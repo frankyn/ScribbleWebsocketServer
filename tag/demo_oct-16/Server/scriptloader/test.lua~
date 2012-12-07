@@ -1,4 +1,0 @@
-function run ( input )
-	output = "Frank is cool"
-	return output
-end

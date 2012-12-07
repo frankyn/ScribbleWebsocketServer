@@ -1,9 +1,0 @@
-Environment Reqs:
-
-liblua5.1-0-dev
-libsqlite3
-apache2
-php5-sqlite3
-
-----------------
-
