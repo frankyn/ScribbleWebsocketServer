@@ -1,0 +1,129 @@
+\hypertarget{classSQLite}{\section{\-S\-Q\-Lite \-Class \-Reference}
+\label{classSQLite}\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}}
+}
+
+
+{\ttfamily \#include $<$\-S\-Q\-Lite.\-h$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSQLite_ae7b35dc7e3c41543a0acde669ad4ba0d}{\-S\-Q\-Lite} ()
+\item 
+\hyperlink{classSQLite_a5b30b82149fe1cc07046f25a9935747f}{$\sim$\-S\-Q\-Lite} ()
+\item 
+void \hyperlink{classSQLite_a1937c8a95aebbfc9b82bf7b30aa6375d}{log} (std\-::string)
+\item 
+bool \hyperlink{classSQLite_a421fe9dd5fd1abd92b00857253823c90}{connect} (std\-::string)
+\item 
+void \hyperlink{classSQLite_af4a886ee189358e84337a5e81ed0d515}{disconnect} ()
+\item 
+int \hyperlink{classSQLite_a4124efb4d6521bcad1666d949ae36311}{query} (std\-::string)
+\item 
+int \hyperlink{classSQLite_addf9309356a45a01f74831cb803b4b8d}{update} (std\-::string)
+\item 
+int \hyperlink{classSQLite_a985917c1b24cfdc802851d22f5d17c3e}{has\-Next} ()
+\item 
+std\-::vector$<$ std\-::string $>$ \hyperlink{classSQLite_ad85ca830bc58aa3c299489c2eaa90080}{next} ()
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classSQLite_add18111d5de9e218a147dbceb0aa7899}{has\-Next\-Row}
+\item 
+sqlite3\-\_\-stmt $\ast$ \hyperlink{classSQLite_ac9fcbb5e55073780e5b7a6b10147d74e}{statement}
+\item 
+sqlite3 $\ast$ \hyperlink{classSQLite_a206e8b4696cbea9d8091310cf17213ee}{dbfile}
+\item 
+bool \hyperlink{classSQLite_a7d855ec7c6e9644201b59321375a6fa5}{is\-Open\-D\-B}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classSQLite_ae7b35dc7e3c41543a0acde669ad4ba0d}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!\-S\-Q\-Lite@{\-S\-Q\-Lite}}
+\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{\-S\-Q\-Lite}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-S\-Q\-Lite\-::\-S\-Q\-Lite} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classSQLite_ae7b35dc7e3c41543a0acde669ad4ba0d}
+\hypertarget{classSQLite_a5b30b82149fe1cc07046f25a9935747f}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!$\sim$\-S\-Q\-Lite@{$\sim$\-S\-Q\-Lite}}
+\index{$\sim$\-S\-Q\-Lite@{$\sim$\-S\-Q\-Lite}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{$\sim$\-S\-Q\-Lite}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-S\-Q\-Lite\-::$\sim$\-S\-Q\-Lite} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classSQLite_a5b30b82149fe1cc07046f25a9935747f}
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classSQLite_a421fe9dd5fd1abd92b00857253823c90}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!connect@{connect}}
+\index{connect@{connect}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{connect}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-S\-Q\-Lite\-::connect} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{db}
+\end{DoxyParamCaption}
+)}}\label{classSQLite_a421fe9dd5fd1abd92b00857253823c90}
+\hypertarget{classSQLite_af4a886ee189358e84337a5e81ed0d515}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!disconnect@{disconnect}}
+\index{disconnect@{disconnect}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{disconnect}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-S\-Q\-Lite\-::disconnect} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classSQLite_af4a886ee189358e84337a5e81ed0d515}
+\hypertarget{classSQLite_a985917c1b24cfdc802851d22f5d17c3e}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!has\-Next@{has\-Next}}
+\index{has\-Next@{has\-Next}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{has\-Next}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-S\-Q\-Lite\-::has\-Next} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classSQLite_a985917c1b24cfdc802851d22f5d17c3e}
+\hypertarget{classSQLite_a1937c8a95aebbfc9b82bf7b30aa6375d}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!log@{log}}
+\index{log@{log}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{log}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-S\-Q\-Lite\-::log} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{msg}
+\end{DoxyParamCaption}
+)}}\label{classSQLite_a1937c8a95aebbfc9b82bf7b30aa6375d}
+\hypertarget{classSQLite_ad85ca830bc58aa3c299489c2eaa90080}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!next@{next}}
+\index{next@{next}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{next}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$ std\-::string $>$ {\bf \-S\-Q\-Lite\-::next} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classSQLite_ad85ca830bc58aa3c299489c2eaa90080}
+\hypertarget{classSQLite_a4124efb4d6521bcad1666d949ae36311}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!query@{query}}
+\index{query@{query}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{query}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-S\-Q\-Lite\-::query} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{q}
+\end{DoxyParamCaption}
+)}}\label{classSQLite_a4124efb4d6521bcad1666d949ae36311}
+\hypertarget{classSQLite_addf9309356a45a01f74831cb803b4b8d}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!update@{update}}
+\index{update@{update}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-S\-Q\-Lite\-::update} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{q}
+\end{DoxyParamCaption}
+)}}\label{classSQLite_addf9309356a45a01f74831cb803b4b8d}
+
+
+\subsection{\-Field \-Documentation}
+\hypertarget{classSQLite_a206e8b4696cbea9d8091310cf17213ee}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!dbfile@{dbfile}}
+\index{dbfile@{dbfile}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{dbfile}]{\setlength{\rightskip}{0pt plus 5cm}sqlite3$\ast$ {\bf \-S\-Q\-Lite\-::dbfile}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classSQLite_a206e8b4696cbea9d8091310cf17213ee}
+\hypertarget{classSQLite_add18111d5de9e218a147dbceb0aa7899}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!has\-Next\-Row@{has\-Next\-Row}}
+\index{has\-Next\-Row@{has\-Next\-Row}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{has\-Next\-Row}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-S\-Q\-Lite\-::has\-Next\-Row}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classSQLite_add18111d5de9e218a147dbceb0aa7899}
+\hypertarget{classSQLite_a7d855ec7c6e9644201b59321375a6fa5}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!is\-Open\-D\-B@{is\-Open\-D\-B}}
+\index{is\-Open\-D\-B@{is\-Open\-D\-B}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{is\-Open\-D\-B}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-S\-Q\-Lite\-::is\-Open\-D\-B}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classSQLite_a7d855ec7c6e9644201b59321375a6fa5}
+\hypertarget{classSQLite_ac9fcbb5e55073780e5b7a6b10147d74e}{\index{\-S\-Q\-Lite@{\-S\-Q\-Lite}!statement@{statement}}
+\index{statement@{statement}!SQLite@{\-S\-Q\-Lite}}
+\subsubsection[{statement}]{\setlength{\rightskip}{0pt plus 5cm}sqlite3\-\_\-stmt$\ast$ {\bf \-S\-Q\-Lite\-::statement}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classSQLite_ac9fcbb5e55073780e5b7a6b10147d74e}
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+sqlite/\hyperlink{SQLite_8h}{\-S\-Q\-Lite.\-h}\item 
+sqlite/\hyperlink{SQLite_8cpp}{\-S\-Q\-Lite.\-cpp}\end{DoxyCompactItemize}

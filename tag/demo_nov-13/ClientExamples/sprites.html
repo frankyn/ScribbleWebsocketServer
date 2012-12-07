@@ -1,0 +1,266 @@
+<html>
+
+<head>
+<title>Galaxy Worlds</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type='text/javascript' src='js/main.js'></script>
+<script type='text/javascript'>
+	var ws;
+	var players = Array ( );
+	var Canvas_FN = function ( width, height ) {
+		this.id = 'real_ctx';
+		this.bid = 'buffer_ctx';
+		this.width = width;
+		this.height = height;
+
+		this.canvas_elem = document.createElement('canvas');
+		this.canvas_elem.id = this.id;
+		this.canvas_elem.height = height;
+		this.canvas_elem.width = width;
+
+		this.buffer_elem = document.createElement('canvas');
+		this.buffer_elem.id = this.id;
+		this.buffer_elem.height = height;
+		this.buffer_elem.width = width;
+		this.buffer_elem.visible = false;
+		document.body.appendChild(this.canvas_elem);
+		    
+		this.canvas_ctx = this.canvas_elem.getContext("2d");
+		this.buffer_ctx = this.buffer_elem.getContext("2d");
+
+	}
+
+	Canvas_FN.prototype.error = function ( MSG ) {
+		console.error ( MSG );	
+	}
+
+	Canvas_FN.prototype.log = function ( MSG ) {
+		console.log ( MSG );
+	}
+
+	Canvas_FN.prototype.resize = function ( width, height ) {
+		this.width = width;
+		this.height = height;
+		$ ( "#" + this.id ).width ( this.width );
+		$ ( "#" + this.id ).height ( this.height );
+
+		$ ( "#" + this.bid ).width ( this.width );
+		$ ( "#" + this.bid ).height ( this.height);	
+	}
+
+	Canvas_FN.prototype.ctx = function ( ) {
+		return this.buffer_ctx;
+	}
+
+	Canvas_FN.prototype.swap = function ( ) {
+		var img = this.buffer_ctx.getImageData(0, 0, this.width, this.height);
+		this.canvas_ctx.putImageData(img, 0, 0);
+		this.buffer_ctx.clearRect (0, 0, this.width, this.height);
+	}
+
+	var Background_FN = function ( width , height ) {
+	this.width = width;
+	this.height = height;
+	}
+
+	Background_FN.prototype.error = function ( MSG ) {
+	console.error ( "Background_FN: " + MSG );	
+	}
+
+	Background_FN.prototype.log = function ( MSG ) {
+	console.log ( "Background_FN: " + MSG );
+	}
+
+	Background_FN.prototype.draw = function ( ctx ) {
+	ctx.fillRect ( 0, 0, this.width, this.height );
+	}
+
+
+	var Sprite_FN = function ( ) {
+	this.x = 0;
+	this.y = 0;	
+	}
+
+	Sprite_FN.prototype.error = function ( MSG ) {
+	console.error ( "Sprite: " + MSG );
+	}
+
+	Sprite_FN.prototype.log = function ( MSG ) {
+	console.log ( "Sprite: " + MSG );
+	}
+
+	Sprite_FN.prototype.setPosition = function ( x, y ) {
+		this.x = x;
+		this.y = y;	
+		this.x0 = x;
+		this.y0 = y;
+	}
+
+	Sprite_FN.prototype.dist = function ( s ) {
+	return Math.sqrt( Math.pow ( s.x - this.x, 2 ) + Math.pow ( s.y - this.y, 2) );	
+	}
+
+	Sprite_FN.prototype.getX = function ( ) {
+	return this.x;	
+	}
+
+	Sprite_FN.prototype.getY = function ( ) {
+	return this.y;	
+	}
+
+	Sprite_FN.prototype.update = function ( dt ) { }
+	Sprite_FN.prototype.draw = function ( ctx ) { }
+	/*
+	SpaceBody creates
+	*/
+
+	var newPoppie = function ( x, y ) {
+		var s = new Sprite_FN ( );
+		s.setPosition ( x, y );
+		s.update = function ( dt ) {
+
+		}
+		s.draw = function ( ctx ) {
+			ctx.save();
+			ctx.fillStyle = "rgb(0, 0, 255 )";
+			ctx.fillRect ( this.x, this.y, 20, 20 );
+			ctx.restore();	
+		}
+		return s;
+	}
+
+	var GalaxyWorlds_FN = function ( ) {
+		this.gfx = new Canvas_FN ( $ ( document ).width(), $(document).height() );
+		this.background = new Background_FN ( $ ( document).width(), $ ( document ).height() );
+		this.player_x = 0;
+		this.player_y = 0;
+		this.player = false;
+		this.unique = Math.floor ( Math.random() * 99999 + 1 );
+		var scope = this;
+		$(document).keypress( function ( evt ) {
+			switch ( evt.which ){
+				case 119: //W
+					scope.player.x += 0;
+					scope.player.y -= 10;
+				break;
+				case 115: //S
+					scope.player.x += 0;
+					scope.player.y += 10;
+				break;
+				case 97: //A
+					scope.player.x += -10;
+					scope.player.y += 0;
+				break;
+				case 100: //D
+					scope.player.x += 10;
+					scope.player.y += 0;
+				break;
+				default:
+					scope.log ( evt.which );	
+			}
+			
+			sendPosition ( scope.unique, scope.player.x, scope.player.y );
+			scope.updateGalaxyPosition ( );
+		});
+
+		$(window).resize( function ( ) {
+			scope.background.width = $ ( document ).width();
+			scope.background.height = $ ( document ) .height();
+			scope.gfx.resize ( $ ( document ).width(), $ ( document).height() );
+		} );
+		
+		this.player = newPoppie ( 100, 100);
+		
+		players[this.unique] = this.player;
+	};
+
+	GalaxyWorlds_FN.prototype.log = function ( MSG ) {
+		console.log ( " Galaxy Worlds: " + MSG );
+	};
+
+	GalaxyWorlds_FN.prototype.error = function ( MSG ) {
+		console.error ( "Galaxy Worlds: " + MSG );	
+	};
+
+	GalaxyWorlds_FN.prototype.init = function ( ) {
+		this.log ( "init..." );
+		this.lastTime = new Date();
+		var scope = this;
+		setInterval ( function ( ) {scope.loop();}, 75 );
+	};
+
+	GalaxyWorlds_FN.prototype.loop = function ( ) {
+		this.currTime = new Date();
+		this.update ( (this.currTime - this.lastTime)/5000 );
+		this.draw ( );
+		this.lastTime = ( this.currTime - this.lastTime ) % 2;
+	};
+
+	GalaxyWorlds_FN.prototype.updateGalaxyPosition = function ( ) {
+
+	};
+
+	GalaxyWorlds_FN.prototype.update = function ( dt ) {
+		this.player.update ( dt );
+	};
+
+	GalaxyWorlds_FN.prototype.draw = function ( ) {
+		this.background.draw ( this.gfx.ctx() );
+		for ( x in players ) {
+			players[x].draw ( this.gfx.ctx() );
+		}
+		this.gfx.swap();
+	};
+
+	$(document).ready(function ( ) {
+		var GW_Runner = new GalaxyWorlds_FN ( );
+		GW_Runner.init();
+	} );
+	var ws;
+
+	// Let us open a web socket
+	ws = new WebSocket("ws://localhost:1035/default");
+
+	ws.onopen = function()
+	{
+	// Web Socket is connected, send data using send()
+		
+	};
+	ws.onmessage = function (evt) 
+	{ 
+		var received_position = evt.data;
+		var position = received_position.split ( ',' );
+		// position [id, x, y]
+		if ( players[position[0]] ) {
+			players[position[0]].setPosition ( parseInt(position[1]), parseInt(position[2]) );
+		} else {
+			players[position[0]] = new newPoppie ( parseInt(position[1]), parseInt(position[2]) );
+		}
+	};
+
+	ws.onclose = function()
+	{ 
+		// websocket is closed.
+		alert("Connection is closed..."); 
+	};
+
+	var sendPosition = function(unique, x, y){
+		ws.send ( unique + "," + x + "," + y );
+	}
+	
+	var unique_var = unique;
+</script>
+<style>
+	body{
+		padding:0px;
+		margin:0px;	
+	}
+</style>
+
+</head>
+
+<body>
+
+</body>
+
+</html>

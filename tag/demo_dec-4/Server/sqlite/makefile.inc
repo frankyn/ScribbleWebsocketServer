@@ -1,0 +1,2 @@
+SQLSCHEMA=SQLite.h SQLite.o
+SQLSCHEMA-EFLAGS=-lsqlite3

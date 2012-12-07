@@ -1,0 +1,50 @@
+\hypertarget{base64_8c}{\section{protocols/rfc\-\_\-6455/base64/base64.c \-File \-Reference}
+\label{base64_8c}\index{protocols/rfc\-\_\-6455/base64/base64.\-c@{protocols/rfc\-\_\-6455/base64/base64.\-c}}
+}
+{\ttfamily \#include \char`\"{}base64.\-h\char`\"{}}\*
+{\ttfamily \#include $<$iostream$>$}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \hyperlink{base64_8c_ac30e44d6346a447e9632f629932fb218}{is\-\_\-base64} (unsigned char c)
+\item 
+std\-::string \hyperlink{base64_8c_af218d8d076a8a9ee46abf1e5c368c84f}{base64\-\_\-encode} (unsigned char const $\ast$bytes\-\_\-to\-\_\-encode, unsigned int in\-\_\-len)
+\item 
+std\-::string \hyperlink{base64_8c_a70c8cda20425a7870ddfb58ff3cff5eb}{base64\-\_\-decode} (std\-::string const \&encoded\-\_\-string)
+\end{DoxyCompactItemize}
+\subsection*{\-Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const std\-::string \hyperlink{base64_8c_afacd58bf72ada31670f59541c2743643}{base64\-\_\-chars} = \char`\"{}0123456789+/\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{base64_8c_a70c8cda20425a7870ddfb58ff3cff5eb}{\index{base64.\-c@{base64.\-c}!base64\-\_\-decode@{base64\-\_\-decode}}
+\index{base64\-\_\-decode@{base64\-\_\-decode}!base64.c@{base64.\-c}}
+\subsubsection[{base64\-\_\-decode}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf base64\-\_\-decode} (
+\begin{DoxyParamCaption}
+\item[{std\-::string const \&}]{encoded\-\_\-string}
+\end{DoxyParamCaption}
+)}}\label{base64_8c_a70c8cda20425a7870ddfb58ff3cff5eb}
+\hypertarget{base64_8c_af218d8d076a8a9ee46abf1e5c368c84f}{\index{base64.\-c@{base64.\-c}!base64\-\_\-encode@{base64\-\_\-encode}}
+\index{base64\-\_\-encode@{base64\-\_\-encode}!base64.c@{base64.\-c}}
+\subsubsection[{base64\-\_\-encode}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf base64\-\_\-encode} (
+\begin{DoxyParamCaption}
+\item[{unsigned char const $\ast$}]{bytes\-\_\-to\-\_\-encode, }
+\item[{unsigned int}]{in\-\_\-len}
+\end{DoxyParamCaption}
+)}}\label{base64_8c_af218d8d076a8a9ee46abf1e5c368c84f}
+\hypertarget{base64_8c_ac30e44d6346a447e9632f629932fb218}{\index{base64.\-c@{base64.\-c}!is\-\_\-base64@{is\-\_\-base64}}
+\index{is\-\_\-base64@{is\-\_\-base64}!base64.c@{base64.\-c}}
+\subsubsection[{is\-\_\-base64}]{\setlength{\rightskip}{0pt plus 5cm}static bool {\bf is\-\_\-base64} (
+\begin{DoxyParamCaption}
+\item[{unsigned char}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{base64_8c_ac30e44d6346a447e9632f629932fb218}
+
+
+\subsection{\-Variable \-Documentation}
+\hypertarget{base64_8c_afacd58bf72ada31670f59541c2743643}{\index{base64.\-c@{base64.\-c}!base64\-\_\-chars@{base64\-\_\-chars}}
+\index{base64\-\_\-chars@{base64\-\_\-chars}!base64.c@{base64.\-c}}
+\subsubsection[{base64\-\_\-chars}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string {\bf base64\-\_\-chars} = \char`\"{}0123456789+/\char`\"{}\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{base64_8c_afacd58bf72ada31670f59541c2743643}

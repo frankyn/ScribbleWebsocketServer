@@ -1,0 +1,169 @@
+\hypertarget{classListenerClass}{\section{\-Listener\-Class \-Class \-Reference}
+\label{classListenerClass}\index{\-Listener\-Class@{\-Listener\-Class}}
+}
+
+
+{\ttfamily \#include $<$\-Listener\-Class.\-h$>$}
+
+\-Inheritance diagram for \-Listener\-Class\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classListenerClass}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classListenerClass_a51123fb7fefe03fb4dcd347fab7d53e9}{\-Listener\-Class} (int, int, int)
+\item 
+void \hyperlink{classListenerClass_a1ea748a7a3d2af97032cb54879937a7b}{handle\-Connection} (int)
+\item 
+\hyperlink{classListenerClass_ad6ca9ef2ec7d0f5dc1c41c629b62ad62}{$\sim$\-Listener\-Class} ()
+\item 
+void \hyperlink{classListenerClass_a928179045e95f0b175ce895dbb8cbafd}{set\-Status} (int)
+\item 
+int \hyperlink{classListenerClass_a2af2bac82ab30eda5ef876e6f4c04df1}{users\-Connected} ()
+\item 
+std\-::string \hyperlink{classListenerClass_a7d698e794f88524ceb2a01f7b8885431}{available\-Channels} ()
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classListenerClass_a3c03db442f150655fb00cc5b562f4cc8}{\-Setup} ()
+\item 
+void \hyperlink{classListenerClass_ac8dd8fe72b34ab5412f8ffe1fec18808}{\-Execute} (void $\ast$)
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classListenerClass_aa89d7f1e7689480cba000b3c0fa8b6c2}{incoming\-F\-D}
+\item 
+int \hyperlink{classListenerClass_a893af73361a8309146dd32f2ea25ad84}{max\-Selectors}
+\item 
+int \hyperlink{classListenerClass_ac7e26fe8e0be92e2f3a789bec5ef0769}{status}
+\item 
+int \hyperlink{classListenerClass_a549253403e548ddd2686076affd5ec94}{queue}
+\item 
+int \hyperlink{classListenerClass_a12f33aca6bb74c05fc425e0a95b43ed7}{port}
+\item 
+std\-::map$<$ std\-::string, \-Channel $\ast$ $>$ \hyperlink{classListenerClass_a117b3a05516645559a9d2ebfc59e402d}{channels}
+\item 
+\-Connections\-Waiting \hyperlink{classListenerClass_a042f0c9bc8ae4ea89fdf667cac503362}{connections\-Waiting}
+\item 
+\-Channel\-Selector $\ast$$\ast$ \hyperlink{classListenerClass_a464fae6bbe88763173d475959707a9ce}{chselect}
+\item 
+\hyperlink{classSQLite}{\-S\-Q\-Lite} \hyperlink{classListenerClass_ab12f05f1fd420de2c5af04a7ecbeba4d}{app\-D\-B}
+\item 
+\hyperlink{classTCPListener}{\-T\-C\-P\-Listener} \hyperlink{classListenerClass_abf5a4811e19cc0c23a3cdcc08f43a09f}{listener\-Socket}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classListenerClass_a51123fb7fefe03fb4dcd347fab7d53e9}{\index{\-Listener\-Class@{\-Listener\-Class}!\-Listener\-Class@{\-Listener\-Class}}
+\index{\-Listener\-Class@{\-Listener\-Class}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{\-Listener\-Class}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Listener\-Class\-::\-Listener\-Class} (
+\begin{DoxyParamCaption}
+\item[{int}]{port, }
+\item[{int}]{queue, }
+\item[{int}]{selectors}
+\end{DoxyParamCaption}
+)}}\label{classListenerClass_a51123fb7fefe03fb4dcd347fab7d53e9}
+\hypertarget{classListenerClass_ad6ca9ef2ec7d0f5dc1c41c629b62ad62}{\index{\-Listener\-Class@{\-Listener\-Class}!$\sim$\-Listener\-Class@{$\sim$\-Listener\-Class}}
+\index{$\sim$\-Listener\-Class@{$\sim$\-Listener\-Class}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{$\sim$\-Listener\-Class}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Listener\-Class\-::$\sim$\-Listener\-Class} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classListenerClass_ad6ca9ef2ec7d0f5dc1c41c629b62ad62}
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classListenerClass_a7d698e794f88524ceb2a01f7b8885431}{\index{\-Listener\-Class@{\-Listener\-Class}!available\-Channels@{available\-Channels}}
+\index{available\-Channels@{available\-Channels}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{available\-Channels}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-Listener\-Class\-::available\-Channels} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classListenerClass_a7d698e794f88524ceb2a01f7b8885431}
+\hypertarget{classListenerClass_ac8dd8fe72b34ab5412f8ffe1fec18808}{\index{\-Listener\-Class@{\-Listener\-Class}!\-Execute@{\-Execute}}
+\index{\-Execute@{\-Execute}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{\-Execute}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Listener\-Class\-::\-Execute} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}private, virtual\mbox{]}}}}\label{classListenerClass_ac8dd8fe72b34ab5412f8ffe1fec18808}
+
+
+\-Implements \hyperlink{classThreadClass_aa6b3fb3567bd8b7d67b4aa200cd47e00}{\-Thread\-Class}.
+
+\hypertarget{classListenerClass_a1ea748a7a3d2af97032cb54879937a7b}{\index{\-Listener\-Class@{\-Listener\-Class}!handle\-Connection@{handle\-Connection}}
+\index{handle\-Connection@{handle\-Connection}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{handle\-Connection}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Listener\-Class\-::handle\-Connection} (
+\begin{DoxyParamCaption}
+\item[{int}]{desc}
+\end{DoxyParamCaption}
+)}}\label{classListenerClass_a1ea748a7a3d2af97032cb54879937a7b}
+\hypertarget{classListenerClass_a928179045e95f0b175ce895dbb8cbafd}{\index{\-Listener\-Class@{\-Listener\-Class}!set\-Status@{set\-Status}}
+\index{set\-Status@{set\-Status}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{set\-Status}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Listener\-Class\-::set\-Status} (
+\begin{DoxyParamCaption}
+\item[{int}]{s}
+\end{DoxyParamCaption}
+)}}\label{classListenerClass_a928179045e95f0b175ce895dbb8cbafd}
+\hypertarget{classListenerClass_a3c03db442f150655fb00cc5b562f4cc8}{\index{\-Listener\-Class@{\-Listener\-Class}!\-Setup@{\-Setup}}
+\index{\-Setup@{\-Setup}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{\-Setup}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Listener\-Class\-::\-Setup} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}private, virtual\mbox{]}}}}\label{classListenerClass_a3c03db442f150655fb00cc5b562f4cc8}
+
+
+\-Implements \hyperlink{classThreadClass_a79775d1799a12bf4c9575cad8fd462d0}{\-Thread\-Class}.
+
+\hypertarget{classListenerClass_a2af2bac82ab30eda5ef876e6f4c04df1}{\index{\-Listener\-Class@{\-Listener\-Class}!users\-Connected@{users\-Connected}}
+\index{users\-Connected@{users\-Connected}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{users\-Connected}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Listener\-Class\-::users\-Connected} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classListenerClass_a2af2bac82ab30eda5ef876e6f4c04df1}
+
+
+\subsection{\-Field \-Documentation}
+\hypertarget{classListenerClass_ab12f05f1fd420de2c5af04a7ecbeba4d}{\index{\-Listener\-Class@{\-Listener\-Class}!app\-D\-B@{app\-D\-B}}
+\index{app\-D\-B@{app\-D\-B}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{app\-D\-B}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-S\-Q\-Lite} {\bf \-Listener\-Class\-::app\-D\-B}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classListenerClass_ab12f05f1fd420de2c5af04a7ecbeba4d}
+\hypertarget{classListenerClass_a117b3a05516645559a9d2ebfc59e402d}{\index{\-Listener\-Class@{\-Listener\-Class}!channels@{channels}}
+\index{channels@{channels}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{channels}]{\setlength{\rightskip}{0pt plus 5cm}std\-::map$<$std\-::string, \-Channel$\ast$$>$ {\bf \-Listener\-Class\-::channels}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classListenerClass_a117b3a05516645559a9d2ebfc59e402d}
+\hypertarget{classListenerClass_a464fae6bbe88763173d475959707a9ce}{\index{\-Listener\-Class@{\-Listener\-Class}!chselect@{chselect}}
+\index{chselect@{chselect}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{chselect}]{\setlength{\rightskip}{0pt plus 5cm}\-Channel\-Selector$\ast$$\ast$ {\bf \-Listener\-Class\-::chselect}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classListenerClass_a464fae6bbe88763173d475959707a9ce}
+\hypertarget{classListenerClass_a042f0c9bc8ae4ea89fdf667cac503362}{\index{\-Listener\-Class@{\-Listener\-Class}!connections\-Waiting@{connections\-Waiting}}
+\index{connections\-Waiting@{connections\-Waiting}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{connections\-Waiting}]{\setlength{\rightskip}{0pt plus 5cm}\-Connections\-Waiting {\bf \-Listener\-Class\-::connections\-Waiting}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classListenerClass_a042f0c9bc8ae4ea89fdf667cac503362}
+\hypertarget{classListenerClass_aa89d7f1e7689480cba000b3c0fa8b6c2}{\index{\-Listener\-Class@{\-Listener\-Class}!incoming\-F\-D@{incoming\-F\-D}}
+\index{incoming\-F\-D@{incoming\-F\-D}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{incoming\-F\-D}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Listener\-Class\-::incoming\-F\-D}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classListenerClass_aa89d7f1e7689480cba000b3c0fa8b6c2}
+\hypertarget{classListenerClass_abf5a4811e19cc0c23a3cdcc08f43a09f}{\index{\-Listener\-Class@{\-Listener\-Class}!listener\-Socket@{listener\-Socket}}
+\index{listener\-Socket@{listener\-Socket}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{listener\-Socket}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-T\-C\-P\-Listener} {\bf \-Listener\-Class\-::listener\-Socket}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classListenerClass_abf5a4811e19cc0c23a3cdcc08f43a09f}
+\hypertarget{classListenerClass_a893af73361a8309146dd32f2ea25ad84}{\index{\-Listener\-Class@{\-Listener\-Class}!max\-Selectors@{max\-Selectors}}
+\index{max\-Selectors@{max\-Selectors}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{max\-Selectors}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Listener\-Class\-::max\-Selectors}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classListenerClass_a893af73361a8309146dd32f2ea25ad84}
+\hypertarget{classListenerClass_a12f33aca6bb74c05fc425e0a95b43ed7}{\index{\-Listener\-Class@{\-Listener\-Class}!port@{port}}
+\index{port@{port}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{port}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Listener\-Class\-::port}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classListenerClass_a12f33aca6bb74c05fc425e0a95b43ed7}
+\hypertarget{classListenerClass_a549253403e548ddd2686076affd5ec94}{\index{\-Listener\-Class@{\-Listener\-Class}!queue@{queue}}
+\index{queue@{queue}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{queue}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Listener\-Class\-::queue}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classListenerClass_a549253403e548ddd2686076affd5ec94}
+\hypertarget{classListenerClass_ac7e26fe8e0be92e2f3a789bec5ef0769}{\index{\-Listener\-Class@{\-Listener\-Class}!status@{status}}
+\index{status@{status}!ListenerClass@{\-Listener\-Class}}
+\subsubsection[{status}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Listener\-Class\-::status}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classListenerClass_ac7e26fe8e0be92e2f3a789bec5ef0769}
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{ListenerClass_8h}{\-Listener\-Class.\-h}\item 
+\hyperlink{ListenerClass_8cpp}{\-Listener\-Class.\-cpp}\end{DoxyCompactItemize}

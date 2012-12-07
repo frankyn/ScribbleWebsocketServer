@@ -1,0 +1,9 @@
+#include "./common/Logger.h"
+#include "./ListenerClass.h"
+
+int main(){
+	ListenerClass LS = ListenerClass(1035, 10, 5);
+	LS.Wait();
+	
+	return 0;
+}

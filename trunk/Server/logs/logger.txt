@@ -1,0 +1,8 @@
+SQLite: QUERY:select * from apps
+SQLite: Query errored.
+SQLite: QUERY:select apps.*, users.* from apps left join assoc on assoc.appid = apps.appid left join users on users.userid = assoc.userid
+SQLite: Query errored.
+Listener: Query error occured.
+SQLite: QUERY:select * from apps
+SQLite: Query errored.
+Listener: Query error occured.

@@ -1,0 +1,57 @@
+\hypertarget{shacmp_8cpp}{\section{protocols/rfc\-\_\-6455/sha1/shacmp.cpp \-File \-Reference}
+\label{shacmp_8cpp}\index{protocols/rfc\-\_\-6455/sha1/shacmp.\-cpp@{protocols/rfc\-\_\-6455/sha1/shacmp.\-cpp}}
+}
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+{\ttfamily \#include $<$string.\-h$>$}\*
+{\ttfamily \#include \char`\"{}sha1.\-h\char`\"{}}\*
+\subsection*{\-Defines}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{shacmp_8cpp_a0faeff3df051b1c839ff17840e74a4dc}{\-S\-H\-A1\-\_\-\-C\-O\-M\-P\-A\-R\-E}~0
+\item 
+\#define \hyperlink{shacmp_8cpp_a1042edb36cfc670a50f55181cc65205b}{\-S\-H\-A1\-\_\-\-N\-O\-\_\-\-C\-O\-M\-P\-A\-R\-E}~1
+\item 
+\#define \hyperlink{shacmp_8cpp_a2fc7ba711e155edc54519bd8b1d54780}{\-S\-H\-A1\-\_\-\-U\-S\-A\-G\-E\-\_\-\-E\-R\-R\-O\-R}~2
+\item 
+\#define \hyperlink{shacmp_8cpp_a579e0254f284c4e8d377bf98dca517a4}{\-S\-H\-A1\-\_\-\-F\-I\-L\-E\-\_\-\-E\-R\-R\-O\-R}~3
+\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{shacmp_8cpp_a2ef30c42cbc289d899a8be5d2d8f77d0}{usage} ()
+\item 
+int \hyperlink{shacmp_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Define \-Documentation}
+\hypertarget{shacmp_8cpp_a0faeff3df051b1c839ff17840e74a4dc}{\index{shacmp.\-cpp@{shacmp.\-cpp}!\-S\-H\-A1\-\_\-\-C\-O\-M\-P\-A\-R\-E@{\-S\-H\-A1\-\_\-\-C\-O\-M\-P\-A\-R\-E}}
+\index{\-S\-H\-A1\-\_\-\-C\-O\-M\-P\-A\-R\-E@{\-S\-H\-A1\-\_\-\-C\-O\-M\-P\-A\-R\-E}!shacmp.cpp@{shacmp.\-cpp}}
+\subsubsection[{\-S\-H\-A1\-\_\-\-C\-O\-M\-P\-A\-R\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-S\-H\-A1\-\_\-\-C\-O\-M\-P\-A\-R\-E}~0}}\label{shacmp_8cpp_a0faeff3df051b1c839ff17840e74a4dc}
+\hypertarget{shacmp_8cpp_a579e0254f284c4e8d377bf98dca517a4}{\index{shacmp.\-cpp@{shacmp.\-cpp}!\-S\-H\-A1\-\_\-\-F\-I\-L\-E\-\_\-\-E\-R\-R\-O\-R@{\-S\-H\-A1\-\_\-\-F\-I\-L\-E\-\_\-\-E\-R\-R\-O\-R}}
+\index{\-S\-H\-A1\-\_\-\-F\-I\-L\-E\-\_\-\-E\-R\-R\-O\-R@{\-S\-H\-A1\-\_\-\-F\-I\-L\-E\-\_\-\-E\-R\-R\-O\-R}!shacmp.cpp@{shacmp.\-cpp}}
+\subsubsection[{\-S\-H\-A1\-\_\-\-F\-I\-L\-E\-\_\-\-E\-R\-R\-O\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-S\-H\-A1\-\_\-\-F\-I\-L\-E\-\_\-\-E\-R\-R\-O\-R}~3}}\label{shacmp_8cpp_a579e0254f284c4e8d377bf98dca517a4}
+\hypertarget{shacmp_8cpp_a1042edb36cfc670a50f55181cc65205b}{\index{shacmp.\-cpp@{shacmp.\-cpp}!\-S\-H\-A1\-\_\-\-N\-O\-\_\-\-C\-O\-M\-P\-A\-R\-E@{\-S\-H\-A1\-\_\-\-N\-O\-\_\-\-C\-O\-M\-P\-A\-R\-E}}
+\index{\-S\-H\-A1\-\_\-\-N\-O\-\_\-\-C\-O\-M\-P\-A\-R\-E@{\-S\-H\-A1\-\_\-\-N\-O\-\_\-\-C\-O\-M\-P\-A\-R\-E}!shacmp.cpp@{shacmp.\-cpp}}
+\subsubsection[{\-S\-H\-A1\-\_\-\-N\-O\-\_\-\-C\-O\-M\-P\-A\-R\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-S\-H\-A1\-\_\-\-N\-O\-\_\-\-C\-O\-M\-P\-A\-R\-E}~1}}\label{shacmp_8cpp_a1042edb36cfc670a50f55181cc65205b}
+\hypertarget{shacmp_8cpp_a2fc7ba711e155edc54519bd8b1d54780}{\index{shacmp.\-cpp@{shacmp.\-cpp}!\-S\-H\-A1\-\_\-\-U\-S\-A\-G\-E\-\_\-\-E\-R\-R\-O\-R@{\-S\-H\-A1\-\_\-\-U\-S\-A\-G\-E\-\_\-\-E\-R\-R\-O\-R}}
+\index{\-S\-H\-A1\-\_\-\-U\-S\-A\-G\-E\-\_\-\-E\-R\-R\-O\-R@{\-S\-H\-A1\-\_\-\-U\-S\-A\-G\-E\-\_\-\-E\-R\-R\-O\-R}!shacmp.cpp@{shacmp.\-cpp}}
+\subsubsection[{\-S\-H\-A1\-\_\-\-U\-S\-A\-G\-E\-\_\-\-E\-R\-R\-O\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-S\-H\-A1\-\_\-\-U\-S\-A\-G\-E\-\_\-\-E\-R\-R\-O\-R}~2}}\label{shacmp_8cpp_a2fc7ba711e155edc54519bd8b1d54780}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{shacmp_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{\index{shacmp.\-cpp@{shacmp.\-cpp}!main@{main}}
+\index{main@{main}!shacmp.cpp@{shacmp.\-cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf main} (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{shacmp_8cpp_a0ddf1224851353fc92bfbff6f499fa97}
+\hypertarget{shacmp_8cpp_a2ef30c42cbc289d899a8be5d2d8f77d0}{\index{shacmp.\-cpp@{shacmp.\-cpp}!usage@{usage}}
+\index{usage@{usage}!shacmp.cpp@{shacmp.\-cpp}}
+\subsubsection[{usage}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf usage} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{shacmp_8cpp_a2ef30c42cbc289d899a8be5d2d8f77d0}

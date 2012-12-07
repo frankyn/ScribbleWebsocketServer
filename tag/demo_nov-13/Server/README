@@ -1,0 +1,8 @@
+Environment Reqs:
+
+liblua5.1-0-dev
+
+
+TODO:
+Clients are closed for some reason.::Need to find out whats closing a connection.
+

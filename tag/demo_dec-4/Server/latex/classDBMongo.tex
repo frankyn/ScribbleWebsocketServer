@@ -1,0 +1,172 @@
+\hypertarget{classDBMongo}{\section{\-D\-B\-Mongo \-Class \-Reference}
+\label{classDBMongo}\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}}
+}
+
+
+{\ttfamily \#include $<$\-D\-B\-Mongo.\-h$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classDBMongo_a62cbd6424bbde08df864612e002b795a}{\-D\-B\-Mongo} ()
+\item 
+\hyperlink{classDBMongo_a5efce15a6942d210a6c3635f84ab5b64}{$\sim$\-D\-B\-Mongo} ()
+\item 
+int \hyperlink{classDBMongo_a0c633e9007fc2ec0cc775986e4cb1794}{connect} (const std\-::string)
+\item 
+int \hyperlink{classDBMongo_a2e617b209777d76700e9ccf7cc94e0e0}{auth} (const std\-::string, const std\-::string, const std\-::string)
+\item 
+int \hyperlink{classDBMongo_a92fce59813d1f78a929f303918591b88}{use\-D\-B} (const std\-::string)
+\item 
+int \hyperlink{classDBMongo_a47f37fc41372135005423f291a5a620a}{count} (const std\-::string, const std\-::string)
+\item 
+int \hyperlink{classDBMongo_a0bad4f3699bbf6666a55df76e93c9486}{query} (const std\-::string, const std\-::string)
+\item 
+int \hyperlink{classDBMongo_ab33c2f434dfde82f8482b83516f9aa5b}{has\-Next} ()
+\item 
+std\-::string \hyperlink{classDBMongo_aae74e2544dfb01b0d59e2ed7ba5fb2cf}{next} ()
+\item 
+int \hyperlink{classDBMongo_a34b43cbaa54ad0c7501d6431fe46d978}{update} (const std\-::string, const std\-::string, const std\-::string)
+\item 
+int \hyperlink{classDBMongo_a3fa19733154817348dfbf094fdbeb148}{remove} (const std\-::string, const std\-::string)
+\item 
+int \hyperlink{classDBMongo_a629d3338a78cbecd51c84bf1bbc3b94e}{insert} (const std\-::string, const std\-::string)
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+const std\-::string \hyperlink{classDBMongo_ae5c8a9211b0e679c2150d250482ee8e1}{get\-Link} (const std\-::string)
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+mongo\-::\-D\-B\-Client\-Connection \hyperlink{classDBMongo_a59aa9f1b562885e5b71203d4c895d8b5}{conn}
+\item 
+mongo\-::auto\-\_\-ptr\*
+$<$ mongo\-::\-D\-B\-Client\-Cursor $>$ \hyperlink{classDBMongo_a6d32ad7e532966a638885cf6b8975c87}{cursor}
+\item 
+std\-::string \hyperlink{classDBMongo_a727f1eb39d182ce873ce8e242eeaa226}{database\-Name}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classDBMongo_a62cbd6424bbde08df864612e002b795a}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!\-D\-B\-Mongo@{\-D\-B\-Mongo}}
+\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{\-D\-B\-Mongo}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-D\-B\-Mongo\-::\-D\-B\-Mongo} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_a62cbd6424bbde08df864612e002b795a}
+\hypertarget{classDBMongo_a5efce15a6942d210a6c3635f84ab5b64}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!$\sim$\-D\-B\-Mongo@{$\sim$\-D\-B\-Mongo}}
+\index{$\sim$\-D\-B\-Mongo@{$\sim$\-D\-B\-Mongo}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{$\sim$\-D\-B\-Mongo}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-D\-B\-Mongo\-::$\sim$\-D\-B\-Mongo} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_a5efce15a6942d210a6c3635f84ab5b64}
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classDBMongo_a2e617b209777d76700e9ccf7cc94e0e0}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!auth@{auth}}
+\index{auth@{auth}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{auth}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-D\-B\-Mongo\-::auth} (
+\begin{DoxyParamCaption}
+\item[{const std\-::string}]{dbname, }
+\item[{const std\-::string}]{username, }
+\item[{const std\-::string}]{password}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_a2e617b209777d76700e9ccf7cc94e0e0}
+\hypertarget{classDBMongo_a0c633e9007fc2ec0cc775986e4cb1794}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!connect@{connect}}
+\index{connect@{connect}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{connect}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-D\-B\-Mongo\-::connect} (
+\begin{DoxyParamCaption}
+\item[{const std\-::string}]{host}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_a0c633e9007fc2ec0cc775986e4cb1794}
+\hypertarget{classDBMongo_a47f37fc41372135005423f291a5a620a}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!count@{count}}
+\index{count@{count}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{count}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-D\-B\-Mongo\-::count} (
+\begin{DoxyParamCaption}
+\item[{const std\-::string}]{table, }
+\item[{const std\-::string}]{json}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_a47f37fc41372135005423f291a5a620a}
+\hypertarget{classDBMongo_ae5c8a9211b0e679c2150d250482ee8e1}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!get\-Link@{get\-Link}}
+\index{get\-Link@{get\-Link}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{get\-Link}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string {\bf \-D\-B\-Mongo\-::get\-Link} (
+\begin{DoxyParamCaption}
+\item[{const std\-::string}]{table}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classDBMongo_ae5c8a9211b0e679c2150d250482ee8e1}
+\hypertarget{classDBMongo_ab33c2f434dfde82f8482b83516f9aa5b}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!has\-Next@{has\-Next}}
+\index{has\-Next@{has\-Next}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{has\-Next}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-D\-B\-Mongo\-::has\-Next} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_ab33c2f434dfde82f8482b83516f9aa5b}
+\hypertarget{classDBMongo_a629d3338a78cbecd51c84bf1bbc3b94e}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!insert@{insert}}
+\index{insert@{insert}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{insert}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-D\-B\-Mongo\-::insert} (
+\begin{DoxyParamCaption}
+\item[{const std\-::string}]{table, }
+\item[{const std\-::string}]{json}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_a629d3338a78cbecd51c84bf1bbc3b94e}
+\hypertarget{classDBMongo_aae74e2544dfb01b0d59e2ed7ba5fb2cf}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!next@{next}}
+\index{next@{next}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{next}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-D\-B\-Mongo\-::next} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_aae74e2544dfb01b0d59e2ed7ba5fb2cf}
+\hypertarget{classDBMongo_a0bad4f3699bbf6666a55df76e93c9486}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!query@{query}}
+\index{query@{query}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{query}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-D\-B\-Mongo\-::query} (
+\begin{DoxyParamCaption}
+\item[{const std\-::string}]{table, }
+\item[{const std\-::string}]{json}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_a0bad4f3699bbf6666a55df76e93c9486}
+\hypertarget{classDBMongo_a3fa19733154817348dfbf094fdbeb148}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!remove@{remove}}
+\index{remove@{remove}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{remove}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-D\-B\-Mongo\-::remove} (
+\begin{DoxyParamCaption}
+\item[{const std\-::string}]{table, }
+\item[{const std\-::string}]{json}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_a3fa19733154817348dfbf094fdbeb148}
+\hypertarget{classDBMongo_a34b43cbaa54ad0c7501d6431fe46d978}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!update@{update}}
+\index{update@{update}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-D\-B\-Mongo\-::update} (
+\begin{DoxyParamCaption}
+\item[{const std\-::string}]{table, }
+\item[{const std\-::string}]{where, }
+\item[{const std\-::string}]{json}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_a34b43cbaa54ad0c7501d6431fe46d978}
+\hypertarget{classDBMongo_a92fce59813d1f78a929f303918591b88}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!use\-D\-B@{use\-D\-B}}
+\index{use\-D\-B@{use\-D\-B}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{use\-D\-B}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-D\-B\-Mongo\-::use\-D\-B} (
+\begin{DoxyParamCaption}
+\item[{const std\-::string}]{dbname}
+\end{DoxyParamCaption}
+)}}\label{classDBMongo_a92fce59813d1f78a929f303918591b88}
+
+
+\subsection{\-Field \-Documentation}
+\hypertarget{classDBMongo_a59aa9f1b562885e5b71203d4c895d8b5}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!conn@{conn}}
+\index{conn@{conn}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{conn}]{\setlength{\rightskip}{0pt plus 5cm}mongo\-::\-D\-B\-Client\-Connection {\bf \-D\-B\-Mongo\-::conn}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classDBMongo_a59aa9f1b562885e5b71203d4c895d8b5}
+\hypertarget{classDBMongo_a6d32ad7e532966a638885cf6b8975c87}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!cursor@{cursor}}
+\index{cursor@{cursor}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{cursor}]{\setlength{\rightskip}{0pt plus 5cm}mongo\-::auto\-\_\-ptr$<$mongo\-::\-D\-B\-Client\-Cursor$>$ {\bf \-D\-B\-Mongo\-::cursor}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classDBMongo_a6d32ad7e532966a638885cf6b8975c87}
+\hypertarget{classDBMongo_a727f1eb39d182ce873ce8e242eeaa226}{\index{\-D\-B\-Mongo@{\-D\-B\-Mongo}!database\-Name@{database\-Name}}
+\index{database\-Name@{database\-Name}!DBMongo@{\-D\-B\-Mongo}}
+\subsubsection[{database\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-D\-B\-Mongo\-::database\-Name}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classDBMongo_a727f1eb39d182ce873ce8e242eeaa226}
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+mongodb/\hyperlink{DBMongo_8h}{\-D\-B\-Mongo.\-h}\item 
+mongodb/\hyperlink{DBMongo_8cpp}{\-D\-B\-Mongo.\-cpp}\end{DoxyCompactItemize}

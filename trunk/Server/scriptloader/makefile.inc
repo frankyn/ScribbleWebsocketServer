@@ -1,0 +1,2 @@
+SCRIPTLOADER=ScriptLoader.h ScriptLoader.o
+SCRIPTLOADER-EFLAGS=-llua5.1

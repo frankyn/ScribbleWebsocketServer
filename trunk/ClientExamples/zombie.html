@@ -1,0 +1,657 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Zombie Game</title>
+<style>
+	body{
+		background-color:#fff;
+		padding:0px;
+		margin:0px;
+	}
+	canvas{
+		background-color:#000000;
+	}
+</style>
+<script type="application/javascript">
+	var ws;
+	var online_players = {};
+	// Let us open a web socket
+	ws = new WebSocket("ws://173.255.200.128:1035/1354618892ZombieGame");
+
+	ws.onopen = function() {
+			
+	};
+
+	ws.onmessage = function (evt) { 
+		var msg = JSON.parse ( evt.data );
+		console.log ( evt.data );
+		switch ( msg.id ) {
+			case 0x1:
+				//New Player
+				onPlayerMovement ( msg.pid, msg.x, msg.y );
+			break;
+			case 0x2:
+				//Player Update
+				onPlayerMovement ( msg.pid, msg.x, msg.y );
+			break;
+			case 0x3:
+				//Player Left
+				
+			break;
+			case 0x4:
+				//Zombie
+				gzombies.push ( new zombie ( msg.x, msg.y, 50, msg.zid ) );
+				glevelAlive++;
+			break;
+			case 0x5:
+
+				for ( i = 0; i < gzombies.length; i ++ ) {
+					if ( gzombies[i].zid == msg.zid )  {
+						gzombies[i].kill();
+						glevelAlive --;
+						break;
+					}
+				}
+			break;
+		}
+	};
+
+	ws.onclose = function()
+	{ 
+		// websocket is closed.
+		alert("Connection is closed..."); 
+	};
+
+	function onPlayerMovement ( id, x, y ) {
+		if ( id in online_players ) {
+			online_players[id].x = -parseInt(x);
+			online_players[id].y = -parseInt(y);
+		} else {
+			online_players[id] = new onlinePlayer ( -parseInt(x), -parseInt(y) );
+		}
+	}
+
+	Array.prototype.remove = function(i){
+		
+	};
+
+	var levelData = "[0,4][SEPERATOR][[0,0],[0,32],[0,64],[0,96],[0,128],[0,160],[0,192],[0,224],[0,256],[0,288],[0,320],[0,352],[0,384],[0,416],[0,448],[0,480],[0,512],[0,544],[0,576],[0,608],[0,640],[0,672],[0,704],[0,736],[0,768],[0,800],[0,832],[0,864],[0,896],[0,928],[0,960],[32,0],[32,32],[32,64],[32,96],[32,128],[32,160],[32,192],[32,224],[32,256],[32,288],[32,320],[32,352],[32,384],[32,416],[32,448],[32,480],[32,512],[32,544],[32,576],[32,608],[32,640],[32,672],[32,704],[32,736],[32,768],[32,800],[32,832],[32,864],[32,896],[32,928],[32,960],[64,0],[64,32],[64,64],[64,96],[64,128],[64,160],[64,192],[64,224],[64,256],[64,288],[64,320],[64,352],[64,384],[64,416],[64,448],[64,480],[64,512],[64,544],[64,576],[64,608],[64,640],[64,672],[64,704],[64,736],[64,768],[64,800],[64,832],[64,864],[64,896],[64,928],[64,960],[96,0],[96,32],[96,64],[96,96],[96,128],[96,160],[96,192],[96,224],[96,256],[96,288],[96,320],[96,352],[96,384],[96,416],[96,448],[96,480],[96,512],[96,544],[96,576],[96,608],[96,640],[96,672],[96,704],[96,736],[96,768],[96,800],[96,832],[96,864],[96,896],[96,928],[96,960],[128,0],[128,32],[128,64],[128,96],[128,128],[128,160],[128,192],[128,224],[128,256],[128,288],[128,320],[128,352],[128,384],[128,416],[128,448],[128,480],[128,512],[128,544],[128,576],[128,608],[128,640],[128,672],[128,704],[128,736],[128,768],[128,800],[128,832],[128,864],[128,896],[128,928],[128,960],[160,0],[160,32],[160,64],[160,96],[160,128],[160,160],[160,192],[160,224],[160,256],[160,288],[160,320],[160,352],[160,384],[160,416],[160,448],[160,480],[160,512],[160,544],[160,576],[160,608],[160,640],[160,672],[160,704],[160,736],[160,768],[160,800],[160,832],[160,864],[160,896],[160,928],[160,960],[192,0],[192,32],[192,64],[192,96],[192,128],[192,160],[192,192],[192,224],[192,256],[192,288],[192,320],[192,352],[192,384],[192,416],[192,448],[192,480],[192,512],[192,544],[192,576],[192,608],[192,640],[192,672],[192,704],[192,736],[192,768],[192,800],[192,832],[192,864],[192,896],[192,928],[192,960],[224,0],[224,32],[224,64],[224,96],[224,128],[224,160],[224,192],[224,224],[224,256],[224,288],[224,320],[224,352],[224,384],[224,416],[224,448],[224,480],[224,512],[224,544],[224,576],[224,608],[224,640],[224,672],[224,704],[224,736],[224,768],[224,800],[224,832],[224,864],[224,896],[224,928],[224,960]][SEPERATOR][[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1]],[[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,-1,-1,-1,-1]],[[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1]],[[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1]],[[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,32,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1],[0,-1,-1,-1,-1]]]";
+	levelData = levelData.split("[SEPERATOR]");
+	var mapSizeOffset = eval(levelData[0]);
+	var TileSet = eval(levelData[1]);
+	var gmap = eval(levelData[2]);
+	var mainView = Array(0, 0);
+	var playerPos = Array(0, 0);
+	var playerMov = Array(0, 0, 0);
+	
+	var maxDepth = 5;
+	var touchmoved = false;
+	var touchedPos = Array(0, 0);
+	var viewElement;
+	var ctx;
+	var zombieimage;
+	var zombie2image;
+	var beaconimage;
+	var floorelement;
+	var floorctx;
+	var tileimage;
+	var timeLapse;
+	var gplayer;
+	var gplayerdir = 0;
+	var gzombies = Array();
+	var bullets = Array();
+	var glife;
+	var gsprint;
+	var glevel = 1;
+	var glevelAlive = 0;
+	var glevelZombies = Array(
+							Array(10,0),
+							Array(15,2),
+							Array(10,5),
+							Array(5,10),
+							Array(1,15)
+							);
+	var inter;
+	var onlinePlayer = function(x, y){
+		this.x = x;
+		this.y = y;
+		this.draw = function(ctx, dt){
+			ctx.save();
+			ctx.translate(mainView[0]/2+(this.x)+playerPos[0], mainView[1]/2+(this.y)+playerPos[1]);
+			
+			ctx.fillStyle = "rgb(255,0,0)";
+			
+			ctx.fillRect(-5, -5, 10, 10);
+			ctx.fillStyle = "rgb(0, 0, 0)";
+			ctx.fillRect(5, 2, 10, 2);
+			ctx.restore();
+		};
+	};
+	var player = function(x, y){
+		this.x = x;
+		this.y = y;
+		this.draw = function(ctx, dt){
+			for(x in gzombies){
+				if(!gzombies[x].alive)
+					continue;
+				var d = Math.sqrt(Math.pow(gzombies[x].x-this.x+playerPos[0], 2)+Math.pow(gzombies[x].y-this.y+playerPos[1], 2));
+				if(d < 10){
+					glife.hitPoints -= gzombies[x].damage*dt;
+				}
+			}
+			ctx.save();
+			ctx.translate(this.x, this.y);
+			ctx.rotate(gplayerdir);
+			
+			ctx.fillStyle = "rgb(255,0,0)";
+			
+			ctx.fillRect(-5, -5, 10, 10);
+			ctx.fillStyle = "rgb(0, 0, 0)";
+			ctx.fillRect(5, 2, 10, 2);
+			ctx.restore();
+		};
+	};
+	var bullet_1 = function(z, p, v, s){
+		this.zombie = z;
+		this.x = p.x;
+		this.y = p.y;
+		this.dir = Math.atan2((this.zombie.y-this.y), (this.zombie.x-this.x));
+		this.vx = 100*Math.cos(this.dir);
+		this.vy = 100*Math.sin(this.dir);
+		this.v = Array();
+		this.vel = v;
+		this.splash = s;
+		this.live = true;
+		this.draw = function(ctx, dt){
+			if(this.x<=(gplayer.x-100) || this.y<=(gplayer.y-100) || this.x >=(gplayer.x+100) || this.y >= (gplayer.y+100)){
+				this.live = false;
+				bullets.remove(this);	
+			}
+			for(x in gzombies){
+				var d = Math.sqrt(Math.pow(gzombies[x].x-this.x+playerPos[0], 2)+Math.pow(gzombies[x].y-this.y+playerPos[1], 2));
+				if(d < this.splash && gzombies[x].alive){
+					gzombies[x].life--;
+					this.live = false;
+					bullets.remove(this);
+					if(gzombies[x].life <= 0){
+						gzombies[x].kill();
+					}
+				}
+			}
+			this.x = this.x+(this.vx*dt);
+			this.y = this.y+(this.vy*dt);
+			
+			ctx.fillStyle = "rgb(255, 0, 0)";
+			ctx.fillRect((this.x), (this.y), 5, 5);
+		}
+	}
+
+	function killedZombie ( id ) {
+		var zombie = {};
+		zombie.id = 0x4
+		zombie.zid = id;
+		ws.send ( JSON.stringify ( zombie ) );
+	}
+	
+	var zombie = function ( x, y, r, id ) {
+		this.life = 1;
+		this.rotation = 0;
+		this.x = x;
+		this.y = y;
+		this.zid = id;
+		this.dx = Math.random()*mainView[0]+1;
+		this.dy = Math.random()*mainView[1]+1;
+		this.range = r;
+		this.alive = true;
+		this.follow = false;
+		this.damage = .5;
+		this.kill = function(){
+			if(this.alive){
+				this.alive = false;
+				glevelAlive--;
+				gzombies.remove(this);
+				killedZombie ( this.zid );
+			}
+		}
+		this.update = function(p,dt){
+			var d = Math.sqrt(Math.pow(this.x-p.x+playerPos[0],2)+Math.pow(this.y-p.y+playerPos[1], 2)); 
+			if(d < r){
+				this.follow = true;
+			}
+			if(this.follow){
+				this.x += (p.x-(this.x+playerPos[0]))*dt;
+				this.y += (p.y-(this.y+playerPos[1]))*dt;
+				this.rotation = Math.atan2((p.y-(this.y+playerPos[1])), (p.x-(this.x+playerPos[0])));
+			}else{
+				if((this.dx-this.x) < 25 && (this.dy-this.y) < 25){
+					this.dx = Math.random()*(p.x+1)+1;
+					this.dy = Math.random()*(p.y+1)+1;	
+					this.x += (this.dx-this.x)*dt/10;
+					this.y += (this.dy-this.y)*dt/10;
+					this.rotation = Math.atan2((this.dy-this.y), (this.dx-this.x))
+				}else{
+					this.x += (this.dx-this.x)*dt/10;
+					this.y += (this.dy-this.y)*dt/10;
+					this.rotation = Math.atan2((this.dy-this.y), (this.dx-this.x))
+				}
+			}
+		};
+		
+		this.draw = function(ctx){
+			/*
+			ctx.fillStyle = "rgb(0, 255, 0)";
+			ctx.globalAlpha = .5;
+			ctx.beginPath();
+			ctx.arc(this.x-5, this.y-5, this.range, 0, 2*Math.PI, false);
+			ctx.fill();
+			ctx.restore();
+			ctx.fillStyle = "rgb(0, 0, 255)";
+			ctx.fillRect(this.x-10, this.y-10, 10, 10);
+			*/
+			ctx.save();
+			ctx.translate(this.x+playerPos[0], this.y+playerPos[1]);
+			ctx.scale(.2, .2);
+			ctx.rotate(this.rotation);
+			ctx.drawImage(zombieimage, -(zombieimage.width/2), -(zombieimage.height/2));
+			ctx.restore();
+		};
+	};
+	
+	var zombie2 = function(x, y, r){
+		this.life = 5;
+		this.x = x;
+		this.y = y;
+		this.dx = Math.random()*mainView[0]+1;
+		this.dy = Math.random()*mainView[1]+1;
+		this.range = r;
+		this.damage = 1;
+		this.alive = true;
+		this.follow = false;
+		this.rotation = 0;
+		this.kill = function(){
+			this.alive = false;
+			glevelAlive--;
+			gzombies.remove(this);
+		}
+		this.update = function(p,dt){
+			var d = Math.sqrt(Math.pow(this.x-p.x+playerPos[0],2)+Math.pow(this.y-p.y+playerPos[1], 2)); 
+			if(d < r){
+				this.follow = true;
+			}
+			if(this.follow){
+				this.x += (p.x-(this.x+playerPos[0]))*dt;
+				this.y += (p.y-(this.y+playerPos[1]))*dt;
+				this.rotation = Math.atan2((p.y-(this.y+playerPos[1])), (p.x-(this.x+playerPos[0])));
+			}else{
+				if((this.dx-this.x) < 25 && (this.dy-this.y) < 25){
+					this.dx = Math.random()*(p.x+1)+1;
+					this.dy = Math.random()*(p.y+1)+1;	
+					this.x += (this.dx-this.x)*dt/10;
+					this.y += (this.dy-this.y)*dt/10;
+					this.rotation = Math.atan2((this.dy-this.y), (this.dx-this.x))
+				}else{
+					this.x += (this.dx-this.x)*dt/10;
+					this.y += (this.dy-this.y)*dt/10;
+					this.rotation = Math.atan2((this.dy-this.y), (this.dx-this.x))
+				}
+			}
+		};
+		
+		this.draw = function(ctx){
+			ctx.save();
+			ctx.translate(this.x+playerPos[0], this.y+playerPos[1]);
+			ctx.scale(.2, .2);
+			ctx.rotate(this.rotation);
+			ctx.drawImage(zombie2image, -(zombieimage.width/2), -(zombieimage.height/2));
+			ctx.restore();
+		};
+	};
+	
+	var meter = function(x, y, p, c){
+		this.x = x;
+		this.y = y;
+		this.hitPoints = p;
+		this.color = c? c: "rgb(0, 255, 0)";
+		this.draw = function(ctx){
+			ctx.fillStyle = "rgb(255, 0, 0)";
+			ctx.fillRect(this.x, this.y, 200, 10);
+			ctx.fillStyle = this.color;
+			ctx.fillRect(this.x, this.y, this.hitPoints/100*200,10);
+			ctx.fillStyle = "rgb(0, 0, 0)";
+			ctx.font = "12pt Arial";
+			ctx.fillText(Math.floor(this.hitPoints)+'%', this.x+90, this.y+10);
+		}
+	}
+	function setupLevel(){
+		var zombies = glevelZombies[glevel-1];
+		gzombies = Array();
+		gbullets = Array();
+		glevelAlive = 1;
+		/*
+		for(var i=0; i<zombies[0]; i++){	
+			gzombies.push(new zombie(Math.random()*mainView[0]+1, Math.random()*mainView[1]+1, 50));
+			glevelAlive++;
+		}
+		for(var i=0; i<zombies[1]; i++){	
+			gzombies.push(new zombie2(Math.random()*mainView[0]+1, Math.random()*mainView[1]+1, 50));
+			glevelAlive++;
+		}
+		*/
+		
+	}
+	function loaded(){
+		viewElement = document.getElementById("c");
+		var mobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));  
+    	if (mobile) { 
+			viewElement.width = window.innerWidth;	
+			viewElement.height = window.innerHeight;
+		}
+		mainView[0] = viewElement.width;
+		mainView[1] = viewElement.height;
+		
+		ctx = viewElement.getContext('2d');
+		
+			
+		
+		floorelement = document.createElement('canvas');
+		floorimg = document.getElementById("floor");
+		zombieimage = document.getElementById("zombie");
+		zombie2image = document.getElementById("zombie2");
+		beaconimage = document.getElementById("beacon");
+		tileimage = document.getElementById("tileset");
+		floorelement.width = floorimg.width;
+		floorelement.height = floorimg.height;
+		
+		floorctx = floorelement.getContext("2d");
+		floorctx.drawImage(floorimg, 0, 0);
+		setupLevel();
+		gplayer = new player(mainView[0]/2,mainView[1]/2);
+		glife = new meter(10,10,100);
+		gsprint = new meter(10, 30, 100, "rgb(0, 0, 255)");
+		timeLapse = new Date().getTime();
+		
+		window.addEventListener("keypress", keyboard, false);
+		window.addEventListener("keyup", keuUp, false);
+		window.addEventListener("click", mouse, false);
+		window.addEventListener("mousemove", mousemove, false);
+		window.addEventListener("resize", resize, false);
+		viewElement.addEventListener("touchmove", touchmove, false);
+		viewElement.addEventListener("touchstart", touchstart, false);
+		viewElement.addEventListener("touchend", touchend, false);
+		inter = setInterval(run, 10);	
+	}
+	
+	function touchstart(e){
+		if(e.targetTouches.length>0){
+			if(!touchmoved){
+				var touch = e.targetTouches[0] || e.changedTouches[0];
+				var XPos = touch.pageX - viewElement.offsetLeft;
+				var YPos = touch.pageY;
+				touchedPos[0] = XPos;
+				touchedPos[1] = YPos;
+			}else{
+				var touch = e.targetTouches[1] || e.changedTouches[1];
+				var XPos = touch.pageX - viewElement.offsetLeft;
+				var YPos = touch.pageY;
+			}
+			if(XPos>=(gplayer.x-100) && YPos>=(gplayer.y-100) && XPos<=(gplayer.x+100) && YPos <= (gplayer.y+100)){
+				gplayerdir = Math.atan2((YPos-gplayer.y), (XPos-gplayer.x));
+				bullets.push(new bullet_1({'x':XPos, 'y':YPos}, gplayer, .01, 10));
+			}
+		}
+		
+		e.preventDefault();
+	}
+	function touchmove(e){
+		touchmoved = true;
+		if(e.targetTouches.length>0){
+			var touch = e.targetTouches[0] || e.changedTouches[0];
+			var XPos = touch.pageX - viewElement.offsetLeft;
+			var YPos = touch.pageY;
+			gplayerdir = Math.atan2((YPos-touchedPos[1]), (XPos-touchedPos[0]));
+			playerPos[0] -= 5*Math.cos(gplayerdir);
+			playerPos[1] -= 5*Math.sin(gplayerdir);
+			sendPosition ( playerPos[0], playerPos[1] );
+		}
+		e.preventDefault();
+	}
+	function touchend(e){
+		touchmoved = false;
+	}
+	
+	/*
+	function map(ctx){
+		for(var i = 0; i < gmap[0].length; i++){
+			for(var b = 0; b < gmap.length; b++){
+				if(i*32+playerPos[0] <= (gplayer.x+100) && b*32+playerPos[1] <= (gplayer.y+100) &&  i*32+playerPos[0] >= (gplayer.x-132) && b*32+playerPos[1] >= (gplayer.y-132)){ 
+					if(gmap[b][i] instanceof Array){
+						for(x in gmap[b][i]){
+							if(gmap[b][i][x] < 100){
+								ctx.drawImage(	tileimage, TileSet[gmap[b][i][x]][0]*32, TileSet[gmap[b][i][x]][1]*32, 32, 32, i*32+playerPos[0], b*32+playerPos[1], 32, 32);
+							}
+						}
+					}else{
+						ctx.drawImage(	tileimage, TileSet[gmap[b][i]][0]*32, TileSet[gmap[b][i]][1]*32, 32, 32, i*32+playerPos[0], b*32+playerPos[1], 32, 32);
+					}
+				}
+			}
+		}
+	}*/
+	
+	function map(ctx,dt){
+		/*
+		ctx.font = "16pt Arial";
+		ctx.fillStyle="rgb(255,0,0)";
+		for(var i = mapSizeOffset[0]-Math.floor(playerPos[0]/32); i < (mapSizeOffset[0]-Math.floor(playerPos[0]/32))+20; i++){
+			for(var b = mapSizeOffset[1]-Math.floor(playerPos[1]/32); b < (mapSizeOffset[1]-Math.floor(playerPos[1]/32))+16; b++){
+				if(!gmap[b])
+					continue;
+				if(gmap[b][i] instanceof Array){
+					for(var x = 1; x < maxDepth; x++){
+						if(x == 3){
+					*/		
+							
+							gplayer.draw(ctx,dt);	
+					/*	}
+						if(gmap[b][i][x] != -1){
+							if((i*32-((mapSizeOffset[0]-playerPos[0]/32)*32)) > gplayer.x-150 && (i*32-((mapSizeOffset[0]-playerPos[0]/32)*32)) < gplayer.x+150
+								&& b*32-((mapSizeOffset[1]-playerPos[1]/32)*32) > gplayer.y-150 && b*32-((mapSizeOffset[1]-playerPos[1]/32)*32) < gplayer.y+150
+							){
+								ctx.drawImage(	tileimage, TileSet[gmap[b][i][x]][0], TileSet[gmap[b][i][x]][1], 32, 32, i*32-((mapSizeOffset[0]-playerPos[0]/32)*32), b*32-((mapSizeOffset[1]-playerPos[1]/32)*32), 32, 32);
+							}
+						}
+						
+					}
+				}
+			}
+		}*/
+	}
+	function tracker(ctx){
+		
+		for(x in gzombies){
+				if(!gzombies[x].alive)
+					continue;
+				var d = Math.sqrt(Math.pow(gzombies[x].x-gplayer.x+playerPos[0], 2)+Math.pow(gzombies[x].y-gplayer.y+playerPos[1], 2));
+				if(d > 100){
+					ctx.save();
+					ctx.translate(gplayer.x, gplayer.y);
+					ctx.rotate(Math.atan2((gzombies[x].y-gplayer.y+playerPos[1]), (gzombies[x].x-gplayer.x+playerPos[0])) );
+					ctx.drawImage(beaconimage, 100, 0);
+					ctx.restore();
+				}
+			}	
+	}
+	function run(){
+		if(glevelAlive==0){
+			if(glevel<glevelZombies.length){
+				glevel++;
+				setupLevel();
+			}else{
+				clearInterval(inter);
+				ctx.fillStyle = "rgb(255, 255, 255)"
+				ctx.font = "20pt Arial";
+				ctx.fillText("YOU SURVIVED...this time...", 200, 200);
+				return;
+			}
+		}
+		var currentTime = new Date().getTime();
+		var dt = currentTime - timeLapse;
+		timeLapse = currentTime;
+		dt /= 1000;
+		ctx.clearRect(0,0, mainView[0], mainView[1]);
+		if(glife.hitPoints <= 0){
+			clearInterval(inter);
+			ctx.fillStyle = "rgb(255, 255, 255)"
+			ctx.font = "20pt Arial";
+			ctx.fillText("Hey look, you died.", 200, 200);
+			return;
+		}
+		if(playerMov[2] && gsprint.hitPoints > 1){
+			gsprint.hitPoints -= 50*dt;	
+		}else
+		if(gsprint.hitPoints<2){
+			playerMov[2] = 0;	
+		}
+		if(gsprint.hitPoints<100){
+			gsprint.hitPoints += 10*dt;	
+		}
+		
+		playerPos[0] += playerMov[0]*dt + (playerMov[0]<0?-1:(playerMov[0]!=0? 1: 0))*playerMov[2]*dt;
+		playerPos[1] += playerMov[1]*dt + (playerMov[1]<0?-1:(playerMov[1]!=0? 1: 0))*playerMov[2]*dt;
+		
+		glife.draw(ctx);
+		gsprint.draw(ctx);
+		ctx.font = "20pt Arial";
+		ctx.fillStyle = "rgb(255, 255, 255)"
+		ctx.fillText("Level: "+glevel, 300, 25);
+		tracker(ctx);
+		ctx.save();
+		
+		ctx.beginPath();
+		ctx.save();
+		ctx.arc(gplayer.x, gplayer.y, 100, 0, 2*Math.PI, false);
+		
+		ctx.clip();
+		
+		map(ctx,dt);
+		ctx.drawImage(floorimg ,gplayer.x-100, gplayer.y-100);
+		
+		for ( x in online_players ) {
+			online_players[x].draw ( ctx, dt );
+		}
+		for(x in gzombies){
+			if(gzombies[x].alive){	
+					gzombies[x].update(gplayer,dt);
+					gzombies[x].draw(ctx);
+			}
+		}
+		
+		for(x in bullets){
+			if(bullets[x].live){
+				bullets[x].draw(ctx, dt);
+			}
+		}
+		ctx.restore();
+	}
+	function keuUp(e){
+		var key = e.keyCode? e.keyCode : e.charCode;
+		switch(key){
+			case 65:
+			case 68:
+				playerMov[0] = 0;
+			break;
+			case 87:
+			case 83:
+				playerMov[1] = 0;
+			break;	
+			case 32:
+				playerMov[2] = 0;
+			break;
+		}
+	}
+
+	function sendPosition ( x, y ) {
+		var obj = {
+			'id': 2,
+			'x': x,
+			'y': y
+		};
+		ws.send ( JSON.stringify ( obj ) );
+	}
+	function keyboard(e){
+		var key = e.keyCode? e.keyCode : e.charCode;
+		switch(key){
+			case 97:
+				playerMov[0] = 50;
+				sendPosition ( playerPos[0], playerPos[1] );
+			break;
+			case 100:
+				playerMov[0] = -50;
+				sendPosition ( playerPos[0], playerPos[1] );
+			break;
+			case 115:
+				playerMov[1] = -50;
+				sendPosition ( playerPos[0], playerPos[1] );
+			break;
+			case 119:
+				playerMov[1] = 50;
+				sendPosition ( playerPos[0], playerPos[1] );
+			break;	
+			case 32:
+				{
+					if(gsprint.hitPoints>2){
+						playerMov[2] = 50;
+					}else{
+						playerMov[2] = 0;	
+					}
+				}
+			break;
+		}
+	}
+	function mouse(e){
+		var XPos = e.clientX - viewElement.offsetLeft;
+		var YPos = e.clientY - viewElement.offsetTop;
+		
+		if(XPos>=(gplayer.x-100) && YPos>=(gplayer.y-100) && XPos<=(gplayer.x+100) && YPos <= (gplayer.y+100)){
+			bullets.push(new bullet_1({'x':XPos, 'y':YPos}, {'x':gplayer.x, 'y':gplayer.y}, .01, 10));
+		}
+	}
+	
+	
+	function mousemove(e){
+		
+		var XPos = e.clientX - viewElement.offsetLeft;
+		var YPos = e.clientY - viewElement.offsetTop;
+		if(XPos>=0 && YPos>=0 && XPos<=mainView[0] && YPos <= mainView[1]){
+			
+			gplayerdir = Math.atan2((YPos-gplayer.y), (XPos-gplayer.x));
+		}
+	}
+	function resize(e){
+		if(window.innerWidth< viewElement.width){
+			viewElement.width = window.innerWidth;	
+		}
+		if(window.innerHeight  < viewElement.height){
+			viewElement.height = window.innerHeight ;	
+		}
+		mainView[0] = viewElement.width;
+		mainView[1] = viewElement.height;
+		ctx = viewElement.getContext('2d');	
+	}
+	
+	window.addEventListener("load", loaded, false);
+</script>
+</head>
+
+<body>
+<img id='floor' src="images/flashlight.gif" style='display:none;' />
+<img id='zombie' src="images/zombie.png" style="display:none;" />
+<img id='zombie2' src="images/zombie2.png" style="display:none;" />
+<img id='beacon' src="images/beacon.png" style="display:none;" />
+<img id='tileset' src='images/rooftops.png' style='display:none;'  />
+<div id='game' style="width:100%;text-align:center;">
+<canvas id='c' width="640px" height="512px">Canvas is not enabled.</canvas>
+</div>
+</body>
+</html>
