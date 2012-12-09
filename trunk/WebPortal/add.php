@@ -17,7 +17,8 @@
 		$query->execute();
 		$query = $DBH->prepare( "SELECT appID FROM apps ORDER BY appID DESC LIMIT 1" ) ;
 		$query->execute() ;
-		$appID = $query->fetch()['appID'] ;
+		$app = $query->fetch() ;
+		$appID = $app['appID'] ;
 		$sql	=	"INSERT INTO assoc (userID, appID) VALUES ($userID, $appID);";
 		$query = $DBH->prepare($sql);
 		$query->execute();
