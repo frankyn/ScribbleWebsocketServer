@@ -83,7 +83,7 @@ void ScriptLoader::call ( std::string func_name, SLArg args ) {
 		lua_pushstring ( state , it->c_str() );	
 	}
 
-    int err_num = lua_pcall ( state, args.size(), 1, 0 );
+        int err_num = lua_pcall ( state, args.size(), 0, 0 );
 	if ( err_num != 0 ) {
 		std::string err = lua_tostring ( state, -1 );
 		if ( err.empty () ) {
