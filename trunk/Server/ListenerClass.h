@@ -6,7 +6,7 @@
 
 #include "./common/TCPListener.h"
 #include "./common/ThreadClass.h"
-#include "./sqlite/SQLite.h"
+#include "./mysql/MySQL.h"
 #include "./Connection.h"
 #include "./ConnectionsWaiting.h"
 #include "./ChannelSelector.h"
@@ -38,7 +38,7 @@ class ListenerClass : public ThreadClass {
 		ConnectionsWaiting connectionsWaiting;		
 		ChannelSelector ** chselect;
 		
-		SQLite appDB;
+		MySQL appDB;
 		TCPListener listenerSocket;
 };
 

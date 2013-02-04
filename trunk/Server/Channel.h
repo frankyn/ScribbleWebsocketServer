@@ -12,7 +12,7 @@
 #include "./protocols/WSProtocol.h"
 #include "./protocols/rfc_6455/RFC_6455.h"
 #include "./scriptloader/ScriptLoader.h"
-#include "./sqlite/SQLite.h"
+#include "./mysql/MySQL.h"
 #include "./mongodb/DBMongo.h"
 #include "Connection.h"
 
@@ -88,7 +88,6 @@ class Channel : public ThreadClass {
 		std::string name; //channel name
 		std::string scriptFile, scriptUpdate;
 		SemClass sc;
-		SQLite sqldb;
 		DBMongo appDatabase;
 		
 		std::map<std::string, Connection*> connections; 

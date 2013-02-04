@@ -50,7 +50,7 @@ int MySQL::query ( std::string q ) {
     affectedRows = 0;
 
     log ( "QUERY:" + q );
-    printf ( "Query: %s" , q.c_str () );
+    
     if ( mysql_query ( &connectionID,  q.c_str() ) == 0 ) {
         log ( "Query OK." );
         

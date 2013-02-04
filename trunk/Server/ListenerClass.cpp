@@ -14,7 +14,7 @@ ListenerClass::ListenerClass ( int port, int queue, int selectors, int elapsedUp
 		status = 1;
 		this->port = port;
 		this->queue = queue;
-		appDB.connect ( "../WebPortal/inc/users.sqlite" );
+		appDB.connect ( "localhost" , "root", "blue23", "scribble" );
 		Start(this);
 	} catch ( const char * e ) {
 		std::cout<<"Listener: "<<e<<std::endl;
