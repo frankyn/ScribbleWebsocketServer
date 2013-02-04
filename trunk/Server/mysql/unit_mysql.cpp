@@ -9,7 +9,7 @@ int main ( ) {
 	MySQL sql;
 	
 	/* Open Database */
-	std::cout << "Opening hello.db" << std::endl;
+	std::cout << "Connecting to 'localhost' using 'test' database" << std::endl;
 	assert ( sql.connect ( "localhost", "root", "blue23", "test" ) == true );
 	std::cout << "Opening was successful" << std::endl;	
 

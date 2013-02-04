@@ -8,7 +8,7 @@ MySQL::MySQL ( ) {
 }
 
 MySQL::~MySQL ( ) {
-	
+	disconnect ( );
 }
 
 bool MySQL::connect ( std::string host, std::string username, std::string password, std::string database ) {
@@ -41,22 +41,17 @@ int MySQL::exec ( std:: string q ) {
 }
 
 int MySQL::update ( std::string q ) {
-    int num_rows = 0;
-
-    log ( "QUERY:" + q ); 
     query ( q );
 
-    
 	return 1;
 }
 
 int MySQL::query ( std::string q ) { 
-    int num_fields = 0, i;
     affectedRows = 0;
 
     log ( "QUERY:" + q );
-
-    if ( mysql_query ( &connectionID,  q.c_str() ) ) {
+    printf ( "Query: %s" , q.c_str () );
+    if ( mysql_query ( &connectionID,  q.c_str() ) == 0 ) {
         log ( "Query OK." );
         
         result = mysql_store_result ( &connectionID );
@@ -68,9 +63,7 @@ int MySQL::query ( std::string q ) {
             num_fields = mysql_num_fields(result);
             while ((row = mysql_fetch_row(result)))
             {
-               unsigned long *lengths;
                std::vector<std::string> val;
-               lengths = mysql_fetch_lengths(result);
                for(i = 0; i < num_fields; i++)
                {
                    val.push_back ( row[i] ); 
