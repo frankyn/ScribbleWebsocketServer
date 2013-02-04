@@ -1,0 +1,2 @@
+SQLSCHEMA=MySQL.o MySQL.h
+SQLSCHEMA-EFLAGS=-lmysqlclient
