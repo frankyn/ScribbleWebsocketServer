@@ -60,7 +60,7 @@ int ScriptLoader::addProc ( lua_CFunction fn, void * arg, const std::string fn_n
 }
 
 void ScriptLoader::call ( std::string func_name ) {
-	//Log ( "ScriptLoader: CALL " + func_name );
+	Log ( "ScriptLoader: CALL " + func_name );
 	lua_getglobal ( state , func_name.c_str() ) ;
     int err_num = lua_pcall ( state, 0, 0, 0 );
 	
@@ -74,7 +74,7 @@ void ScriptLoader::call ( std::string func_name ) {
 }
 
 void ScriptLoader::call ( std::string func_name, SLArg args ) {
-	//Log ( "ScriptLoader: CALL " + func_name );
+	Log ( "ScriptLoader: CALL " + func_name + " (..args..)" );
 	std::string response;
 
 	lua_getglobal ( state , func_name.c_str() ) ;
@@ -83,7 +83,7 @@ void ScriptLoader::call ( std::string func_name, SLArg args ) {
 		lua_pushstring ( state , it->c_str() );	
 	}
 
-        int err_num = lua_pcall ( state, args.size(), 0, 0 );
+    int err_num = lua_pcall ( state, args.size(), 0, 0 );
 	if ( err_num != 0 ) {
 		std::string err = lua_tostring ( state, -1 );
 		if ( err.empty () ) {
