@@ -80,7 +80,6 @@ void Channel::Execute (void * arg) {
 		std::string msgTemp = "";
 		int buffer_len = 0;
 		char buffer[1024] = {0};
-		unsigned msgLength = 0;
 
 		Log ( "Channel " + this->name + " ready..." );
 		
@@ -89,6 +88,7 @@ void Channel::Execute (void * arg) {
 			conn = NULL;
 			eventsOccuring = epoll_wait(eventFD, eventsList, 10, 1000);
 			if(eventsOccuring < 0){
+				  Log ( "Channel: Unable to wait 'epoll_wait' error" );
 				  throw LogString ( "Unable to wait 'epoll_wait' error occured" );
 			}
 			if ( !scriptUpdate.empty () ) {
@@ -102,7 +102,9 @@ void Channel::Execute (void * arg) {
 				often without giving a user the commanding control.
 			*/
 			logicModule.call ("onBeat");
-			
+			//Handle any packets that are ready in the queue.
+			handleConnectionBuffers ( );
+
 			for ( int ce = 0; ce < eventsOccuring; ce++ ) {
 				conn = ( Connection* ) eventsList[ce].data.ptr;
 				if ( ( buffer_len = conn->recv ( buffer, sizeof ( buffer ) - 1 ) ) == 0 ) {
@@ -111,25 +113,7 @@ void Channel::Execute (void * arg) {
 					continue;
 				}else{
 					//Add incoming data for Connection to its own personal buffer.
-					if ( conn->appendBuffer ( std::string ( buffer, buffer_len ) ) > 0 ) {
-						//Call decode if return is empty string buffer isn't ready to be decoded.
-						msgLength = conn->packetLength ( conn->getBuffer ( ) );
-						if ( msgLength <= conn->getBuffer ( ).size ( ) ) {
-							//We have a complete packet waiting for us so we need clear it from the buffer.
-							msgTemp = conn->getBuffer ( ).substr ( 0, msgLength );
-							conn->setBuffer ( conn->getBuffer ( ).substr ( msgLength, conn->getBuffer ( ).size ( ) ) );	
-
-						    //If incoming message is not empty then transmit to logicModule
-						    //decode and check if not empty
-						    if ( !( msgTemp = conn->decode( msgTemp ) ).empty() ) {
-								//pass decoded message to logicModule script
-								SLArg args;
-								args.push_back ( conn->getID () );
-								args.push_back ( msgTemp );
-								logicModule.call ( "onMessage", args );
-							}
-						}	
-					}
+					conn->appendBuffer ( std::string ( buffer, buffer_len ) );
 				}
 			}
 		}
@@ -137,6 +121,34 @@ void Channel::Execute (void * arg) {
 	}catch(LogString e) {
 		Log ( "Listener: " + e );		
 		std::exit(0);
+	}
+}
+
+void Channel::handleConnectionBuffers ( ) {
+	std::map<std::string, Connection*>::iterator it;
+	Connection * conn;
+	std::string msgTemp;
+	unsigned msgLength = 0;
+
+	for ( it = connections.begin(); it != connections.end(); it ++ ) {
+		conn = it->second;
+		//Call decode if return is empty string buffer isn't ready to be decoded.
+		msgLength = conn->packetLength ( conn->getBuffer ( ) );
+		if ( msgLength != 0 && msgLength <= conn->getBuffer ( ).size ( ) ) {
+			//We have a complete packet waiting for us so we need clear it from the buffer.
+			msgTemp = conn->getBuffer ( ).substr ( 0, msgLength );
+			conn->setBuffer ( conn->getBuffer ( ).substr ( msgLength, conn->getBuffer ( ).size ( ) ) );	
+
+		    //If incoming message is not empty then transmit to logicModule
+		    //decode and check if not empty
+		    if ( !( msgTemp = conn->decode( msgTemp ) ).empty() ) {
+				//pass decoded message to logicModule script
+				SLArg args;
+				args.push_back ( conn->getID () );
+				args.push_back ( msgTemp );
+				logicModule.call ( "onMessage", args );
+			}
+		}
 	}
 }
 

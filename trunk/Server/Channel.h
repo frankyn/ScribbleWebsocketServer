@@ -42,6 +42,9 @@ class Channel : public ThreadClass {
 		void addConnection ( Connection * );
 		void removeConnection ( std::string );
 
+		//Handling Data
+		void handleConnectionBuffers ( );
+
 		//Writing methods
 		int sendTo ( std::string, std::string ); 
 		int broadcast ( std::string, std::string );
