@@ -29,8 +29,7 @@ void ChannelSelector::Execute ( void * arg ) {
 			WSProtocol * protocol = NULL;
 			Log ( "Channel Selector: started" );
 			while ( status ) { 
-				newConnection = NULL;
-				protocol = NULL;	
+				Log ( "Channel Selector: waiting" );
 				if ( connectionsWaiting->wait ( ) ) {
 					continue;
 				}
