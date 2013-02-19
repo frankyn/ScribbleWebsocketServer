@@ -64,9 +64,9 @@ void ChannelSelector::Execute ( void * arg ) {
 					continue;
 				}
 			}
-			delete newConnection;//Protocol is freed within Connection()
-			newConnection = NULL;
-			protocol = NULL;
+			//delete newConnection;//Protocol is freed within Connection()
+			//newConnection = NULL;
+			//protocol = NULL;
    		}
     } catch(std::exception e){
 		Log ( "Channel Selector: failed. --" + std::string(e.what ( )) );
