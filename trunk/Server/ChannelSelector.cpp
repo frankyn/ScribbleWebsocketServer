@@ -51,6 +51,7 @@ void ChannelSelector::Execute ( void * arg ) {
 					newConnection->send ( attributes.response.c_str(), attributes.response.length() );
 					if ( channels->find( attributes.channel ) != channels->end() ) {
 						//std::cout<< "Connection sent to: " << attributes.channel<<std::endl;
+						Log ( "Channel Selector: Connection sent to: " + attributes.channel );
 						(*channels) [ attributes.channel ]->addConnection ( newConnection );
 						newConnection = NULL;
 						protocol = NULL;
