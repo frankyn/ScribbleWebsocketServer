@@ -52,6 +52,8 @@ void ChannelSelector::Execute ( void * arg ) {
 					if ( channels->find( attributes.channel ) != channels->end() ) {
 						//std::cout<< "Connection sent to: " << attributes.channel<<std::endl;
 						(*channels) [ attributes.channel ]->addConnection ( newConnection );
+						newConnection = NULL;
+						protocol = NULL;
 					} else {
 						Log ( "Channel Selector: Channel Not found" );
 						newConnection->close ( );
@@ -66,7 +68,7 @@ void ChannelSelector::Execute ( void * arg ) {
 			newConnection = NULL;
 			protocol = NULL;
    		}
-    } catch(...){
-		Log("Channel Selector: failed. ");
+    } catch(std::exception e){
+		Log ( "Channel Selector: failed. --" + e.what ( ) );
     }
 }
