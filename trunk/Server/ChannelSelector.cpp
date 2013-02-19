@@ -69,6 +69,6 @@ void ChannelSelector::Execute ( void * arg ) {
 			protocol = NULL;
    		}
     } catch(std::exception e){
-		Log ( "Channel Selector: failed. --" + e.what ( ) );
+		Log ( "Channel Selector: failed. --" + std::string(e.what ( )) );
     }
 }
