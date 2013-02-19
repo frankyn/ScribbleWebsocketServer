@@ -68,7 +68,7 @@ void ChannelSelector::Execute ( void * arg ) {
 			//newConnection = NULL;
 			//protocol = NULL;
    		}
-    } catch(std::exception e){
+    } catch(std::exception& e){
 		Log ( "Channel Selector: failed. --" + std::string(e.what ( )) );
     }
 }
