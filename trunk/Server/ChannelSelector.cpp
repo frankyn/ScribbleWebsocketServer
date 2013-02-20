@@ -41,7 +41,7 @@ void ChannelSelector::Execute ( void * arg ) {
 				Log ( "Channel Selector: waiting for handshake" );
 				bytes = newConnection->recv ( buffer, sizeof(buffer)/sizeof(char) );
 				Log ( "Channel Selector: handshake checking" );
-				if ( bytes ) {				
+				if ( bytes > 0 ) {				
 					Log ( "Channel Selector: handshake received" );
 					if ( newConnection->handshake ( buffer, &attributes ) == 0 ){
 						/*		
