@@ -74,6 +74,7 @@ void Channel::Setup() {
 }
 
 void Channel::Execute (void * arg) {
+	while ( status ) {
 	try {
 
 		Connection * conn;
@@ -121,6 +122,7 @@ void Channel::Execute (void * arg) {
 	}catch(LogString e) {
 		Log ( "Listener: " + e );		
 		std::exit(0);
+	}
 	}
 }
 
