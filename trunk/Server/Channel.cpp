@@ -121,7 +121,7 @@ void Channel::Execute (void * arg) {
 
 	}catch(LogString e) {
 		Log ( "Listener: " + e );		
-		std::exit(0);
+		//std::exit(0);
 	}
 	}
 }
