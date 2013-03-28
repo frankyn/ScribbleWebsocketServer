@@ -29,10 +29,17 @@ Todo:
 	Add in MongoDB Wrapper ( MongoDB )
 	Add in the ability to check to see if settings were updated for channel.
 */
-
+struct AppDB {
+	int auth;
+	std::string host;
+	std::string dbname;
+	std::string username;
+	std::string password;
+};
+typedef struct AppDB AppDB;
 class Channel : public ThreadClass { 
 	public:
-		Channel ( std::string, std::string, std::string, unsigned );
+		Channel ( std::string, AppDB, std::string, unsigned );
 		~Channel ( );
 		//User limit reached
 		void limitReached ( Connection * );

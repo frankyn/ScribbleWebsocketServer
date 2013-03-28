@@ -76,7 +76,13 @@ void ListenerClass::Setup(){
 		
 		while ( appDB.hasNext ( ) ) {
 			std::vector<std::string> l = appDB.next ( );
-			channels.insert ( channels.begin(), std::pair <std::string, Channel* > ( l[2], new Channel ( l[1], "app_" + l[2] , l[3] , 1000 ) ) ); 			
+			AppDB appMDB;
+			appMDB.auth = 1;
+			appMDB.host = l[4];
+			appMDB.dbname = "app_" + l[2];
+			appMDB.username = l[5];
+			appMDB.password = l[6];
+			channels.insert ( channels.begin(), std::pair <std::string, Channel* > ( l[2], new Channel ( l[1], appMDB , l[3] , 1000 ) ) ); 			
 		}
 
 		chselect = (ChannelSelector**) malloc ( sizeof(ChannelSelector*) * maxSelectors );
@@ -130,6 +136,7 @@ int ListenerClass::checkForUpdates ( ) {
 			}
 
 			while ( appDB.hasNext ( ) ) {
+				AppDB appMDB;
 				std::vector<std::string> l = appDB.next ( );
 				std::map<std::string,Channel*>::iterator it;
 				if ( ( it = channels.find ( l[2] ) ) != channels.end () ) {
@@ -138,7 +145,12 @@ int ListenerClass::checkForUpdates ( ) {
 						it->second->updateScript ( l[3] );
 					}
 				} else {
-					channels.insert ( channels.begin(), std::pair <std::string, Channel* > ( l[2], new Channel ( l[1], "app_" + l[2], l[3] , 1000 ) ) ); 
+					appMDB.auth = 1;
+					appMDB.host = l[4];
+					appMDB.dbname = "app_" + l[2];
+					appMDB.username = l[5];
+					appMDB.password = l[6];
+					channels.insert ( channels.begin(), std::pair <std::string, Channel* > ( l[2], new Channel ( l[1], appMDB, l[3] , 1000 ) ) ); 
 				}			
 			}
 		}

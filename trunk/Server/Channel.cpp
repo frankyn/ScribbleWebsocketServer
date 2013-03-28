@@ -1,7 +1,7 @@
 #include <cerrno>
 #include "Channel.h"
 
-Channel::Channel ( std::string cname, std::string dbname, std::string script, unsigned maxConn ) {
+Channel::Channel ( std::string cname, AppDB appDB, std::string script, unsigned maxConn ) {
 	this->name = cname;	
 	scriptFile = script;
 	maxConnections = maxConn;
@@ -9,11 +9,19 @@ Channel::Channel ( std::string cname, std::string dbname, std::string script, un
 	
 	/*Connect to database server*/
 	/*Should probably make this configurable from outside.*/
-	if ( !appDatabase.connect ( "localhost" ) ) {
+	if ( !appDatabase.connect ( appDB.host ) ) {
 		Log ( "Channel: Unable to connect to database" );
 		throw "Unable to connect to database";
 	}
-	appDatabase.useDB ( dbname );
+
+	if ( appDB.auth ) {
+		if ( !appDatabase.auth ( appDB.dbname, appDB.username, appDB.password ) ) {
+			Log ( "Channel: Unable to authorize into to database" );
+			throw "Unable to auth into database";
+		}
+	}
+
+	appDatabase.useDB ( appDB.dbname );
 	
 	/*Loading in extra libraries*/
 	logicModule.loadLib ( "lualibs/json.lua" );
