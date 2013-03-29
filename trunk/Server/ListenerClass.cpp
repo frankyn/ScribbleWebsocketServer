@@ -77,11 +77,11 @@ void ListenerClass::Setup(){
 		while ( appDB.hasNext ( ) ) {
 			std::vector<std::string> l = appDB.next ( );
 			AppDB appMDB;
-			appMDB.auth = 1;
-			appMDB.host = l[4];
-			appMDB.dbname = "app_" + l[2];
-			appMDB.username = l[5];
-			appMDB.password = l[6];
+			appMDB.auth = atoi(l[4].c_str());
+			appMDB.host = l[5];
+			appMDB.dbname = l[6];
+			appMDB.username = l[7];
+			appMDB.password = l[8];
 			channels.insert ( channels.begin(), std::pair <std::string, Channel* > ( l[2], new Channel ( l[1], appMDB , l[3] , 1000 ) ) ); 			
 		}
 
@@ -145,11 +145,11 @@ int ListenerClass::checkForUpdates ( ) {
 						it->second->updateScript ( l[3] );
 					}
 				} else {
-					appMDB.auth = 1;
-					appMDB.host = l[4];
-					appMDB.dbname = "app_" + l[2];
-					appMDB.username = l[5];
-					appMDB.password = l[6];
+					appMDB.auth = atoi(l[4].c_str());
+					appMDB.host = l[5];
+					appMDB.dbname = l[6];
+					appMDB.username = l[7];
+					appMDB.password = l[8];
 					channels.insert ( channels.begin(), std::pair <std::string, Channel* > ( l[2], new Channel ( l[1], appMDB, l[3] , 1000 ) ) ); 
 				}			
 			}
