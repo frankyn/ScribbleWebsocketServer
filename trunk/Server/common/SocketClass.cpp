@@ -40,7 +40,6 @@ int SocketClass::newSocket ( int socket_family, int socket_type, int protocol ) 
 
 void SocketClass::setNonBlocking (int desc) {
 	try{
-
 		if(fcntl(desc,F_SETFL,O_NONBLOCK)<0) {
 			throw LogString("Unable to set non-blocking");
 		}
@@ -49,6 +48,24 @@ void SocketClass::setNonBlocking (int desc) {
 	}
 
 }
+
+void SocketClass::setTimeout ( int desc, int sec, int usec ) { 
+	try{	
+		struct timeval timeout;      
+	    	timeout.tv_sec = sec;
+	    	timeout.tv_usec = usec;
+		if (setsockopt (desc, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout,
+		        sizeof(timeout)) < 0)
+			throw("setsockopt failed\n");
+
+	    	if (setsockopt (desc, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout,
+		        sizeof(timeout)) < 0)
+			throw("setsockopt failed\n");
+	}catch(LogString e){
+		Log("Socket: " + e);
+	}
+}
+
 int SocketClass::getSocket() { 
 	return socketDesc;
 }

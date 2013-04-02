@@ -23,6 +23,7 @@ class SocketClass {
 		int getSocket ( );
 		std::string getSocket_str ( );
 		void setNonBlocking ( int );
+		void setTimeout ( int , int , int );
 	protected:
 		int tcpSocket ( );
 		int tcpSocket ( int, int );

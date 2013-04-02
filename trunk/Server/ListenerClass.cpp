@@ -99,6 +99,7 @@ void ListenerClass::Setup(){
 			throw "Unable to listen on port";
 		}
 		listenerSocket.setNonBlocking ( listenerSocket.getSocket() );
+		listenerSocket.setTimeout ( listenerSocket.getSocket(), 1, 0 );
 		Log("Listener: Starting");
 
 		
@@ -117,6 +118,7 @@ void ListenerClass::Execute(void * arg){
 
 			//Call doBeat to tell LUA Scripts to call onBeat
 			doBeat ( );
+			
 			if ( ( incomingFD = listenerSocket.accept() ) > 0) {
 				Log("Listener: New Connection");
 				handleConnection(incomingFD);
