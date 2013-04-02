@@ -41,6 +41,8 @@ class Channel : public ThreadClass {
 	public:
 		Channel ( std::string, AppDB, std::string, unsigned );
 		~Channel ( );
+		
+				
 		//User limit reached
 		void limitReached ( Connection * );
 		void setStatus ( int );
@@ -49,12 +51,16 @@ class Channel : public ThreadClass {
 		void addConnection ( Connection * );
 		void removeConnection ( std::string );
 
+		//Events
+		void doBeat ( );
+		
 		//Handling Data
 		void handleConnectionBuffers ( );
 
 		//Writing methods
 		int sendTo ( std::string, std::string ); 
 		int broadcast ( std::string, std::string );
+
 		/*DB Calls for lua API*/
 		/*
 		int storeData ( std::string, std::string );

@@ -115,6 +115,8 @@ void ListenerClass::Execute(void * arg){
 			//Check for updated scripts and new channels.
 			checkForUpdates ( );
 
+			//Call doBeat to tell LUA Scripts to call onBeat
+			doBeat ( );
 			if ( ( incomingFD = listenerSocket.accept() ) > 0) {
 				Log("Listener: New Connection");
 				handleConnection(incomingFD);
@@ -123,6 +125,13 @@ void ListenerClass::Execute(void * arg){
 	}catch(const char * e){
 		Log("Listener: " + std::string(e));
 		std::exit(0);
+	}
+}
+
+void ListenerClass::doBeat ( ) {
+	std::map<std::string, Channel*>::iterator it = channels.begin();
+	for ( ; it != channels.end ();it ++ ) {
+		it->second->doBeat();
 	}
 }
 

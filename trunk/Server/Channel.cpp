@@ -95,24 +95,11 @@ void Channel::Execute (void * arg) {
 		while ( status ) {
 			buffer_len = 0;
 			conn = NULL;
-			eventsOccuring = epoll_wait(eventFD, eventsList, 10, 1000);
+			eventsOccuring = epoll_wait(eventFD, eventsList, 10, -1);
 			if(eventsOccuring < 0){
 				  Log ( "Channel: Unable to wait 'epoll_wait' error" );
 				  throw LogString ( "Unable to wait 'epoll_wait' error occured" );
 			}
-			if ( !scriptUpdate.empty () ) {
-				scriptFile = scriptUpdate;
-				scriptUpdate = "";
-				logicModule.loadText ( this->scriptFile );
-				Log ( "Channel: Reloaded script" );
-			}
-			/* 
-				Giving LUA Module onBeat method will give it life more 
-				often without giving a user the commanding control.
-			*/
-			logicModule.call ("onBeat");
-			//Handle any packets that are ready in the queue.
-			handleConnectionBuffers ( );
 
 			for ( int ce = 0; ce < eventsOccuring; ce++ ) {
 				conn = ( Connection* ) eventsList[ce].data.ptr;
@@ -132,6 +119,23 @@ void Channel::Execute (void * arg) {
 		//std::exit(0);
 	}
 	}
+}
+
+void Channel::doBeat ( ) {
+	if ( !scriptUpdate.empty () ) {
+		scriptFile = scriptUpdate;
+		scriptUpdate = "";
+		logicModule.loadText ( this->scriptFile );
+		Log ( "Channel: Reloaded script" );
+	}
+			
+	/* 
+		Giving LUA Module onBeat method will give it life more 
+		often without giving a user the commanding control.
+	*/
+	logicModule.call ("onBeat");
+	//Handle any packets that are ready in the queue.
+	handleConnectionBuffers ( );
 }
 
 void Channel::handleConnectionBuffers ( ) {

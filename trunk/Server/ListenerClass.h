@@ -28,6 +28,7 @@ class ListenerClass : public ThreadClass {
 	private:
 		void Setup();
 		void Execute(void *);
+		void doBeat ( );
 		
 		int incomingFD, maxSelectors, status, queue, port;
 		
