@@ -1,0 +1,5 @@
+config = {}
+config.db_host = "<MYSQL_HOST>"
+config.db_username = "<MYSQL_USERNAME>"
+config.db_password = "<MYSQL_PASSWORD>"
+config.db_database = "<MYSQL_DATABASE>"

@@ -11,6 +11,7 @@
 #include "./ConnectionsWaiting.h"
 #include "./ChannelSelector.h"
 #include "./Channel.h"
+#include "./scriptloader/ScriptLoader.h"
 
 #ifndef LISTENER_HEADER
 #define LISTERER_HEADER
@@ -38,7 +39,9 @@ class ListenerClass : public ThreadClass {
 		std::map<std::string, Channel*> channels; //Only one channel for now
 		ConnectionsWaiting connectionsWaiting;		
 		ChannelSelector ** chselect;
-		
+				
+		ScriptLoader config;		
+
 		MySQL appDB;
 		TCPListener listenerSocket;
 };

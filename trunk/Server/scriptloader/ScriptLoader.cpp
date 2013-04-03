@@ -93,3 +93,27 @@ void ScriptLoader::call ( std::string func_name, SLArg args ) {
 	}
 }
 
+void ScriptLoader::focusVar ( std::string var_name ) {
+	lua_getglobal(state, var_name.c_str());
+	if (!lua_istable(state, -1)) {
+		//error(L, "`background' is not a valid color table");
+		Log ( "ScriptLoader: Value not found" );
+	}
+}
+
+std::string ScriptLoader::getTableValue_str ( std::string key ) {
+	std::string result;
+
+      	lua_pushstring(state, key.c_str());
+      	lua_gettable(state, -2);  /* get Table[key] */
+      	if (!lua_isstring(state, -1)) {
+       		//error(L, "invalid component in background color");
+		Log ( "ScriptLoader: value not a string" );		
+		return result;
+      	}
+      	result = lua_tostring(state, -1);
+      	lua_pop(state, 1);  /* remove string */
+
+      	return result;
+}
+

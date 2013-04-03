@@ -14,7 +14,15 @@ ListenerClass::ListenerClass ( int port, int queue, int selectors, int elapsedUp
 		status = 1;
 		this->port = port;
 		this->queue = queue;
-		appDB.connect ( "localhost" , "root", "blue23", "scribble" );
+		config.load("config/config.lua");
+		config.focusVar("config");
+
+		//Load in config file values		
+		appDB.connect ( config.getTableValue_str("db_host") , 
+				config.getTableValue_str("db_username") , 
+				config.getTableValue_str("db_password") , 
+				config.getTableValue_str("db_database") );
+
 		Start(this);
 	} catch ( const char * e ) {
 		std::cout<<"Listener: "<<e<<std::endl;
@@ -99,7 +107,7 @@ void ListenerClass::Setup(){
 			throw "Unable to listen on port";
 		}
 		listenerSocket.setNonBlocking ( listenerSocket.getSocket() );
-		listenerSocket.setTimeout ( listenerSocket.getSocket(), 1, 0 );
+		listenerSocket.setTimeout ( listenerSocket.getSocket(), 20, 0 );
 		Log("Listener: Starting");
 
 		

@@ -35,6 +35,9 @@ class ScriptLoader {
 		int addProc ( lua_CFunction, void * , const std::string );
 		void call ( std::string );
 		void call ( std::string, SLArg );
+		
+		void focusVar ( std::string );
+		std::string getTableValue_str ( std::string );
 	private:			
 		Lua_State state;
 		
