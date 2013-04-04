@@ -106,8 +106,8 @@ void ListenerClass::Setup(){
 			Log ("Unable to listen on port" );
 			throw "Unable to listen on port";
 		}
-		listenerSocket.setNonBlocking ( listenerSocket.getSocket() );
-		listenerSocket.setTimeout ( listenerSocket.getSocket(), 20, 0 );
+		
+		listenerSocket.setTimeout ( listenerSocket.getSocket(), 25, 0 );
 		Log("Listener: Starting");
 
 		
