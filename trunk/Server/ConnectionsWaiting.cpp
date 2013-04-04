@@ -31,5 +31,5 @@ void ConnectionsWaiting::signal ( ) {
 }
 
 int ConnectionsWaiting::wait ( ) {
-	return sem.timedWait( 0, 5 );
+	return sem.timedWait( 0, 25 );
 }
