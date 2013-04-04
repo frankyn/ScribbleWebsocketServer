@@ -110,6 +110,7 @@ void Channel::Execute (void * arg) {
 				}else{
 					//Add incoming data for Connection to its own personal buffer.
 					conn->appendBuffer ( std::string ( buffer, buffer_len ) );
+					handleConnectionBuffers ( );
 				}
 			}
 		}
