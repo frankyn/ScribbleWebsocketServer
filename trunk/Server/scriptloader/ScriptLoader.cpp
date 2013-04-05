@@ -117,3 +117,28 @@ std::string ScriptLoader::getTableValue_str ( std::string key ) {
       	return result;
 }
 
+int ScriptLoader::getTableValue_int ( std::string key ) {
+	int result=-1;
+
+      	lua_pushstring(state, key.c_str());
+      	lua_gettable(state, -2);  /* get Table[key] */
+      	if (!lua_isnumber(state, -1)) {
+       		//error(L, "invalid component in background color");
+		Log ( "ScriptLoader: value not a number" );		
+		return result;
+      	}
+      	result = lua_tonumber(state, -1);
+      	lua_pop(state, 1);  /* remove number */
+
+      	return result;
+}
+
+int ScriptLoader::getValue_int ( std::string key ) {
+	focusVar ( key );
+	if ( !lua_isnumber(state, -1)) {
+		Log ( "ScriptLoader: value not a number" );
+		return -1;
+	}	
+	return lua_tonumber(state, -1);
+}
+

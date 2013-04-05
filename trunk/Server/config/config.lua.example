@@ -1,4 +1,8 @@
 config = {}
+config.channel_selectors = 5
+config.port = 1035
+config.script_update_delay = 30
+config.connection_queue = 10
 config.db_host = "<MYSQL_HOST>"
 config.db_username = "<MYSQL_USERNAME>"
 config.db_password = "<MYSQL_PASSWORD>"

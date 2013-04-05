@@ -17,7 +17,7 @@
 #define LISTERER_HEADER
 class ListenerClass : public ThreadClass {
 	public:
-		ListenerClass(int, int, int, int);
+		ListenerClass();
 		void handleConnection(int);
 		~ListenerClass();
 

@@ -38,6 +38,9 @@ class ScriptLoader {
 		
 		void focusVar ( std::string );
 		std::string getTableValue_str ( std::string );
+		int getTableValue_int ( std::string );
+
+		int getValue_int ( std::string );
 	private:			
 		Lua_State state;
 		

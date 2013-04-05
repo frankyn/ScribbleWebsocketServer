@@ -6,7 +6,7 @@
 int main(int argc, char ** args){
 	try{
 		
-		ListenerClass LS = ListenerClass( 1035, 10, 5, 30 );
+		ListenerClass LS;
 		std::string h;
 
 		while ( h.compare( "quit" ) != 0 ) {

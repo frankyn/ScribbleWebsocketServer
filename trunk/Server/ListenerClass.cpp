@@ -7,22 +7,24 @@
 GO THROUGH EVERY POINTER DECLARATION AND SET TO NULL
 
 */
-ListenerClass::ListenerClass ( int port, int queue, int selectors, int elapsedUpdate ) {
+ListenerClass::ListenerClass ( ) {
 	try {
-		maxSelectors = selectors;
-		elapseUpdateCheck = elapsedUpdate;
-		status = 1;
-		this->port = port;
-		this->queue = queue;
 		config.load("config/config.lua");
-		config.focusVar("config");
+		
+		//Load in config file values	
+		config.focusVar ( "config" );
+		
+		queue = config.getTableValue_int("connection_queue");
+		maxSelectors = config.getTableValue_int("channel_selectors");
+		elapseUpdateCheck = config.getTableValue_int("script_update_delay");
+		port = config.getTableValue_int("port");
 
-		//Load in config file values		
 		appDB.connect ( config.getTableValue_str("db_host") , 
 				config.getTableValue_str("db_username") , 
 				config.getTableValue_str("db_password") , 
 				config.getTableValue_str("db_database") );
-
+		
+		status = 1;
 		Start(this);
 	} catch ( const char * e ) {
 		std::cout<<"Listener: "<<e<<std::endl;
