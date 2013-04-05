@@ -95,7 +95,7 @@ void Channel::Execute (void * arg) {
 		while ( status ) {
 			buffer_len = 0;
 			conn = NULL;
-			eventsOccuring = epoll_wait(eventFD, eventsList, 10, -1);
+			eventsOccuring = epoll_wait(eventFD, eventsList, 10, 30);
 			if(eventsOccuring < 0){
 				  Log ( "Channel: Unable to wait 'epoll_wait' error" );
 				  throw LogString ( "Unable to wait 'epoll_wait' error occured" );
@@ -110,9 +110,9 @@ void Channel::Execute (void * arg) {
 				}else{
 					//Add incoming data for Connection to its own personal buffer.
 					conn->appendBuffer ( std::string ( buffer, buffer_len ) );
-					handleConnectionBuffers ( );
 				}
 			}
+			handleConnectionBuffers ( );
 		}
 
 	}catch(LogString e) {

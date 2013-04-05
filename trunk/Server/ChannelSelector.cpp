@@ -29,7 +29,7 @@ void ChannelSelector::Execute ( void * arg ) {
 			WSProtocol * protocol = NULL;
 			Log ( "Channel Selector: started" );
 			while ( status ) { 
-				if ( connectionsWaiting->wait ( ) ) {
+				if ( connectionsWaiting->wait ( ) ) {//Needs to have a timeout.
 					continue;
 				}
 				connectionsWaiting->lock ( );
