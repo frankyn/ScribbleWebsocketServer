@@ -1,4 +1,5 @@
 config = {}
+
 config.channel_selectors = 5
 config.port = 1035
 config.script_update_delay = 30
