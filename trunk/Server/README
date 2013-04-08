@@ -1,9 +1,9 @@
 Environment Reqs:
 
 liblua5.1-0-dev
-libsqlite3
+libmysqlclient-dev 
 apache2
-php5-sqlite3
+drupal 7.x
 mongodb
 
 ----------------
