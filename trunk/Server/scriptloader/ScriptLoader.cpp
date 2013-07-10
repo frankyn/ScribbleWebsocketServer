@@ -97,7 +97,6 @@ void ScriptLoader::focusVar ( std::string var_name ) {
 	lua_getglobal(state, var_name.c_str());
 	if (!lua_istable(state, -1)) {
 		//error(L, "`background' is not a valid color table");
-		std::cout<<"ERROR"<<std::endl;
 		Log ( "ScriptLoader: Value not found" );
 	}
 }
