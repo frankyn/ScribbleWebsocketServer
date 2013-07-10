@@ -64,7 +64,9 @@ void ChannelSelector::Execute ( void * arg ) {
 						}
 						continue;
 					}
+					Log ( "Channel Selector: unable to find protocol" );
 				}
+				
 				//delete newConnection;//Protocol is freed within Connection()
 				//newConnection = NULL;
 				//protocol = NULL;
