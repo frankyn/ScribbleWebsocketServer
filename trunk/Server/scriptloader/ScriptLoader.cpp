@@ -16,7 +16,7 @@ int ScriptLoader::load ( std::string filename ) {
     if ( err_num != 0 ) {
 		std::string err = lua_tostring ( state, -1 );
 		if ( err.empty () ) {
-			err = "unrecongnized Lua error";;
+			err = "unrecongnized Lua error";
 		}
 		Log ( "ScriptLoader: LOAD ERROR " + err );
 	}
@@ -30,7 +30,7 @@ int ScriptLoader::loadText ( std::string script ) {
 	if ( err_num != 0 ) {
 		std::string err = lua_tostring ( state, -1 );
 		if ( err.empty () ) {
-			err = "unrecongnized Lua error";;
+			err = "unrecongnized Lua error";
 		}
 		Log ( "ScriptLoader: LOAD ERROR " + err );
 	} 
@@ -44,7 +44,7 @@ int ScriptLoader::loadLib ( std::string filename ) {
 	if ( err_num != 0 ) {
 		std::string err = lua_tostring ( state, -1 );
 		if ( err.empty () ) {
-			err = "unrecongnized Lua error";;
+			err = "unrecongnized Lua error";
 		}
 		Log ( "ScriptLoader: LOAD LIB ERROR " + err );
 	} 
@@ -67,7 +67,7 @@ void ScriptLoader::call ( std::string func_name ) {
 	if ( err_num != 0 ) {
 		std::string err = lua_tostring ( state, -1 );
 		if ( err.empty () ) {
-			err = "unrecongnized Lua error";;
+			err = "unrecongnized Lua error";
 		}
 		Log ( "ScriptLoader: CALL ERROR " + err );
 	}
@@ -87,7 +87,7 @@ void ScriptLoader::call ( std::string func_name, SLArg args ) {
 	if ( err_num != 0 ) {
 		std::string err = lua_tostring ( state, -1 );
 		if ( err.empty () ) {
-			err = "unrecongnized Lua error";;
+			err = "unrecongnized Lua error";
 		}
 		Log ( "ScriptLoader: CALL ERROR " + err );
 	}
@@ -97,6 +97,7 @@ void ScriptLoader::focusVar ( std::string var_name ) {
 	lua_getglobal(state, var_name.c_str());
 	if (!lua_istable(state, -1)) {
 		//error(L, "`background' is not a valid color table");
+		std::cout<<"ERROR"<<std::endl;
 		Log ( "ScriptLoader: Value not found" );
 	}
 }
@@ -108,8 +109,10 @@ std::string ScriptLoader::getTableValue_str ( std::string key ) {
       	lua_gettable(state, -2);  /* get Table[key] */
       	if (!lua_isstring(state, -1)) {
        		//error(L, "invalid component in background color");
-		Log ( "ScriptLoader: value not a string" );		
-		return result;
+			Log ( "ScriptLoader: value not a string" );		
+			
+			return result;
+
       	}
       	result = lua_tostring(state, -1);
       	lua_pop(state, 1);  /* remove string */
@@ -124,8 +127,9 @@ int ScriptLoader::getTableValue_int ( std::string key ) {
       	lua_gettable(state, -2);  /* get Table[key] */
       	if (!lua_isnumber(state, -1)) {
        		//error(L, "invalid component in background color");
-		Log ( "ScriptLoader: value not a number" );		
-		return result;
+			Log ( "ScriptLoader: value not a number" );		
+			
+			return result;
       	}
       	result = lua_tonumber(state, -1);
       	lua_pop(state, 1);  /* remove number */

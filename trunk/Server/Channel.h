@@ -13,7 +13,7 @@
 #include "./protocols/rfc_6455/RFC_6455.h"
 #include "./scriptloader/ScriptLoader.h"
 #include "./mysql/MySQL.h"
-#include "./mongodb/DBMongo.h"
+//#include "./mongodb/DBMongo.h"
 #include "Connection.h"
 
 #ifndef CHANNEL_HEADER
@@ -39,7 +39,7 @@ struct AppDB {
 typedef struct AppDB AppDB;
 class Channel : public ThreadClass { 
 	public:
-		Channel ( std::string, AppDB, std::string, unsigned );
+		Channel ( int , std::string, AppDB, std::string, unsigned );
 		~Channel ( );
 		
 				
@@ -61,17 +61,18 @@ class Channel : public ThreadClass {
 		int sendTo ( std::string, std::string ); 
 		int broadcast ( std::string, std::string );
 
-		/*DB Calls for lua API*/
 		/*
-		int storeData ( std::string, std::string );
-		std::string getData ( std::string );
+			MongoDB * getDB();
 		*/
-		DBMongo * getDB();
+		
+		//Get DB Handle
+		MySQL * getDB();
 
 		//Channel Information
 		int usersConnected ( );
 		std::string getName ( );
-
+		int getID ( );
+		
 		/*LUA Module Interaction*/
 		std::string currentScript ( );
 		int updateScript ( std::string );
@@ -85,17 +86,20 @@ class Channel : public ThreadClass {
 		static int luaLog ( lua_State * );
 		
 		/*DB LUA API Callback*/
+		
+		static int luaStore ( lua_State * );
+		static int luaGet ( lua_State * );
+		
 		/*
-			static int luaStore ( lua_State * );
-			static int luaGet ( lua_State * );
-		*/
 		static int luaInsert ( lua_State * );
 		static int luaUpdate ( lua_State * );
 		static int luaQuery ( lua_State * );
 		static int luaRemove ( lua_State * );
 		static int luaCountQuery ( lua_State * );
+		*/
 
 	private:
+		int channelID;
 		int eventsOccuring, eventFD, incomingFD, status;
 		unsigned maxConnections;
 		epoll_event ev, *eventsList; 
@@ -104,7 +108,8 @@ class Channel : public ThreadClass {
 		std::string name; //channel name
 		std::string scriptFile, scriptUpdate;
 		SemClass sc;
-		DBMongo appDatabase;
+		//DBMongo appDatabase;
+		MySQL appDatabase;
 		
 		std::map<std::string, Connection*> connections; 
 
