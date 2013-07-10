@@ -92,7 +92,8 @@ void ListenerClass::Setup(){
 			appMDB.dbname = l[6];
 			appMDB.username = l[7];
 			appMDB.password = l[8];
-			channels.insert ( channels.begin(), std::pair <std::string, Channel* > ( l[2], new Channel ( l[1], appMDB , l[3] , 1000 ) ) ); 			
+			
+			channels.insert ( channels.begin(), std::pair <std::string, Channel* > ( l[2], new Channel ( atoi(l[0].c_str()), l[1], appMDB , l[3] , 1000 ) ) ); 			
 		}
 
 		chselect = (ChannelSelector**) malloc ( sizeof(ChannelSelector*) * maxSelectors );
@@ -171,7 +172,7 @@ int ListenerClass::checkForUpdates ( ) {
 					appMDB.dbname = l[6];
 					appMDB.username = l[7];
 					appMDB.password = l[8];
-					channels.insert ( channels.begin(), std::pair <std::string, Channel* > ( l[2], new Channel ( l[1], appMDB, l[3] , 1000 ) ) ); 
+					channels.insert ( channels.begin(), std::pair <std::string, Channel* > ( l[2], new Channel ( atoi(l[0].c_str()), l[1], appMDB, l[3] , 1000 ) ) ); 
 				}			
 			}
 		}

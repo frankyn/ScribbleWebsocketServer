@@ -1,28 +1,39 @@
 #include <cerrno>
 #include "Channel.h"
 
-Channel::Channel ( std::string cname, AppDB appDB, std::string script, unsigned maxConn ) {
+Channel::Channel ( int cID, std::string cname, AppDB appDB, std::string script, unsigned maxConn ) {
+	this->channelID = cID;
 	this->name = cname;	
 	scriptFile = script;
 	maxConnections = maxConn;
 	eventsList = new epoll_event[maxConnections];
 	
 	/*Connect to database server*/
-	/*Should probably make this configurable from outside.*/
-	if ( !appDatabase.connect ( appDB.host ) ) {
+
+	/* MySQL DB Connection */
+	if ( !appDatabase.connect ( appDB.host , appDB.username , appDB.password , appDB.dbname ) ) {
 		Log ( "Channel: Unable to connect to database" );
 		throw "Unable to connect to database";
 	}
 
+	/*
+	MongoDB Setup
+	if ( !appDatabase.connect ( appDB.host ) ) {
+		Log ( "Channel: Unable to connect to database" );
+		throw "Unable to connect to database";
+	}
 	if ( appDB.auth ) {
 		if ( !appDatabase.auth ( appDB.dbname, appDB.username, appDB.password ) ) {
 			Log ( "Channel: Unable to authorize into to database" );
 			throw "Unable to auth into database";
 		}
 	}
-
-	appDatabase.useDB ( appDB.dbname );
 	
+	appDatabase.useDB ( appDB.dbname );
+	*/
+
+
+
 	/*Loading in extra libraries*/
 	logicModule.loadLib ( "lualibs/json.lua" );
 	/*Logger LUA API*/
@@ -31,14 +42,17 @@ Channel::Channel ( std::string cname, AppDB appDB, std::string script, unsigned 
 	logicModule.addProc ( &Channel::luaBroadcast, (void*)this,"broadcast" ); //Add broadcast
 	logicModule.addProc ( &Channel::luaDisconnectUser, (void*)this, "disconnectUser" );
 	logicModule.addProc ( &Channel::luaSendTo, (void*)this, "sendTo" );
+	
+	/*MYSQL LUA API*/
+	logicModule.addProc ( &Channel::luaStore, (void*)this, "storeid" );
+	logicModule.addProc ( &Channel::luaGet, (void*)this, "getid" );
+	
 	/*MongoDB LUA API*/
-	//logicModule.addProc ( &Channel::luaStore, (void*)this, "storeid" );
-	//logicModule.addProc ( &Channel::luaGet, (void*)this, "getid" );
-	logicModule.addProc ( &Channel::luaCountQuery, (void*)this, "countQuery" );
-	logicModule.addProc ( &Channel::luaQuery, (void*)this, "query" );
-	logicModule.addProc ( &Channel::luaInsert, (void*)this, "insert" );
-	logicModule.addProc ( &Channel::luaRemove, (void*)this, "remove" );
-	logicModule.addProc ( &Channel::luaUpdate, (void*)this, "update" );
+	//logicModule.addProc ( &Channel::luaCountQuery, (void*)this, "countQuery" );
+	//logicModule.addProc ( &Channel::luaQuery, (void*)this, "query" );
+	//logicModule.addProc ( &Channel::luaInsert, (void*)this, "insert" );
+	//logicModule.addProc ( &Channel::luaRemove, (void*)this, "remove" );
+	//logicModule.addProc ( &Channel::luaUpdate, (void*)this, "update" );
 	
 	status = 1;
 	ThreadClass::Start(this);
@@ -244,13 +258,16 @@ void Channel::removeConnection ( std::string uid ) {
 	}
 }
 
-DBMongo * Channel::getDB() {
+MySQL * Channel::getDB() {
 	return &appDatabase;
 }
 
-
 std::string Channel::getName ( ) {
 	return this->name;
+}
+
+int Channel::getID ( ) {
+	return this->channelID;
 }
 
 
@@ -283,6 +300,81 @@ int Channel::luaLog ( lua_State * state ) {
 	Log ( "Lua: " + std::string ( lua_tostring (state, -1 ) ) );
 	return 1;
 };
+
+//MySQL Extension for LUA
+
+//Story a given value as a string with a key and Channel ID
+int Channel::luaStore ( lua_State * state ) {
+	Channel * pthis = (Channel*) lua_touserdata ( state, lua_upvalueindex (1) );
+	MySQL * db = pthis->getDB ( );
+	
+	std::string key = lua_tostring ( state, 1 );
+	std::string value = lua_tostring ( state, 2 );
+
+	int channelID = pthis->getID ( );
+	char channelID_str[11];
+
+	//Convert int to char[]
+	snprintf ( channelID_str, 11, "%d", channelID );
+	
+	//Check to see if key is inside database
+	db->query ( "SELECT * FROM appData WHERE key = '" + key + channelID_str + "'" );
+	if ( db->hasNext ( ) ) {
+		//It has values
+		//Update Value
+		if ( !db->exec ( "UPDATE appData SET value = '" + value + "' WHERE key = '" +  key + channelID_str + "'" ) ) {
+			//error
+			lua_pushnumber ( state, 0 );
+		}
+	} else {
+		//No values found
+		//Insert a new Key with Value
+		if ( !db->exec ( "INSERT INTO appData  ( key, value ) VALUES ( '" + key + channelID_str + "','" + value + "' )" ) ) {
+			//error
+			lua_pushnumber ( state, 0 );
+		}
+	}
+
+	lua_pushnumber ( state, 1 );
+	return 1;
+}
+
+//Story a given value as a string with a key and Channel ID
+int Channel::luaGet ( lua_State * state ) {
+	Channel * pthis = (Channel*) lua_touserdata ( state, lua_upvalueindex (1) );
+	MySQL * db = pthis->getDB ( );
+	
+	std::string key = lua_tostring ( state, 1 );
+	std::string value = lua_tostring ( state, 2 );
+
+	int channelID = pthis->getID ( );
+	char channelID_str[11];
+
+	//Convert int to char[]
+	snprintf ( channelID_str, 11, "%d", channelID );
+	
+	//Check to see if key is inside database
+	if ( db->query ( "SELECT value FROM appData WHERE key = '" + key + channelID_str + "'" ) ) {
+		//error
+		lua_pushnumber ( state, 0 );
+	}
+	if ( db->hasNext ( ) ) {
+		std::vector<std::string> data = db->next ( );
+		lua_pushstring ( state, data[0].c_str() );
+	} else {
+		//Return successfully
+		lua_pushnumber ( state, 1 );
+	}
+
+	return 1;
+}
+
+
+
+/*
+
+Deprecated: (EXPENSIVE)
+DBMongo Lua Extension
 
 int Channel::luaInsert ( lua_State * state ) {
 	Channel * pthis = (Channel*) lua_touserdata ( state, lua_upvalueindex (1) );
@@ -365,3 +457,5 @@ int Channel::luaCountQuery ( lua_State * state ) {
 	lua_pushnumber ( state, count );
 	return 1;
 }
+
+*/

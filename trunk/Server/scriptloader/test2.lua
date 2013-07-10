@@ -1,3 +1,4 @@
 function check () 
-	test ( global_test_var )
+	test("hello" )
+	sdf("hello")
 end
