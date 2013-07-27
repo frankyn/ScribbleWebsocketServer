@@ -1,1 +1,0 @@
-SQLSCHEMA=SQLite.h SQLite.o
