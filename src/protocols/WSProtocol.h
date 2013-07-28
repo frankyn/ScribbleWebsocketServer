@@ -32,6 +32,7 @@ struct WSAttributes {
 };
 
 struct WSPacketLength {
+    unsigned long packetLen;
     unsigned long length;
     unsigned payloadOffset;
 };

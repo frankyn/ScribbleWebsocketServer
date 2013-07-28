@@ -104,14 +104,15 @@ void RFC_6455::packetLength ( const std::string input , WSPacketLength * pcktLen
 		//126 - 2 bytes
 		pcktLen->length = inputBytes[3] | inputBytes[2]<<8;
 		pcktLen->payloadOffset = 4;
+		pcktLen->packetLen = pcktLen->payloadOffset + ( hasMask ( input ) ? 4: 0 ) + pcktLen->length;
 	} 
 	if ( pcktLen->length == 127 ) {
 		//127 - 8 bytes
 		//NOT TESTED || Need a test packet.
 		
 		pcktLen->length = inputBytes[2] << 24 | inputBytes[3] << 16 | inputBytes[4] << 8 | inputBytes[5];
-		
 		pcktLen->payloadOffset = 6;
+		pcktLen->packetLen = pcktLen->payloadOffset  + ( hasMask ( input ) ? 4: 0 ) + pcktLen->length;
 	}
 }
 
@@ -133,6 +134,7 @@ std::string RFC_6455::decode ( const std::string input ) {
 	const char * inputBytes = input.c_str(); 
 	WSPacketLength pcktLen;
 	packetLength ( input , &pcktLen );
+	std::cout << "LENGTH: " << pcktLen.packetLen << std::endl;
 	//std::cout<<"LENGTH: " << input.size()  << std::endl;
 	if ( (unsigned)input.size() < pcktLen.length ) {
 		/*

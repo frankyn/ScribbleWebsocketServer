@@ -157,7 +157,7 @@ void Channel::handleConnectionBuffers ( ) {
 	std::map<std::string, Connection*>::iterator it;
 	Connection * conn;
 	std::string msgTemp;
-	unsigned msgLength = 0;
+	unsigned long msgLength = 0;
 
 	for ( it = connections.begin(); it != connections.end(); it ++ ) {
 		conn = it->second;
