@@ -11,6 +11,9 @@ all: $(SOURCES) $(OBJECTS)
 
 unit: $(SOURCES) $(UNITSOURCES) $(EXECUTABLE)
 
+clean:
+	  rm *.o
+
 $(EXECUTABLE): $(OBJECTS) $(UNITOBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) $(UNITOBJECTS) -o $@
 

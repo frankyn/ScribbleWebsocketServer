@@ -61,12 +61,58 @@ int RFC_6455::handshake (const std::string input, WSAttributes * response) {
 	return 0;
 }
 
-unsigned RFC_6455::packetLength ( const std::string input ) {
+/*
+	Check if the packet has the MASK bit turned on.
+*/
+int RFC_6455::hasMask ( const std::string input ) {
 	if ( input.empty ( ) ) return 0;
-	const char * inputBytes = input.c_str(); 
-	char maskedBit = inputBytes[1] & 0xF0;
-	int payloadLength = inputBytes[1] & 0x7F;
-	return (payloadLength + 4 * ( maskedBit ? 1 : 0 ) + 2);
+	const unsigned char * inputBytes = (unsigned char*)input.c_str(); 
+
+	return (inputBytes[0] & 0x80 ? 1 : 0 );
+}
+
+/*
+	Check packet length:
+		There are 3 different cases for large packet sizes.
+*/
+void RFC_6455::packetLength ( const std::string input , WSPacketLength * pcktLen ) {
+	if ( input.empty ( ) ) return;
+	/*
+	      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-------+-+-------------+-------------------------------+
+     |F|R|R|R| opcode|M| Payload len |    Extended payload length    |
+     |I|S|S|S|  (4)  |A|     (7)     |             (16/64)           |
+     |N|V|V|V|       |S|             |   (if payload len==126/127)   |
+     | |1|2|3|       |K|             |                               |
+     +-+-+-+-+-------+-+-------------+ - - - - - - - - - - - - - - - +
+     |     Extended payload length continued, if payload len == 127  |
+     + - - - - - - - - - - - - - - - +-------------------------------+
+     |                               |Masking-key, if MASK set to 1  |
+     +-------------------------------+-------------------------------+
+     | Masking-key (continued)       |          Payload Data         |
+     +-------------------------------- - - - - - - - - - - - - - - - +
+     :                     Payload Data continued ...                :
+     + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
+     |                     Payload Data continued ...                |
+     +---------------------------------------------------------------+
+	*/
+	const unsigned char * inputBytes = (unsigned char*)input.c_str(); 
+	pcktLen->length = inputBytes[1] & 0x7F;
+
+	if ( pcktLen->length == 126 ) {
+		//126 - 2 bytes
+		pcktLen->length = inputBytes[3] | inputBytes[2]<<8;
+		pcktLen->payloadOffset = 4;
+	} 
+	if ( pcktLen->length == 127 ) {
+		//127 - 8 bytes
+		//NOT TESTED || Need a test packet.
+		
+		pcktLen->length = inputBytes[2] << 24 | inputBytes[3] << 16 | inputBytes[4] << 8 | inputBytes[5];
+		
+		pcktLen->payloadOffset = 6;
+	}
 }
 
 std::string RFC_6455::decode ( const std::string input ) {
@@ -85,30 +131,38 @@ std::string RFC_6455::decode ( const std::string input ) {
 	
 	*/
 	const char * inputBytes = input.c_str(); 
-	char maskedBit = inputBytes[1] & 0xF0;
-	int payloadLength = inputBytes[1] & 0x7F;
-	if ( input.size() <  packetLength ( input ) ) {
-		return decodedInput;
-	}
-
-	if ( maskedBit ) {
-		//Masked Input
-		int c = 0;
-		int m = 2;		
-		int offset = 6;
-
-		while ( c < payloadLength ) {
-			if ( m == 6 ) m = 2;
-			decodedInput += inputBytes[c+offset] ^ inputBytes[m++];
-			c++;
-		}
-	}else{
-		//Not Masked
-		int c = 0;
-		int offset = 2;
-		while ( c < payloadLength ) { 
-			decodedInput += inputBytes[c+offset];	
-			c++;
+	WSPacketLength pcktLen;
+	packetLength ( input , &pcktLen );
+	//std::cout<<"LENGTH: " << input.size()  << std::endl;
+	if ( (unsigned)input.size() < pcktLen.length ) {
+		/*
+			This needs to be extended for split up packets
+		*/
+	} else { 
+		//Single packet
+		if ( hasMask ( input ) ) {
+			//Masked Input
+			unsigned long byteCounter = 0;
+			unsigned long maskCounter = 0;		
+			unsigned long maskOffset = pcktLen.payloadOffset;
+			unsigned long offset = 4 + pcktLen.payloadOffset;
+			//printf ( "---------%X\n", inputBytes[offset] );
+			while ( byteCounter < pcktLen.length ) {
+				//std::cout << (byteCounter);
+				//printf ( "--0x%X--" , inputBytes[byteCounter+offset] );
+				//std::cout << " " << input.at ( byteCounter ) << " ";
+				//std::cout << " " << (unsigned long)(inputBytes[byteCounter+offset] ^ inputBytes[(maskCounter)+maskOffset]) << std::endl;
+				decodedInput += inputBytes[byteCounter+offset] ^ inputBytes[((maskCounter++)%4)+maskOffset];
+				byteCounter++;
+			}
+		}else{
+			//Not Masked
+			unsigned long byteCounter = 0;
+			int offset = 0;
+			while ( byteCounter < pcktLen.payloadOffset ) { 
+				decodedInput += inputBytes[byteCounter+offset];	
+				byteCounter++;
+			}
 		}
 	}	
 	return decodedInput;

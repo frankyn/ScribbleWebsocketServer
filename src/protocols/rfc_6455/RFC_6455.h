@@ -17,12 +17,15 @@ class RFC_6455 : public WSProtocol{
     public:
          RFC_6455 ();
          ~RFC_6455 ();
-         
-         int handshake ( const std::string input, WSAttributes * response );
-	 	 unsigned packetLength ( const std::string input );
-	 	 std::string decode ( const std::string input );
-         std::string encode ( const std::string input );
-	
+
+        void packetLength ( const std::string input , WSPacketLength * );
+        
+        int handshake ( const std::string input, WSAttributes * response );
+	 	int hasMask ( const std::string input );
+	 	
+	 	std::string decode ( const std::string input );
+        std::string encode ( const std::string input );
+		
 };
 
 #endif
