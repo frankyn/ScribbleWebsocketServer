@@ -68,7 +68,7 @@ int RFC_6455::hasMask ( const std::string input ) {
 	if ( input.empty ( ) ) return 0;
 	const unsigned char * inputBytes = (unsigned char*)input.c_str(); 
 
-	return (inputBytes[0] & 0x80 ? 1 : 0 );
+	return (inputBytes[1] & 0x80 ? 1 : 0 );
 }
 
 /*
@@ -141,6 +141,7 @@ std::string RFC_6455::decode ( const std::string input ) {
 	} else { 
 		//Single packet
 		if ( hasMask ( input ) ) {
+			//std::cout<<"MASKED"<<std::endl;
 			//Masked Input
 			unsigned long byteCounter = 0;
 			unsigned long maskCounter = 0;		
@@ -157,9 +158,10 @@ std::string RFC_6455::decode ( const std::string input ) {
 			}
 		}else{
 			//Not Masked
+			//std::cout<<"NOT MASKED"<<std::endl;
 			unsigned long byteCounter = 0;
-			int offset = 0;
-			while ( byteCounter < pcktLen.payloadOffset ) { 
+			int offset = pcktLen.payloadOffset;
+			while ( byteCounter < pcktLen.length ) { 
 				decodedInput += inputBytes[byteCounter+offset];	
 				byteCounter++;
 			}
@@ -172,8 +174,21 @@ std::string RFC_6455::encode ( const std::string input ) {
 	std::string encodedInput;
 
 	int len = input.length();
+	//std::cout<<"len: "<< len << std::endl;
+
 	encodedInput += "\x81";
-	encodedInput += (char)(len);
+
+	if ( len <= 125 ) {
+		encodedInput += (char)(len);
+	} else 
+	if ( len <= 65535 ) {
+		encodedInput += "\x7E";
+		encodedInput += (char)(len>>8);
+		encodedInput += (char)(len);
+	} else {
+		//NEEDS TO BE EXTENDED for largest possibility
+	}
+
 	encodedInput += input;
 
 	return encodedInput;
