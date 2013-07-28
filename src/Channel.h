@@ -39,7 +39,7 @@ struct AppDB {
 typedef struct AppDB AppDB;
 class Channel : public ThreadClass { 
 	public:
-		Channel ( int , std::string, AppDB, std::string, unsigned );
+		Channel ( int , std::string, std::string, AppDB, std::string, unsigned );
 		~Channel ( );
 		
 				
@@ -71,6 +71,7 @@ class Channel : public ThreadClass {
 		//Channel Information
 		int usersConnected ( );
 		std::string getName ( );
+		std::string getDBKey ( );
 		int getID ( );
 		
 		/*LUA Module Interaction*/
@@ -106,6 +107,7 @@ class Channel : public ThreadClass {
 		ScriptLoader logicModule;
 
 		std::string name; //channel name
+		std::string channelDBKey;
 		std::string scriptFile, scriptUpdate;
 		SemClass sc;
 		//DBMongo appDatabase;

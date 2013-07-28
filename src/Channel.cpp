@@ -1,8 +1,9 @@
 #include <cerrno>
 #include "Channel.h"
 
-Channel::Channel ( int cID, std::string cname, AppDB appDB, std::string script, unsigned maxConn ) {
+Channel::Channel ( int cID, std::string dbKey, std::string cname, AppDB appDB, std::string script, unsigned maxConn ) {
 	this->channelID = cID;
+	this->channelDBKey = dbKey;
 	this->name = cname;	
 	scriptFile = script;
 	maxConnections = maxConn;
@@ -286,6 +287,9 @@ int Channel::getID ( ) {
 	return this->channelID;
 }
 
+std::string Channel::getDBKey ( ) {
+	return this->channelDBKey;
+}
 
 int Channel::luaBroadcast ( lua_State* state ) {
 	Channel * pthis = (Channel*)lua_touserdata( state, lua_upvalueindex(1));
@@ -327,25 +331,22 @@ int Channel::luaStore ( lua_State * state ) {
 	std::string key = lua_tostring ( state, 1 );
 	std::string value = lua_tostring ( state, 2 );
 
-	int channelID = pthis->getID ( );
-	char channelID_str[11];
-
-	//Convert int to char[]
-	snprintf ( channelID_str, 11, "%d", channelID );
+	std::string dbKey = pthis->getDBKey ( );
+	
 	
 	//Check to see if key is inside database
-	db->query ( "SELECT * FROM appData WHERE key = '" + key + channelID_str + "'" );
+	db->query ( "SELECT * FROM appData WHERE key = '" + key + dbKey + "'" );
 	if ( db->hasNext ( ) ) {
 		//It has values
 		//Update Value
-		if ( !db->exec ( "UPDATE appData SET value = '" + value + "' WHERE key = '" +  key + channelID_str + "'" ) ) {
+		if ( !db->exec ( "UPDATE appData SET value = '" + value + "' WHERE key = '" +  key + dbKey + "'" ) ) {
 			//error
 			lua_pushnumber ( state, 0 );
 		}
 	} else {
 		//No values found
 		//Insert a new Key with Value
-		if ( !db->exec ( "INSERT INTO appData  ( key, value ) VALUES ( '" + key + channelID_str + "','" + value + "' )" ) ) {
+		if ( !db->exec ( "INSERT INTO appData  ( key, value ) VALUES ( '" + key + dbKey + "','" + value + "' )" ) ) {
 			//error
 			lua_pushnumber ( state, 0 );
 		}
@@ -363,14 +364,10 @@ int Channel::luaGet ( lua_State * state ) {
 	std::string key = lua_tostring ( state, 1 );
 	std::string value = lua_tostring ( state, 2 );
 
-	int channelID = pthis->getID ( );
-	char channelID_str[11];
+	std::string dbKey = pthis->getDBKey ( );
 
-	//Convert int to char[]
-	snprintf ( channelID_str, 11, "%d", channelID );
-	
 	//Check to see if key is inside database
-	if ( db->query ( "SELECT value FROM appData WHERE key = '" + key + channelID_str + "'" ) ) {
+	if ( db->query ( "SELECT value FROM appData WHERE key = '" + key + dbKey + "'" ) ) {
 		//error
 		lua_pushnumber ( state, 0 );
 	}
