@@ -13,8 +13,8 @@ Channel::Channel ( int cID, std::string dbKey, std::string cname, AppDB appDB, s
 
 	/* MySQL DB Connection */
 	if ( !appDatabase.connect ( appDB.host , appDB.username , appDB.password , appDB.dbname ) ) {
-		Log ( "Channel: Unable to connect to database" );
-		throw "Unable to connect to database";
+		Log ( "Channel: Unable to connect to database ( " + appDB.host + "," + appDB.username + "," + appDB.password + "," + appDB.dbname + " )" );
+		throw "Unable to connect to database" + appDB.host + "," + appDB.username + "," + appDB.password + "," + appDB.dbname + " )";
 	}
 
 	/*
