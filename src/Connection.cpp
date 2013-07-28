@@ -50,7 +50,7 @@ std::string Connection::encode ( const std::string input) {
 }
 
 int Connection::appendBuffer ( const std::string input ) {
-	buffer += input;
+	buffer.append ( input );
 	return buffer.size();
 }
 

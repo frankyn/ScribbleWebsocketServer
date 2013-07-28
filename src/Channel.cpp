@@ -122,8 +122,10 @@ void Channel::Execute (void * arg) {
 					removeConnection ( conn->getID() );
 					continue;
 				}else{
+					//std::cout<<"INCOMING SIZE: " << buffer_len << std::endl;
 					//Add incoming data for Connection to its own personal buffer.
 					conn->appendBuffer ( std::string ( buffer, buffer_len ) );
+					//std::cout<<"BUFFER NEW SIZE: " << conn->getBuffer().size() << std::endl;
 				}
 			}
 			handleConnectionBuffers ( );
@@ -163,24 +165,33 @@ void Channel::handleConnectionBuffers ( ) {
 		conn = it->second;
 		//Call decode if return is empty string buffer isn't ready to be decoded.
 		msgLength = conn->packetLength ( conn->getBuffer ( ) );
-		//if ( msgLength != 0 ) {
-		//	std::cout<<msgLength<<std::endl;
-		//}
+		/*
+		if ( msgLength != 0 ) {
+			std::cout << "----------------------------------" << std::endl;
+			std::cout<<msgLength<<std::endl;
+			std::cout<<conn->getBuffer ( ).size ( )<<std::endl;
+		}*/
 		if ( msgLength != 0 && msgLength <= conn->getBuffer ( ).size ( ) ) {
 			//std::cout<<"HAS PACKET"<<std::endl;
 			//We have a complete packet waiting for us so we need clear it from the buffer.
-			msgTemp = conn->getBuffer ( ).substr ( 0, msgLength );
-			conn->setBuffer ( conn->getBuffer ( ).substr ( msgLength, conn->getBuffer ( ).size ( ) ) );	
-
+			msgTemp = conn->getBuffer ( );
+			conn->setBuffer ( "" );	
 		    //If incoming message is not empty then transmit to logicModule
 		    //decode and check if not empty
-		    if ( !( msgTemp = conn->decode( msgTemp ) ).empty() ) {
+		    //std::cout << "Len: " << msgTemp.size() << std::endl; 
+		    //std::cout << msgTemp << std::endl;
+		    msgTemp = conn->decode( msgTemp );
+		    //std::cout << msgTemp << std::endl;
+		    
+		    if ( !msgTemp.empty() ) {
 				//pass decoded message to logicModule script
+				//std::cout << msgTemp << std::endl;
 				SLArg args;
 				args.push_back ( conn->getID () );
 				args.push_back ( msgTemp );
 				logicModule.call ( "onMessage", args );
 			}
+		
 		}
 	}
 }
@@ -188,6 +199,7 @@ void Channel::handleConnectionBuffers ( ) {
 int Channel::broadcast ( std::string uid, std::string buffer ) {
 	std::string msg;
 	std::map<std::string, Connection*>::iterator it;
+	//std::cout << buffer.size() << std::endl;
 	for ( it = connections.begin(); it != connections.end(); it ++ ) {
 		//encode message for every connection because the connection version could be different.
 		if ( it->second->getID().compare ( uid ) != 0 ) {
