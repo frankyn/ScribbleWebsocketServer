@@ -59,8 +59,10 @@ int Connection::setBuffer ( const std::string input ) {
 	return buffer.size();
 }
 
-unsigned Connection::packetLength ( const std::string input ) {
-	return protocol->packetLength ( input );
+unsigned long Connection::packetLength ( const std::string input ) {
+	WSPacketLength pcktLength;
+	protocol->packetLength ( input , &pcktLength );
+	return pcktLength.length;
 }
 
 const std::string Connection::getBuffer ( ) {

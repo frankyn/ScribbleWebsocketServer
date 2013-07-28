@@ -23,7 +23,7 @@ class Connection {
 		std::string decode ( const std::string );
 		std::string encode ( const std::string );
 		
-		unsigned packetLength ( const std::string );
+		unsigned long packetLength ( const std::string );
 		int appendBuffer ( const std::string );
 		int setBuffer ( const std::string );
 		
