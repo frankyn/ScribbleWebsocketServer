@@ -76,7 +76,12 @@ int RFC_6455::hasMask ( const std::string input ) {
 		There are 3 different cases for large packet sizes.
 */
 void RFC_6455::packetLength ( const std::string input , WSPacketLength * pcktLen ) {
-	if ( input.empty ( ) ) return;
+	if ( input.empty ( ) ) {
+		pcktLen->length = 0;
+		pcktLen->payloadOffset = 0;
+		pcktLen->packetLen = 0;
+		return;
+	}
 	/*
 	      0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -112,6 +117,9 @@ void RFC_6455::packetLength ( const std::string input , WSPacketLength * pcktLen
 		
 		pcktLen->length = inputBytes[2] << 24 | inputBytes[3] << 16 | inputBytes[4] << 8 | inputBytes[5];
 		pcktLen->payloadOffset = 6;
+		pcktLen->packetLen = pcktLen->payloadOffset  + ( hasMask ( input ) ? 4: 0 ) + pcktLen->length;
+	} else {
+		pcktLen->payloadOffset = 2;
 		pcktLen->packetLen = pcktLen->payloadOffset  + ( hasMask ( input ) ? 4: 0 ) + pcktLen->length;
 	}
 }
