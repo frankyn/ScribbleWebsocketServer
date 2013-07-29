@@ -171,6 +171,8 @@ void Channel::handleConnectionBuffers ( ) {
 			std::cout<<conn->getBuffer ( ).size ( )<<std::endl;
 		}*/
 		if ( conn->packetComplete ( conn->getBuffer ( ) ) ) {
+			std::cout << "PacketComplete: " << std::endl;
+
 			unsigned long msgLength = 0;
 			msgLength = conn->packetLength ( conn->getBuffer ( ) );
 			//std::cout<<"HAS PACKET"<<std::endl;
@@ -182,6 +184,7 @@ void Channel::handleConnectionBuffers ( ) {
 		    std::cout << "Len: " << msgTemp.size() << std::endl; 
 		    //std::cout << msgTemp << std::endl;
 		    msgTemp = conn->decode( msgTemp );
+		    std::cout << "????";
 		    //std::cout << msgTemp << std::endl;
 		    
 		    if ( !msgTemp.empty() ) {
@@ -193,6 +196,8 @@ void Channel::handleConnectionBuffers ( ) {
 				logicModule.call ( "onMessage", args );
 			}
 			
+		} else {
+			std::cout << "Not complete" << std::endl;
 		}
 	}
 }
