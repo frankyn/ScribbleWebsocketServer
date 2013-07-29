@@ -26,16 +26,23 @@
 
 */
 struct WSAttributes { 
-	std::string version;
-	std::string channel;
-	std::string response;
-
+    std::string version;
+    std::string channel;
+    std::string response;
 };
+
+struct WSPacketLength {
+    unsigned long packetLen;
+    unsigned long length;
+    unsigned payloadOffset;
+};
+
 class WSProtocol{
-	public:
-		 virtual int handshake( const std::string input, WSAttributes * response ) = 0;
-         virtual unsigned packetLength ( const std::string input ) = 0;
-		 virtual std::string decode( const std::string input ) = 0;
+    public:
+         virtual int handshake( const std::string input, WSAttributes * response ) = 0;
+         virtual int hasMask ( const std::string input ) = 0;
+         virtual void packetLength ( const std::string input , WSPacketLength * packetLength ) = 0;
+         virtual std::string decode( const std::string input ) = 0;
          virtual std::string encode( const std::string input ) = 0;
 };
 

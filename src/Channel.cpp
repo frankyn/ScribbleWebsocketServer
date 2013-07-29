@@ -1,8 +1,10 @@
 #include <cerrno>
 #include "Channel.h"
 
-Channel::Channel ( int cID, std::string cname, AppDB appDB, std::string script, unsigned maxConn ) {
+
+Channel::Channel ( int cID, std::string dbKey, std::string cname, AppDB appDB, std::string script, unsigned maxConn ) {
 	this->channelID = cID;
+	this->channelDBKey = dbKey;
 	this->name = cname;	
 	scriptFile = script;
 	maxConnections = maxConn;
@@ -12,8 +14,8 @@ Channel::Channel ( int cID, std::string cname, AppDB appDB, std::string script, 
 
 	/* MySQL DB Connection */
 	if ( !appDatabase.connect ( appDB.host , appDB.username , appDB.password , appDB.dbname ) ) {
-		Log ( "Channel: Unable to connect to database" );
-		throw "Unable to connect to database";
+		Log ( "Channel: Unable to connect to database ( " + appDB.host + "," + appDB.username + "," + appDB.password + "," + appDB.dbname + " )" );
+		throw "Unable to connect to database" + appDB.host + "," + appDB.username + "," + appDB.password + "," + appDB.dbname + " )";
 	}
 
 	/*
@@ -22,6 +24,7 @@ Channel::Channel ( int cID, std::string cname, AppDB appDB, std::string script, 
 		Log ( "Channel: Unable to connect to database" );
 		throw "Unable to connect to database";
 	}
+
 	if ( appDB.auth ) {
 		if ( !appDatabase.auth ( appDB.dbname, appDB.username, appDB.password ) ) {
 			Log ( "Channel: Unable to authorize into to database" );
@@ -122,8 +125,10 @@ void Channel::Execute (void * arg) {
 					removeConnection ( conn->getID() );
 					continue;
 				}else{
+					std::cout<<"INCOMING SIZE: " << buffer_len << std::endl;
 					//Add incoming data for Connection to its own personal buffer.
 					conn->appendBuffer ( std::string ( buffer, buffer_len ) );
+					std::cout<<"BUFFER NEW SIZE: " << conn->getBuffer().size() << std::endl;
 				}
 			}
 			handleConnectionBuffers ( );
@@ -157,26 +162,39 @@ void Channel::handleConnectionBuffers ( ) {
 	std::map<std::string, Connection*>::iterator it;
 	Connection * conn;
 	std::string msgTemp;
-	unsigned msgLength = 0;
+	unsigned long msgLength = 0;
 
 	for ( it = connections.begin(); it != connections.end(); it ++ ) {
 		conn = it->second;
 		//Call decode if return is empty string buffer isn't ready to be decoded.
 		msgLength = conn->packetLength ( conn->getBuffer ( ) );
+		/*
+		if ( msgLength != 0 ) {
+			std::cout << "----------------------------------" << std::endl;
+			std::cout<<msgLength<<std::endl;
+			std::cout<<conn->getBuffer ( ).size ( )<<std::endl;
+		}*/
 		if ( msgLength != 0 && msgLength <= conn->getBuffer ( ).size ( ) ) {
+			//std::cout<<"HAS PACKET"<<std::endl;
 			//We have a complete packet waiting for us so we need clear it from the buffer.
-			msgTemp = conn->getBuffer ( ).substr ( 0, msgLength );
-			conn->setBuffer ( conn->getBuffer ( ).substr ( msgLength, conn->getBuffer ( ).size ( ) ) );	
-
+			msgTemp = conn->getBuffer ( );
+			conn->setBuffer ( "" );	
 		    //If incoming message is not empty then transmit to logicModule
 		    //decode and check if not empty
-		    if ( !( msgTemp = conn->decode( msgTemp ) ).empty() ) {
+		    std::cout << "Len: " << msgTemp.size() << std::endl; 
+		    //std::cout << msgTemp << std::endl;
+		    msgTemp = conn->decode( msgTemp );
+		    //std::cout << msgTemp << std::endl;
+		    
+		    if ( !msgTemp.empty() ) {
 				//pass decoded message to logicModule script
+				std::cout << msgTemp << std::endl;
 				SLArg args;
 				args.push_back ( conn->getID () );
 				args.push_back ( msgTemp );
 				logicModule.call ( "onMessage", args );
 			}
+			
 		}
 	}
 }
@@ -184,6 +202,7 @@ void Channel::handleConnectionBuffers ( ) {
 int Channel::broadcast ( std::string uid, std::string buffer ) {
 	std::string msg;
 	std::map<std::string, Connection*>::iterator it;
+	std::cout << buffer.size() << std::endl;
 	for ( it = connections.begin(); it != connections.end(); it ++ ) {
 		//encode message for every connection because the connection version could be different.
 		if ( it->second->getID().compare ( uid ) != 0 ) {
@@ -270,6 +289,9 @@ int Channel::getID ( ) {
 	return this->channelID;
 }
 
+std::string Channel::getDBKey ( ) {
+	return this->channelDBKey;
+}
 
 int Channel::luaBroadcast ( lua_State* state ) {
 	Channel * pthis = (Channel*)lua_touserdata( state, lua_upvalueindex(1));
@@ -311,25 +333,22 @@ int Channel::luaStore ( lua_State * state ) {
 	std::string key = lua_tostring ( state, 1 );
 	std::string value = lua_tostring ( state, 2 );
 
-	int channelID = pthis->getID ( );
-	char channelID_str[11];
-
-	//Convert int to char[]
-	snprintf ( channelID_str, 11, "%d", channelID );
+	std::string dbKey = pthis->getDBKey ( );
+	
 	
 	//Check to see if key is inside database
-	db->query ( "SELECT * FROM appData WHERE key = '" + key + channelID_str + "'" );
+	db->query ( "SELECT * FROM appData WHERE key = '" + key + dbKey + "'" );
 	if ( db->hasNext ( ) ) {
 		//It has values
 		//Update Value
-		if ( !db->exec ( "UPDATE appData SET value = '" + value + "' WHERE key = '" +  key + channelID_str + "'" ) ) {
+		if ( !db->exec ( "UPDATE appData SET value = '" + value + "' WHERE key = '" +  key + dbKey + "'" ) ) {
 			//error
 			lua_pushnumber ( state, 0 );
 		}
 	} else {
 		//No values found
 		//Insert a new Key with Value
-		if ( !db->exec ( "INSERT INTO appData  ( key, value ) VALUES ( '" + key + channelID_str + "','" + value + "' )" ) ) {
+		if ( !db->exec ( "INSERT INTO appData  ( key, value ) VALUES ( '" + key + dbKey + "','" + value + "' )" ) ) {
 			//error
 			lua_pushnumber ( state, 0 );
 		}
@@ -347,14 +366,11 @@ int Channel::luaGet ( lua_State * state ) {
 	std::string key = lua_tostring ( state, 1 );
 	std::string value = lua_tostring ( state, 2 );
 
-	int channelID = pthis->getID ( );
-	char channelID_str[11];
 
-	//Convert int to char[]
-	snprintf ( channelID_str, 11, "%d", channelID );
-	
+	std::string dbKey = pthis->getDBKey ( );
+
 	//Check to see if key is inside database
-	if ( db->query ( "SELECT value FROM appData WHERE key = '" + key + channelID_str + "'" ) ) {
+	if ( db->query ( "SELECT value FROM appData WHERE key = '" + key + dbKey + "'" ) ) {
 		//error
 		lua_pushnumber ( state, 0 );
 	}

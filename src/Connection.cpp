@@ -50,7 +50,7 @@ std::string Connection::encode ( const std::string input) {
 }
 
 int Connection::appendBuffer ( const std::string input ) {
-	buffer += input;
+	buffer.append ( input );
 	return buffer.size();
 }
 
@@ -59,8 +59,10 @@ int Connection::setBuffer ( const std::string input ) {
 	return buffer.size();
 }
 
-unsigned Connection::packetLength ( const std::string input ) {
-	return protocol->packetLength ( input );
+unsigned long Connection::packetLength ( const std::string input ) {
+	WSPacketLength pcktLength;
+	protocol->packetLength ( input , &pcktLength );
+	return pcktLength.packetLen;
 }
 
 const std::string Connection::getBuffer ( ) {
