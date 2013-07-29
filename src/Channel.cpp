@@ -166,13 +166,12 @@ void Channel::handleConnectionBuffers ( ) {
 		//Call decode if return is empty string buffer isn't ready to be decoded.
 		
 		unsigned long msgLength = conn->packetLength ( conn->getBuffer() );
-
 		if ( msgLength != 0 ) {
 			std::cout << "----------------------------------" << std::endl;
 			std::cout<<msgLength<<std::endl;
 			std::cout<<conn->getBuffer ( ).size ( )<<std::endl;
 		}
-		if ( conn->packetComplete ( conn->getBuffer ( ) ) ) {
+		if ( msgLength != 0 && conn->packetComplete ( conn->getBuffer ( ) ) ) {
 			std::cout << "PacketComplete: " << std::endl;
 
 			//std::cout<<"HAS PACKET"<<std::endl;

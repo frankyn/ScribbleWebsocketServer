@@ -123,6 +123,10 @@ unsigned long RFC_6455::packetRealLength ( const std::string input ) {
 			//Packet is a partial let's check to make sure all the packets are here before we allow decoding.
 			WSPacketLength pcktLen;
 			packetLength ( tmp , &pcktLen );
+			if ( pcktLen.packetLen > tmp.size() ) {
+				//Incomplete packet
+				return 0;
+			}
 			tmp = tmp.substr ( pcktLen.packetLen , tmp.size() );
 			sizeOfPacket += pcktLen.packetLen; 
 		} else {
