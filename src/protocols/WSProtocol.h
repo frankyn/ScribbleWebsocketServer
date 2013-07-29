@@ -44,6 +44,7 @@ class WSProtocol{
          virtual int packetComplete ( const std::string input ) = 0;
          virtual int packetFragmented ( const std::string input ) = 0;
          virtual void packetLength ( const std::string input , WSPacketLength * packetLength ) = 0;
+         virtual unsigned long packetRealLength ( const std::string ) = 0;
          virtual std::string decode( const std::string input ) = 0;
          virtual std::string encode( const std::string input ) = 0;
 };

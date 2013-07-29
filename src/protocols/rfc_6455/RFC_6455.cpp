@@ -104,6 +104,30 @@ int RFC_6455::packetComplete ( const std::string input ) {
 	return foundEndPacket;
 }
 
+/*
+	Get full size of packet even if it's fragged.
+*/
+
+unsigned long RFC_6455::packetRealLength ( const std::string input ) {
+	if ( input.empty ( ) ) return 0;
+	std::string tmp = input;
+	int foundEndPacket = 0;
+	unsigned long sizeOfPacket = 0;
+	//Using a loop instead of using recursion.
+	while ( !tmp.empty() && !foundEndPacket ) {
+		if ( packetFragmented(tmp) ) {
+			//Packet is a partial let's check to make sure all the packets are here before we allow decoding.
+			WSPacketLength pcktLen;
+			packetLength ( tmp , &pcktLen );
+			tmp = tmp.substr ( pcktLen.packetLen , tmp.size() );
+			sizeOfPacket += pcktLen.packetLen;
+		} else {
+			foundEndPacket = 1;
+		}
+	}
+	return sizeOfPacket;	
+}
+
 
 /*
 	Check packet length:

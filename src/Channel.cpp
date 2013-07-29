@@ -160,7 +160,6 @@ void Channel::handleConnectionBuffers ( ) {
 	std::map<std::string, Connection*>::iterator it;
 	Connection * conn;
 	std::string msgTemp;
-	unsigned long msgLength = 0;
 
 	for ( it = connections.begin(); it != connections.end(); it ++ ) {
 		conn = it->second;
@@ -172,6 +171,7 @@ void Channel::handleConnectionBuffers ( ) {
 			std::cout<<conn->getBuffer ( ).size ( )<<std::endl;
 		}*/
 		if ( conn->packetComplete ( conn->getBuffer ( ) ) ) {
+			unsigned long msgLength = 0;
 			msgLength = conn->packetLength ( conn->getBuffer ( ) );
 			//std::cout<<"HAS PACKET"<<std::endl;
 			//We have a complete packet waiting for us so we need clear it from the buffer.
