@@ -213,12 +213,12 @@ std::string RFC_6455::decode ( const std::string input ) {
 	std::string unknownPacket = input;
 
 	do {
-		std::cout << "LOOP" << std::endl;
+		//std::cout << "LOOP" << std::endl;
 		const char * inputBytes = unknownPacket.c_str(); 
 		WSPacketLength pcktLen;
 		packetLength ( unknownPacket , &pcktLen );
 
-		std::cout << "STARTING DECODING" << std::endl;	
+		//std::cout << "STARTING DECODING" << std::endl;	
 		//std::cout << "INPUT LENGTH: " << input.size() << std::endl;
 		//std::cout << "LENGTH: " << pcktLen.packetLen << std::endl;
 		//std::cout << "LENGTH: " << input.size()  << std::endl;
@@ -248,11 +248,11 @@ std::string RFC_6455::decode ( const std::string input ) {
 				byteCounter++;
 			}
 		}
-		std::cout << "ENDING DECODING" << std::endl;
-		std::cout << "Length of unknownPacket: " << unknownPacket.size() << std::endl;
-		std::cout << "REMOVING LENGTH: " << pcktLen.packetLen << std::endl;
+		//std::cout << "ENDING DECODING" << std::endl;
+		//std::cout << "Length of unknownPacket: " << unknownPacket.size() << std::endl;
+		//std::cout << "REMOVING LENGTH: " << pcktLen.packetLen << std::endl;
 		unknownPacket = unknownPacket.substr ( pcktLen.packetLen );
-		std::cout << "AFTER SUBSTR" << std::endl;
+		//std::cout << "AFTER SUBSTR" << std::endl;
 	} while ( !unknownPacket.empty() );
 	return decodedInput;
 }
