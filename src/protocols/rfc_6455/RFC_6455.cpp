@@ -102,6 +102,13 @@ int RFC_6455::packetComplete ( const std::string input ) {
 			}
 			tmp = tmp.substr ( pcktLen.packetLen , tmp.size() );
 		} else {
+			//Packet is a partial let's check to make sure all the packets are here before we allow decoding.
+			WSPacketLength pcktLen;
+			packetLength ( tmp , &pcktLen );
+			if ( pcktLen.packetLen > tmp.size() ) {
+				//Incomplete packet
+				return 0;
+			}
 			foundEndPacket = 1;
 		}
 	}
