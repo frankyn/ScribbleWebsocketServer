@@ -204,11 +204,12 @@ std::string RFC_6455::decode ( const std::string input ) {
 	std::string unknownPacket = input;
 
 	do {
+		std::cout << "LOOP" << std::endl;
 		const char * inputBytes = unknownPacket.c_str(); 
 		WSPacketLength pcktLen;
 		packetLength ( unknownPacket , &pcktLen );
 
-			
+		std::cout << "STARTING DECODING" << std::endl;	
 		//std::cout << "INPUT LENGTH: " << input.size() << std::endl;
 		//std::cout << "LENGTH: " << pcktLen.packetLen << std::endl;
 		//std::cout << "LENGTH: " << input.size()  << std::endl;
@@ -238,6 +239,7 @@ std::string RFC_6455::decode ( const std::string input ) {
 				byteCounter++;
 			}
 		}
+		std::cout << "ENDING DECODING" << std::endl;
 		unknownPacket = unknownPacket.substr ( pcktLen.packetLen , unknownPacket.size() );
 	} while ( !unknownPacket.empty() );
 	return decodedInput;
