@@ -240,7 +240,7 @@ std::string RFC_6455::decode ( const std::string input ) {
 			}
 		}
 		std::cout << "ENDING DECODING" << std::endl;
-		unknownPacket = unknownPacket.substr ( pcktLen.packetLen , unknownPacket.size() );
+		unknownPacket = unknownPacket.substr ( pcktLen.packetLen );
 		std::cout << "AFTER SUBSTR" << std::endl;
 	} while ( !unknownPacket.empty() );
 	return decodedInput;
