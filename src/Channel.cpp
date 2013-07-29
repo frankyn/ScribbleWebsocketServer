@@ -177,7 +177,7 @@ void Channel::handleConnectionBuffers ( ) {
 			//std::cout<<"HAS PACKET"<<std::endl;
 			//We have a complete packet waiting for us so we need clear it from the buffer.
 			msgTemp = conn->getBuffer ( ).substr ( 0, msgLength );
-			conn->setBuffer (  conn->getBuffer ( ).substr ( 0, msgLength ) );	
+			conn->setBuffer (  conn->getBuffer ( ).substr ( msgLength ) );	
 		    //If incoming message is not empty then transmit to logicModule
 		    //decode and check if not empty
 		    std::cout << "Len: " << msgTemp.size() << std::endl; 
