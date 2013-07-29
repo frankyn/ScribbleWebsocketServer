@@ -165,14 +165,14 @@ void Channel::handleConnectionBuffers ( ) {
 	for ( it = connections.begin(); it != connections.end(); it ++ ) {
 		conn = it->second;
 		//Call decode if return is empty string buffer isn't ready to be decoded.
-		msgLength = conn->packetLength ( conn->getBuffer ( ) );
 		/*
 		if ( msgLength != 0 ) {
 			std::cout << "----------------------------------" << std::endl;
 			std::cout<<msgLength<<std::endl;
 			std::cout<<conn->getBuffer ( ).size ( )<<std::endl;
 		}*/
-		if ( msgLength != 0 && msgLength <= conn->getBuffer ( ).size ( ) ) {
+		if ( conn->packetComplete ( conn->getBuffer ( ) ) ) {
+			msgLength = conn->packetLength ( conn->getBuffer ( ) );
 			//std::cout<<"HAS PACKET"<<std::endl;
 			//We have a complete packet waiting for us so we need clear it from the buffer.
 			msgTemp = conn->getBuffer ( );

@@ -41,6 +41,8 @@ class WSProtocol{
     public:
          virtual int handshake( const std::string input, WSAttributes * response ) = 0;
          virtual int hasMask ( const std::string input ) = 0;
+         virtual int packetComplete ( const std::string input ) = 0;
+         virtual int packetFragmented ( const std::string input ) = 0;
          virtual void packetLength ( const std::string input , WSPacketLength * packetLength ) = 0;
          virtual std::string decode( const std::string input ) = 0;
          virtual std::string encode( const std::string input ) = 0;

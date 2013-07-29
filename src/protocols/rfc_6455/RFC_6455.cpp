@@ -68,8 +68,42 @@ int RFC_6455::hasMask ( const std::string input ) {
 	if ( input.empty ( ) ) return 0;
 	const unsigned char * inputBytes = (unsigned char*)input.c_str(); 
 
-	return (inputBytes[1] & 0x80 ? 1 : 0 );
+	return (inputBytes[1] & 0x80);
 }
+
+/*
+	Check if the packet is fragmented state
+*/
+
+int RFC_6455::packetFragmented ( const std::string input ) {
+	if ( input.empty() ) return 0;
+	const unsigned char * inputBytes = (unsigned char*)input.c_str();
+
+	return !(inputBytes[0] & 0x80);
+}
+
+/*
+	Check if the packet is complete.
+*/
+
+int RFC_6455::packetComplete ( const std::string input ) {
+	if ( input.empty ( ) ) return 0;
+	std::string tmp = input;
+	int foundEndPacket = 0;
+	//Using a loop instead of using recursion.
+	while ( !tmp.empty() && !foundEndPacket ) {
+		if ( packetFragmented(tmp) ) {
+			//Packet is a partial let's check to make sure all the packets are here before we allow decoding.
+			WSPacketLength pcktLen;
+			packetLength ( tmp , &pcktLen );
+			tmp = tmp.substr ( pcktLen.packetLen , tmp.size() );
+		} else {
+			foundEndPacket = 1;
+		}
+	}
+	return foundEndPacket;
+}
+
 
 /*
 	Check packet length:
@@ -141,19 +175,20 @@ std::string RFC_6455::decode ( const std::string input ) {
          (contains "Hello")
 	
 	*/
-	const char * inputBytes = input.c_str(); 
-	WSPacketLength pcktLen;
-	packetLength ( input , &pcktLen );
-	//std::cout << "INPUT LENGTH: " << input.size() << std::endl;
-	//std::cout << "LENGTH: " << pcktLen.packetLen << std::endl;
-	//std::cout<<"LENGTH: " << input.size()  << std::endl;
-	if ( (unsigned)input.size() < pcktLen.length ) {
-		/*
-			This needs to be extended for split up packets
-		*/
-	} else { 
-		//Single packet
-		if ( hasMask ( input ) ) {
+	//If packet isn't complete fail decoding.
+	if ( !packetComplete ( input ) ) return decodedInput;
+	std::string unknownPacket = input;
+
+	do {
+		const char * inputBytes = unknownPacket.c_str(); 
+		WSPacketLength pcktLen;
+		packetLength ( unknownPacket , &pcktLen );
+
+			
+		//std::cout << "INPUT LENGTH: " << input.size() << std::endl;
+		//std::cout << "LENGTH: " << pcktLen.packetLen << std::endl;
+		//std::cout << "LENGTH: " << input.size()  << std::endl;
+		if ( hasMask ( unknownPacket ) ) {
 			//std::cout<<"MASKED"<<std::endl;
 			//Masked Input
 			unsigned long byteCounter = 0;
@@ -179,7 +214,8 @@ std::string RFC_6455::decode ( const std::string input ) {
 				byteCounter++;
 			}
 		}
-	}	
+		unknownPacket = unknownPacket.substr ( pcktLen.packetLen , unknownPacket.size() );
+	} while ( !unknownPacket.empty() );
 	return decodedInput;
 }
 
