@@ -130,6 +130,13 @@ unsigned long RFC_6455::packetRealLength ( const std::string input ) {
 			tmp = tmp.substr ( pcktLen.packetLen , tmp.size() );
 			sizeOfPacket += pcktLen.packetLen; 
 		} else {
+			WSPacketLength pcktLen;
+			packetLength ( tmp , &pcktLen );
+			if ( pcktLen.packetLen > tmp.size() ) {
+				//Incomplete packet
+				return 0;
+			}
+			sizeOfPacket += pcktLen.packetLen;
 			foundEndPacket = 1;
 		}
 	}
