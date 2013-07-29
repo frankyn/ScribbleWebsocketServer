@@ -96,6 +96,10 @@ int RFC_6455::packetComplete ( const std::string input ) {
 			//Packet is a partial let's check to make sure all the packets are here before we allow decoding.
 			WSPacketLength pcktLen;
 			packetLength ( tmp , &pcktLen );
+			if ( pcktLen.packetLen > tmp.size() ) {
+				//Incomplete packet
+				return 0;
+			}
 			tmp = tmp.substr ( pcktLen.packetLen , tmp.size() );
 		} else {
 			foundEndPacket = 1;
@@ -120,7 +124,7 @@ unsigned long RFC_6455::packetRealLength ( const std::string input ) {
 			WSPacketLength pcktLen;
 			packetLength ( tmp , &pcktLen );
 			tmp = tmp.substr ( pcktLen.packetLen , tmp.size() );
-			sizeOfPacket += pcktLen.packetLen;
+			sizeOfPacket += pcktLen.packetLen; 
 		} else {
 			foundEndPacket = 1;
 		}
@@ -244,11 +248,7 @@ std::string RFC_6455::decode ( const std::string input ) {
 		std::cout << "ENDING DECODING" << std::endl;
 		std::cout << "Length of unknownPacket: " << unknownPacket.size() << std::endl;
 		std::cout << "REMOVING LENGTH: " << pcktLen.packetLen << std::endl;
-		if ( unknownPacket.size() < pcktLen.packetLen ) {
-			unknownPacket = "";
-		} else {
-			unknownPacket = unknownPacket.substr ( pcktLen.packetLen );
-		}
+		unknownPacket = unknownPacket.substr ( pcktLen.packetLen );
 		std::cout << "AFTER SUBSTR" << std::endl;
 	} while ( !unknownPacket.empty() );
 	return decodedInput;
