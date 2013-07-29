@@ -164,17 +164,17 @@ void Channel::handleConnectionBuffers ( ) {
 	for ( it = connections.begin(); it != connections.end(); it ++ ) {
 		conn = it->second;
 		//Call decode if return is empty string buffer isn't ready to be decoded.
-		/*
+		
+		unsigned long msgLength = conn->packetLength ( conn->getBuffer() );
+
 		if ( msgLength != 0 ) {
 			std::cout << "----------------------------------" << std::endl;
 			std::cout<<msgLength<<std::endl;
 			std::cout<<conn->getBuffer ( ).size ( )<<std::endl;
-		}*/
+		}
 		if ( conn->packetComplete ( conn->getBuffer ( ) ) ) {
 			std::cout << "PacketComplete: " << std::endl;
 
-			unsigned long msgLength = 0;
-			msgLength = conn->packetLength ( conn->getBuffer ( ) );
 			//std::cout<<"HAS PACKET"<<std::endl;
 			//We have a complete packet waiting for us so we need clear it from the buffer.
 			msgTemp = conn->getBuffer ( );
@@ -184,8 +184,6 @@ void Channel::handleConnectionBuffers ( ) {
 		    std::cout << "Len: " << msgTemp.size() << std::endl; 
 		    //std::cout << msgTemp << std::endl;
 		    msgTemp = conn->decode( msgTemp );
-		    std::cout << "????";
-		    //std::cout << msgTemp << std::endl;
 		    
 		    if ( !msgTemp.empty() ) {
 				//pass decoded message to logicModule script
