@@ -194,8 +194,6 @@ void Channel::handleConnectionBuffers ( ) {
 				logicModule.call ( "onMessage", args );
 			}
 			
-		} else {
-			std::cout << "Not complete" << std::endl;
 		}
 	}
 }
