@@ -24,6 +24,7 @@ class Connection {
 		std::string encode ( const std::string );
 		
 		unsigned long packetLength ( const std::string );
+		int packetComplete ( const std::string );
 		int appendBuffer ( const std::string );
 		int setBuffer ( const std::string );
 		
