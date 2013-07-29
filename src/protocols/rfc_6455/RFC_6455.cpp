@@ -134,10 +134,12 @@ unsigned long RFC_6455::packetRealLength ( const std::string input ) {
 		There are 3 different cases for large packet sizes.
 */
 void RFC_6455::packetLength ( const std::string input , WSPacketLength * pcktLen ) {
+	pcktLen->length = 0;
+	pcktLen->payloadOffset = 0;
+	pcktLen->packetLen = 0;
+	
 	if ( input.empty ( ) ) {
-		pcktLen->length = 0;
-		pcktLen->payloadOffset = 0;
-		pcktLen->packetLen = 0;
+		
 		return;
 	}
 	/*
