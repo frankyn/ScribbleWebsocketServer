@@ -186,7 +186,7 @@ void Channel::handleConnectionBuffers ( ) {
 		    
 		    if ( !msgTemp.empty() ) {
 				//pass decoded message to logicModule script
-				std::cout << msgTemp << std::endl;
+				//std::cout << msgTemp << std::endl;
 				SLArg args;
 				args.push_back ( conn->getID () );
 				args.push_back ( msgTemp );
