@@ -156,7 +156,7 @@ void Channel::Execute (void * arg) {
 					}	
 				}
 			}
-			//handleConnectionBuffers ( );
+			handleConnectionBuffers ( );
 		}
 
 	}catch(LogString e) {
