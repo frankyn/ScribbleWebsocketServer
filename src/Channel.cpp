@@ -129,9 +129,34 @@ void Channel::Execute (void * arg) {
 					//Add incoming data for Connection to its own personal buffer.
 					conn->appendBuffer ( std::string ( buffer, buffer_len ) );
 					//std::cout<<"BUFFER NEW SIZE: " << conn->getBuffer().size() << std::endl;
+					unsigned long msgLength = conn->packetLength ( conn->getBuffer() );
+		
+					if ( msgLength != 0 && conn->packetComplete ( conn->getBuffer ( ) ) ) {
+						//std::cout << "PacketComplete: " << std::endl;
+
+						//std::cout<<"HAS PACKET"<<std::endl;
+						//We have a complete packet waiting for us so we need clear it from the buffer.
+						msgTemp = conn->getBuffer ( ).substr ( 0, msgLength );
+						conn->setBuffer (  conn->getBuffer ( ).substr ( msgLength ) );	
+					    //If incoming message is not empty then transmit to logicModule
+					    //decode and check if not empty
+					    //std::cout << "Len: " << msgTemp.size() << std::endl; 
+					    //std::cout << msgTemp << std::endl;
+					    msgTemp = conn->decode( msgTemp );
+					    
+					    if ( !msgTemp.empty() ) {
+							//pass decoded message to logicModule script
+							//std::cout << msgTemp << std::endl;
+							SLArg args;
+							args.push_back ( conn->getID () );
+							args.push_back ( msgTemp );
+							logicModule.call ( "onMessage", args );
+						}
+						
+					}	
 				}
 			}
-			handleConnectionBuffers ( );
+			//handleConnectionBuffers ( );
 		}
 
 	}catch(LogString e) {
@@ -168,11 +193,11 @@ void Channel::handleConnectionBuffers ( ) {
 		//Call decode if return is empty string buffer isn't ready to be decoded.
 		
 		unsigned long msgLength = conn->packetLength ( conn->getBuffer() );
-		if ( msgLength != 0 ) {
+		//if ( msgLength != 0 ) {
 			//std::cout << "----------------------------------" << std::endl;
 			//std::cout<<msgLength<<std::endl;
 			//std::cout<<conn->getBuffer ( ).size ( )<<std::endl;
-		}
+		//}
 		if ( msgLength != 0 && conn->packetComplete ( conn->getBuffer ( ) ) ) {
 			//std::cout << "PacketComplete: " << std::endl;
 
