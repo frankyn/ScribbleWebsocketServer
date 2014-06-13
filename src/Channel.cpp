@@ -13,10 +13,10 @@ Channel::Channel ( int cID, std::string dbKey, std::string cname, AppDB appDB, s
 	/*Connect to database server*/
 
 	/* MySQL DB Connection */
-	if ( !appDatabase.connect ( appDB.host , appDB.username , appDB.password , appDB.dbname ) ) {
-		Log ( "Channel: Unable to connect to database ( " + appDB.host + "," + appDB.username + "," + appDB.password + "," + appDB.dbname + " )" );
-		throw "Unable to connect to database" + appDB.host + "," + appDB.username + "," + appDB.password + "," + appDB.dbname + " )";
-	}
+	//if ( !appDatabase.connect ( appDB.host , appDB.username , appDB.password , appDB.dbname ) ) {
+	//	Log ( "Channel: Unable to connect to database ( " + appDB.host + "," + appDB.username + "," + appDB.password + "," + appDB.dbname + " )" );
+	//	throw "Unable to connect to database" + appDB.host + "," + appDB.username + "," + appDB.password + "," + appDB.dbname + " )";
+	//}
 
 	/*
 	MongoDB Setup
@@ -47,8 +47,8 @@ Channel::Channel ( int cID, std::string dbKey, std::string cname, AppDB appDB, s
 	logicModule.addProc ( &Channel::luaSendTo, (void*)this, "sendTo" );
 	
 	/*MYSQL LUA API*/
-	logicModule.addProc ( &Channel::luaStore, (void*)this, "storeid" );
-	logicModule.addProc ( &Channel::luaGet, (void*)this, "getid" );
+	//logicModule.addProc ( &Channel::luaStore, (void*)this, "storeid" );
+	//logicModule.addProc ( &Channel::luaGet, (void*)this, "getid" );
 	
 	/*MongoDB LUA API*/
 	//logicModule.addProc ( &Channel::luaCountQuery, (void*)this, "countQuery" );
