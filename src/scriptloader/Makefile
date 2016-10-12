@@ -3,10 +3,10 @@ CC=g++
 CFLAGS=-c -Wall 
 EFLAGS= $(SCRIPTLOADER-EFLAGS)
 LDFLAGS= 
-UNITSOURCES= unit_scriptloader.cpp ../common/Logger.h ../common/Logger.cpp
-SOURCES= ScriptLoader.h ScriptLoader.cpp
-OBJECTS = $(SOURCES:.cpp=.o)
-UNITOBJECTS = $(UNITSOURCES:.cpp=.o)
+UNITSOURCES= unit_scriptloader.cc ../common/Logger.h ../common/Logger.cpp
+SOURCES= ScriptLoader.h ScriptLoader.cc
+OBJECTS = $(SOURCES:.cc=.o)
+UNITOBJECTS = $(UNITSOURCES:.cc=.o)
 EXECUTABLE= unit_scriptloader
 
 all: $(SOURCES) $(OBJECTS)

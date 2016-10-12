@@ -4,39 +4,40 @@
 #include "./ListenerClass.h"
 
 int main(int argc, char ** args){
-	try{
-		
-		ListenerClass LS;
-		std::string h;
+  ListenerClass listener;
+  std::string console_input;
 
-		while ( h.compare( "quit" ) != 0 ) {
-			std::cout<<"Console: ";
-			std::cin>>h;
-			if ( h.compare ( "connected" ) == 0 ) {
-				std::cout << "Connected: " << LS.usersConnected ( ) << std::endl;
-			} else 
-			if ( h.compare ( "channels" ) == 0 ) {
-				std::cout<<"Available Channels:"<<std::endl
-						 <<LS.availableChannels ( )<<std::endl;
-			} else
-			if ( h.compare ( "help" ) == 0 ) {
-				std::cout<<"Commands:"<<std::endl
-						 <<"help - list of commands"<<std::endl
-						 <<"connected - connected user count"<<std::endl
-						 <<"channels - list of channels"<<std::endl
-						 <<"quit - exit program"<<std::endl;
-			} else
-			if ( h.compare ( "quit" ) != 0 ) {
-				std::cout<<"'"<<h<<"' not a valid command. For list of commands type in 'help'"<<std::endl;
-			} 
-		}
-		
-		std::cout<<"Scribble is shutting down."<<std::endl;
-		
-		LS.setStatus ( 0 );
-	} catch (const char * e) {
-		std::cout<<"Error: "<<e<<std::endl;
-	}
+  // Accept console input  
+  while (console_input.compare("quit") != 0) {
+    std::cout << "Console: ";
+    std::cin >> console_input;
+    
+    if (console_input.compare("connected") == 0) {
+      std::cout << "Connected: " << listener.usersConnected ( ) << std::endl;
+    } else 
+    if (console_input.compare("channels") == 0) {
+      std::cout << "Available Channels:\n" 
+                << listener.availableChannels() << std::endl;
+    } else
+    if (console_input.compare("help") == 0) {
+      std::cout << "Commands:\n"
+                << "help - list of commands\n"
+                << "connected - connected user count\n"
+                << "channels - list of channels\n"
+                << "quit - exit program\n" << std::endl;
+    } else
+    if (console_input.compare("quit") != 0) {
+      std::cout << "'" << console_input
+                << "' not a valid command. For list of commands type in 'help'"
+                << std::endl;
+    } 
+  }
+ 
+  // Shutdown Listening server 
+  std::cout << "Scribble is shutting down." << std::endl;
+  listener.setStatus(0);
+  
 
-	return 0;
+  return 0;
 }
+
