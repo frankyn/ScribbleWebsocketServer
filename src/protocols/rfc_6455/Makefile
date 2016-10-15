@@ -1,22 +1,28 @@
-CC=g++
-CFLAGS=-c -Wall
-LDFLAGS= -pthread
-UNITSOURCES =  unit_rfc_6455.cc  
-SOURCES= rfc_6455.h rfc_6455.cc base64/base64.h base64/base64.c sha1/sha1.h sha1/sha1.cpp ../WSProtocol.h
-OBJECTS = $(SOURCES:.cpp=.o)
-UNITOBJECTS = $(UNITSOURCES:.cpp=.o)
-EXECUTABLE= unit_rfc_6455
+CXX          = g++
+CFLAGS       = -Wall -c -g
+LDFLAGS      =
+UNITSOURCES  = unit_rfc_6455.cc  
+SOURCES      = rfc_6455.cc 
+DEPENDENCIES = sha1 base64
+OBJECTS      = $(SOURCES:.cc=.o) sha1/sha1.o base64/base64.o 
+UNITOBJECTS  = $(UNITSOURCES:.cc=.o)
+EXECUTABLE   = unit_rfc_6455
 
-all: $(SOURCES) $(OBJECTS)
-
-unit: $(SOURCES) $(UNITSOURCES) $(EXECUTABLE)
-
-clean:
-	  rm *.o
+all: $(DEPENDENCIES) $(SOURCES) $(OBJECTS) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS) $(UNITOBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) $(UNITOBJECTS) -o $@
+	$(CXX) $(OBJECTS) $(UNITOBJECTS) $(LDFLAGS) -o $@
 
-.cpp.o:
-	$(CC) $(CFLAGS) $< -o $@
+.cc.o:
+	$(CXX) $(CFLAGS) $< $(LDFLAGS) -o $@
+
+.PHONY: $(DEPENDENCIES)
+$(DEPENDENCIES):
+	$(MAKE) -C $@
+
+.PHONY: clean
+clean:
+	$(RM) *.o $(EXECUTABLE)
+	$(MAKE) -C sha1 clean
+	$(MAKE) -C base64 clean 
 

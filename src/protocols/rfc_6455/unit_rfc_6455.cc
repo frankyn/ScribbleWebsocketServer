@@ -7,7 +7,7 @@
 using namespace std;
 
 int main ( ) { 
-  WSProtocol * protocolTest = new RFC_6455();
+  WSProtocol * protocolTest = new RFC6455();
   WSAttributes attributes;
   string exampleInput = "GET /chat HTTP/1.1\r\nHost: server.example.com\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\nOrigin: http://example.com\r\nSec-WebSocket-Protocol: chat, superchat\r\nSec-WebSocket-Version: 13";
   string exampleResponse = "HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=\r\n\r\n";

@@ -1,15 +1,11 @@
 #include "rfc_6455.h"
 
+RFC6455::RFC6455() {}
 
-RFC_6455::RFC_6455 ( ) {
-
-}
-
-RFC_6455::~RFC_6455 ( ) {
-
-}
+RFC6455::~RFC6455() {}
          
-int RFC_6455::handshake (const std::string input, WSAttributes * response) {
+int RFC6455::handshake(const std::string input, WSAttributes * response) {
+
         /*Grab Version*/
         if ( input.compare("") == 0 ) return -1;
         std::string versionLookupStart ="Sec-WebSocket-Version: ";
@@ -18,6 +14,7 @@ int RFC_6455::handshake (const std::string input, WSAttributes * response) {
         int verEnd = input.find ( versionLookupEnd, verStart );
         response->version = input.substr( verStart + versionLookupStart.length() , verEnd - (verStart+versionLookupStart.length()) );
         if ( response->version.compare("13") != 0 ) return -1;
+
         /*Grab Channel Name*/
         std::string channelLookupStart = "GET /";
         std::string channelLookupEnd = " HTTP/1.1";
@@ -64,7 +61,7 @@ int RFC_6455::handshake (const std::string input, WSAttributes * response) {
 /*
         Check if the packet has the MASK bit turned on.
 */
-int RFC_6455::hasMask ( const std::string input ) {
+int RFC6455::hasMask ( const std::string input ) {
         if ( input.empty ( ) ) return 0;
         const unsigned char * inputBytes = (unsigned char*)input.c_str(); 
 
@@ -75,7 +72,7 @@ int RFC_6455::hasMask ( const std::string input ) {
         Check if the packet is fragmented state
 */
 
-int RFC_6455::packetFragmented ( const std::string input ) {
+int RFC6455::packetFragmented ( const std::string input ) {
         if ( input.empty() ) return 0;
         const unsigned char * inputBytes = (unsigned char*)input.c_str();
 
@@ -86,7 +83,7 @@ int RFC_6455::packetFragmented ( const std::string input ) {
         Check if the packet is complete.
 */
 
-int RFC_6455::packetComplete ( const std::string input ) {
+int RFC6455::packetComplete ( const std::string input ) {
         if ( input.empty ( ) ) return 0;
         std::string tmp = input;
         int completed = 0;
@@ -103,7 +100,7 @@ int RFC_6455::packetComplete ( const std::string input ) {
         Get full size of packet even if it's fragged.
 */
 
-unsigned long RFC_6455::packetRealLength ( const std::string input ) {
+unsigned long RFC6455::packetRealLength ( const std::string input ) {
         if ( input.empty ( ) ) return 0;
         std::string tmp = input;
         int foundEndPacket = 0;
@@ -140,7 +137,7 @@ unsigned long RFC_6455::packetRealLength ( const std::string input ) {
         Check packet length:
                 There are 3 different cases for large packet sizes.
 */
-void RFC_6455::packetLength ( const std::string input , WSPacketLength * pcktLen ) {
+void RFC6455::packetLength ( const std::string input , WSPacketLength * pcktLen ) {
         pcktLen->length = 0;
         pcktLen->payloadOffset = 0;
         pcktLen->packetLen = 0;
@@ -193,7 +190,7 @@ void RFC_6455::packetLength ( const std::string input , WSPacketLength * pcktLen
         }
 }
 
-std::string RFC_6455::decode ( const std::string input ) {
+std::string RFC6455::decode ( const std::string input ) {
         std::string decodedInput = "";
         
         /*
@@ -257,7 +254,7 @@ std::string RFC_6455::decode ( const std::string input ) {
         return decodedInput;
 }
 
-std::string RFC_6455::encode ( const std::string input ) {
+std::string RFC6455::encode ( const std::string input ) {
         std::string encodedInput;
 
         int len = input.length();

@@ -35,7 +35,7 @@ void ChannelSelector::Execute ( void * arg ) {
       desc = connectionsWaiting->get ( );
       connectionsWaiting->unlock ( ); 
       Log ( "Channel Selector: new connection" ); 
-      protocol = new RFC_6455();
+      protocol = new RFC6455();
       newConnection = new Connection ( desc, protocol );
       Log ( "Channel Selector: waiting for handshake" );
       bytes = newConnection->recv ( buffer, sizeof(buffer)/sizeof(char) );
