@@ -14,9 +14,11 @@ dependencies:
     - sudo apt-get install liblua5.1-0-dev libmysqlclient-dev 
     - make -C src/mysql unit
     - make -C src/protocols/rfc_6455 unit
+    - make -C src/scriptloader unit
+
 ## Customize test commands
 test:
   override:
     - ./src/mysql/unit_mysql
     - ./src/protocols/rfc_6455/RFC_6455_Unit_Test
-
+    - ./src/scriptloader/unit_scriptloader
