@@ -83,5 +83,5 @@ int main(int argc, char ** argv) {
 	
 	/* Closing statements */
 	std::cout << "Finished unit testing :D" << std::endl;
-	return 1;	
+	return 0;	
 };
