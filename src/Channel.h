@@ -10,10 +10,9 @@
 #include "./common/SocketClass.h"
 #include "./common/Logger.h"
 #include "./protocols/WSProtocol.h"
-#include "./protocols/rfc_6455/RFC_6455.h"
+#include "./protocols/rfc_6455/rfc_6455.h"
 #include "./scriptloader/ScriptLoader.h"
 #include "./mysql/MySQL.h"
-//#include "./mongodb/DBMongo.h"
 #include "Connection.h"
 
 #ifndef CHANNEL_HEADER

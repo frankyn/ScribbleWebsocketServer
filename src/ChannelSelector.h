@@ -5,7 +5,7 @@
 #include "./common/SocketClass.h"
 #include "./common/ThreadClass.h"
 #include "./protocols/WSProtocol.h"
-#include "./protocols/rfc_6455/RFC_6455.h"
+#include "./protocols/rfc_6455/rfc_6455.h"
 #include "Connection.h"
 #include "ConnectionsWaiting.h"
 #include "Channel.h"

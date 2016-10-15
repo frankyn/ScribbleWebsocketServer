@@ -20,5 +20,5 @@ dependencies:
 test:
   override:
     - ./src/mysql/unit_mysql
-    - ./src/protocols/rfc_6455/RFC_6455_Unit_Test
+    - ./src/protocols/rfc_6455/unit_rfc_6455
     - ./src/scriptloader/unit_scriptloader

@@ -2,7 +2,7 @@
 #include <string>
 #include <cassert>
 #include "../WSProtocol.h"
-#include "RFC_6455.h"
+#include "rfc_6455.h"
 
 using namespace std;
 
@@ -80,50 +80,50 @@ int main ( ) {
          0x80 0x02 0x6c 0x6f (contains "lo")
     */
 
-//  std::cout << "Case 5...testing....framented packets" << std::endl;
-//  std::cout << "--testing (1/4) fragment of packet...";
-//  assert ( protocolTest->packetComplete ( exampleWSMessage_split_1 ) == 0 );
-//  std::cout << "ok" << std::endl;
-//
-//  std::cout << "Case 6...testing....fragmented packets" << std::endl;
-//  std::cout << "--testing (2/4) fragment of packet...";
-//  assert ( protocolTest->packetComplete ( exampleWSMessage_split_1+exampleWSMessage_split_2 ) == 0 );
-//  std::cout << "ok" << std::endl;
-//
-//  std::cout << "Case 7...testing....fragmented packets" << std::endl;
-//  std::cout << "--testing (3/4) fragment of packet...";
-//  assert ( protocolTest->packetComplete ( exampleWSMessage_split_1+exampleWSMessage_split_2+exampleWSMessage_split_3 ) == 0 );
-//  std::cout << "ok" << std::endl;
-//
-//  std::cout << "Case 8...testing....fragmented packets" << std::endl;
-//  std::cout << "--testing (4/4) fragment of packet...";
-//  assert ( protocolTest->packetComplete ( exampleWSMessage_split_1+exampleWSMessage_split_2+exampleWSMessage_split_3+exampleWSMessage_split_4 ) == 1 );
-//  std::cout << "ok" << std::endl;
-//
-//  std::cout << "Case 9...testing....fragmented packets" << std::endl;
-//  std::cout << "--testing decoding of fragmented packet...";
-//  assert ( exampleWSMessage_split_payload.compare ( protocolTest->decode ( exampleWSMessage_split_1+exampleWSMessage_split_2+exampleWSMessage_split_3+exampleWSMessage_split_4 ) ) == 0 );
-//  std::cout << "ok" <<std::endl;
-//  
-//  std::cout << "Case 10...testing....long fragmented packets" << std::endl;
-//  std::cout << "--testing (1/2) fragment of packet...";
-//  assert ( protocolTest->packetComplete ( exampleWSMessage_long_split_1 ) == 0 );
-//  std::cout << "ok" << std::endl;
-//
-//  std::cout << "Case 11...testing....long fragmented packets" << std::endl;
-//  std::cout << "--testing (2/2) fragment of packet...";
-//  assert ( protocolTest->packetComplete ( exampleWSMessage_long_split_1+exampleWSMessage_long_split_2 ) == 1 );
-//  std::cout << "ok" << std::endl;
-//
-//  std::cout << "Case 12...testing....long fragmented packets" << std::endl;
-//  std::cout << "--testing decoding of fragmented packet...";
-//  assert ( exampleWSMessage_long_split_payload.compare ( protocolTest->decode ( exampleWSMessage_long_split_1+exampleWSMessage_long_split_2 ) ) == 0 );
-//  std::cout << "ok" <<std::endl;
-//
-//  std::cout << "Case 13...testing....long fragmented incomplete packet" << std::endl;
-//  std::cout << "--testing (1/2) fragment of packet...";
-//  assert ( protocolTest->packetComplete ( exampleWSMessage_incomplete_split_1 ) == 0 );
-//  std::cout << "ok" << std::endl;
+  std::cout << "Case 5...testing....framented packets" << std::endl;
+  std::cout << "--testing (1/4) fragment of packet...";
+  assert ( protocolTest->packetComplete ( exampleWSMessage_split_1 ) == 0 );
+  std::cout << "ok" << std::endl;
+
+  std::cout << "Case 6...testing....fragmented packets" << std::endl;
+  std::cout << "--testing (2/4) fragment of packet...";
+  assert ( protocolTest->packetComplete ( exampleWSMessage_split_1+exampleWSMessage_split_2 ) == 0 );
+  std::cout << "ok" << std::endl;
+
+  std::cout << "Case 7...testing....fragmented packets" << std::endl;
+  std::cout << "--testing (3/4) fragment of packet...";
+  assert ( protocolTest->packetComplete ( exampleWSMessage_split_1+exampleWSMessage_split_2+exampleWSMessage_split_3 ) == 0 );
+  std::cout << "ok" << std::endl;
+
+  std::cout << "Case 8...testing....fragmented packets" << std::endl;
+  std::cout << "--testing (4/4) fragment of packet...";
+  assert ( protocolTest->packetComplete ( exampleWSMessage_split_1+exampleWSMessage_split_2+exampleWSMessage_split_3+exampleWSMessage_split_4 ) == 1 );
+  std::cout << "ok" << std::endl;
+
+  std::cout << "Case 9...testing....fragmented packets" << std::endl;
+  std::cout << "--testing decoding of fragmented packet...";
+  assert ( exampleWSMessage_split_payload.compare ( protocolTest->decode ( exampleWSMessage_split_1+exampleWSMessage_split_2+exampleWSMessage_split_3+exampleWSMessage_split_4 ) ) == 0 );
+  std::cout << "ok" <<std::endl;
+  
+  std::cout << "Case 10...testing....long fragmented packets" << std::endl;
+  std::cout << "--testing (1/2) fragment of packet...";
+  assert ( protocolTest->packetComplete ( exampleWSMessage_long_split_1 ) == 0 );
+  std::cout << "ok" << std::endl;
+
+  std::cout << "Case 11...testing....long fragmented packets" << std::endl;
+  std::cout << "--testing (2/2) fragment of packet...";
+  assert ( protocolTest->packetComplete ( exampleWSMessage_long_split_1+exampleWSMessage_long_split_2 ) == 1 );
+  std::cout << "ok" << std::endl;
+
+  std::cout << "Case 12...testing....long fragmented packets" << std::endl;
+  std::cout << "--testing decoding of fragmented packet...";
+  assert ( exampleWSMessage_long_split_payload.compare ( protocolTest->decode ( exampleWSMessage_long_split_1+exampleWSMessage_long_split_2 ) ) == 0 );
+  std::cout << "ok" <<std::endl;
+
+  std::cout << "Case 13...testing....long fragmented incomplete packet" << std::endl;
+  std::cout << "--testing (1/2) fragment of packet...";
+  assert ( protocolTest->packetComplete ( exampleWSMessage_incomplete_split_1 ) == 0 );
+  std::cout << "ok" << std::endl;
 
   return 0;
 }
