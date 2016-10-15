@@ -1,8 +1,6 @@
+# Scrible Websocket Server
 [![Build Status][circleci-badge]][circleci-link]
 
-[circleci-badge]: https://circleci.com/gh/frankyn/ScribbleWebsocketServer/tree/master.svg?style=svg
-[circleci-link]: https://circleci.com/gh/frankyn/ScribbleWebsocketServer/tree/master
-# Scrible Websocket Server
 A c++ hobby project started in 2012. 
 
 # Environment Reqs:
@@ -21,4 +19,6 @@ console:
 	channels - channels available
 	exit - stop server
 ```
+[circleci-badge]: https://circleci.com/gh/frankyn/ScribbleWebsocketServer/tree/master.svg?style=svg
+[circleci-link]: https://circleci.com/gh/frankyn/ScribbleWebsocketServer/tree/master
 
