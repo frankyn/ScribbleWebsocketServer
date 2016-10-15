@@ -1,17 +1,38 @@
 #include <iostream>
-#include <cassert>
-
 #include <vector>
+#include <cassert>
+#include <cstdlib>
+
 #include "MySQL.h"
 
 int main(int argc, char ** argv) {
-	/* Create MySQL object */
+	/* Get ENV variables */
+  const char* test_host = std::getenv("TEST_HOST");
+  assert(test_host != NULL);
+
+  const char* test_user = std::getenv("TEST_USER");
+  assert(test_user != NULL);
+
+  const char* test_database = std::getenv("TEST_DATABASE");
+  assert(test_database != NULL);  
+
+  const char* test_pass = std::getenv("TEST_PASS");
+  
+
+  /* Create MySQL object */
 	MySQL sql;
 	
 	/* Open Database */
-	std::cout << "Connecting to 'localhost' using 'test' database" << std::endl;
-	assert(sql.connect("localhost", "root", "blue23", "test") == true);
-	std::cout << "Opening was successful" << std::endl;	
+	std::cout << "Connecting to " << test_host <<
+               " using " << test_database << " database" << std::endl;
+
+  if (test_pass) {
+	  assert(sql.connect(test_host, test_user, test_pass, test_database) == true);
+	} else {
+    assert(sql.connect(test_host, test_user, "", test_database) == true);
+  }
+
+  std::cout << "Opening was successful" << std::endl;	
 
 	/* Create a table */		
 	std::cout << "Creating table tbl1 (one int, two int)" << std::endl;

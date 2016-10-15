@@ -1,7 +1,7 @@
 include makefile.inc
 
 CC=g++
-CFLAGS=-c -Wall 
+CFLAGS=-c -Wall -g 
 LDFLAGS= 
 EFLAGS=$(SQLSCHEMA-EFLAGS)
 SOURCES= MySQL.cpp MySQL.h 

@@ -1,0 +1,20 @@
+## Customize the test machine
+machine:
+  timezone: America/Los_Angeles # Set the timezone
+  environment:
+      TEST_HOST: localhost
+      TEST_USER: ubuntu
+      TEST_PASS: 
+  TEST_DATABASE: circle_test
+
+## Customize dependencies
+dependencies:
+  override:
+    - sudo apt-get update
+    - sudo apt-get install liblua5.1-0-dev libmysqlclient-dev 
+
+## Customize test commands
+test:
+  override:
+    - make -C src/mysql unit
+    - ./src/mysql/unit_mysql
