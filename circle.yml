@@ -5,7 +5,7 @@ machine:
       TEST_HOST: localhost
       TEST_USER: ubuntu
       TEST_PASS: 
-  TEST_DATABASE: circle_test
+      TEST_DATABASE: circle_test
 
 ## Customize dependencies
 dependencies:
