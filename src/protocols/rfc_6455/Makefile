@@ -1,17 +1,15 @@
 CXX          = g++
 CFLAGS       = -Wall -c -g
 LDFLAGS      =
-UNITSOURCES  = unit_rfc_6455.cc  
-SOURCES      = rfc_6455.cc 
+SOURCES      = rfc_6455.cc unit_rfc_6455.cc
 DEPENDENCIES = sha1 base64
 OBJECTS      = $(SOURCES:.cc=.o) sha1/sha1.o base64/base64.o 
-UNITOBJECTS  = $(UNITSOURCES:.cc=.o)
 EXECUTABLE   = unit_rfc_6455
 
 all: $(DEPENDENCIES) $(SOURCES) $(OBJECTS) $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJECTS) $(UNITOBJECTS)
-	$(CXX) $(OBJECTS) $(UNITOBJECTS) $(LDFLAGS) -o $@
+$(EXECUTABLE): $(OBJECTS) 
+	$(CXX) $(OBJECTS) $(LDFLAGS) -o $@
 
 .cc.o:
 	$(CXX) $(CFLAGS) $< $(LDFLAGS) -o $@
