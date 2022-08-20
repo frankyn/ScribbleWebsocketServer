@@ -15,35 +15,43 @@
 
 #ifndef LISTENER_HEADER
 #define LISTERER_HEADER
+
 class ListenerClass : public ThreadClass {
-	public:
-		ListenerClass();
-		void handleConnection(int);
-		~ListenerClass();
+public:
+    ListenerClass();
 
-		void setStatus ( int );
-		int usersConnected ( );
-		std::string availableChannels ( );
+    void handleConnection(int);
 
-		int checkForUpdates ( );
-	private:
-		void Setup();
-		void Execute(void *);
-		void doBeat ( );
-		
-		int incomingFD, maxSelectors, status, queue, port;
-		
-		int elapseUpdateCheck;
-		time_t lastUpdateCheck;
+    ~ListenerClass();
 
-		std::map<std::string, Channel*> channels; //Only one channel for now
-		ConnectionsWaiting connectionsWaiting;		
-		ChannelSelector ** chselect;
-				
-		ScriptLoader config;		
+    void setStatus(int);
 
-		MySQL appDB;
-		TCPListener listenerSocket;
+    int usersConnected();
+
+    std::string availableChannels();
+
+    int checkForUpdates();
+
+private:
+    void Setup();
+
+    void Execute(void *);
+
+    void doBeat();
+
+    int incomingFD, maxSelectors, status, queue, port;
+
+    int elapseUpdateCheck;
+    time_t lastUpdateCheck;
+
+    std::map<std::string, Channel *> channels; //Only one channel for now
+    ConnectionsWaiting connectionsWaiting;
+    ChannelSelector **chselect;
+
+    ScriptLoader config;
+
+    MySQL appDB;
+    TCPListener listenerSocket;
 };
 
 #endif

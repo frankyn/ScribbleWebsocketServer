@@ -13,21 +13,28 @@
 
 */
 
-class RFC_6455 : public WSProtocol{
-    public:
-         RFC_6455 ();
-         ~RFC_6455 ();
+class RFC_6455 : public WSProtocol {
+public:
+    RFC_6455();
 
-        void packetLength ( const std::string input , WSPacketLength * );
-        unsigned long packetRealLength ( const std::string );
-        int packetComplete ( const std::string input );
-        int packetFragmented ( const std::string input );
-        int handshake ( const std::string input, WSAttributes * response );
-	 	int hasMask ( const std::string input );
-	 	
-	 	std::string decode ( const std::string input );
-        std::string encode ( const std::string input );
-		
+    ~RFC_6455();
+
+    void packetLength(const std::string input, WSPacketLength *);
+
+    unsigned long packetRealLength(const std::string);
+
+    int packetComplete(const std::string input);
+
+    int packetFragmented(const std::string input);
+
+    int handshake(const std::string input, WSAttributes *response);
+
+    int hasMask(const std::string input);
+
+    std::string decode(const std::string input);
+
+    std::string encode(const std::string input);
+
 };
 
 #endif

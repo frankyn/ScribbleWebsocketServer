@@ -1,35 +1,35 @@
 #include "ConnectionsWaiting.h"
 
 ConnectionsWaiting::ConnectionsWaiting() {
-	
+
 }
 
 ConnectionsWaiting::~ConnectionsWaiting() {
-	connectionsWaiting.clear();
+    connectionsWaiting.clear();
 }
 
-void ConnectionsWaiting::lock ( ) {
-	pad.lock();
+void ConnectionsWaiting::lock() {
+    pad.lock();
 }
 
-void ConnectionsWaiting::unlock ( ) {
-	pad.unlock();
+void ConnectionsWaiting::unlock() {
+    pad.unlock();
 }
 
-void ConnectionsWaiting::insert ( int conn ) {
-	connectionsWaiting.push_back ( conn );
+void ConnectionsWaiting::insert(int conn) {
+    connectionsWaiting.push_back(conn);
 }
 
-int ConnectionsWaiting::get ( ) {
-	int desc = connectionsWaiting.front ( );
-	connectionsWaiting.pop_front ( );
-	return desc;
-}	
-
-void ConnectionsWaiting::signal ( ) {
-	sem.post();
+int ConnectionsWaiting::get() {
+    int desc = connectionsWaiting.front();
+    connectionsWaiting.pop_front();
+    return desc;
 }
 
-int ConnectionsWaiting::wait ( ) {
-	return sem.wait();
+void ConnectionsWaiting::signal() {
+    sem.post();
+}
+
+int ConnectionsWaiting::wait() {
+    return sem.wait();
 }
