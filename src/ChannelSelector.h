@@ -18,16 +18,21 @@
 */
 
 class ChannelSelector : public ThreadClass {
-	public:
-		ChannelSelector ( ConnectionsWaiting* , std::map<std::string, Channel*> *);
-		~ChannelSelector ( );
-		void Setup ( );
-		void Execute ( void * );
-		void setStatus ( int );
-	private:
-		int status;
-		std::map<std::string, Channel*> * channels;
-		ConnectionsWaiting * connectionsWaiting;
+public:
+    ChannelSelector(ConnectionsWaiting *, std::map<std::string, Channel *> *);
+
+    ~ChannelSelector();
+
+    void Setup();
+
+    void Execute(void *);
+
+    void setStatus(int);
+
+private:
+    int status;
+    std::map<std::string, Channel *> *channels;
+    ConnectionsWaiting *connectionsWaiting;
 };
 
 #endif

@@ -49,10 +49,9 @@ void DisplayMessageDigest(unsigned *message_digest);
  *  Comments:
  *
  */
-int main()
-{
-    SHA1        sha;
-    unsigned    message_digest[5];
+int main() {
+    SHA1 sha;
+    unsigned message_digest[5];
 
     /*
      *  Perform test A
@@ -62,12 +61,9 @@ int main()
     sha.Reset();
     sha << TESTA;
 
-    if (!sha.Result(message_digest))
-    {
+    if (!sha.Result(message_digest)) {
         cerr << "ERROR-- could not compute message digest" << endl;
-    }
-    else
-    {
+    } else {
         DisplayMessageDigest(message_digest);
         cout << "Should match:" << endl;
         cout << '\t' << "A9993E36 4706816A BA3E2571 7850C26C 9CD0D89D" << endl;
@@ -81,12 +77,9 @@ int main()
     sha.Reset();
     sha << TESTB;
 
-    if (!sha.Result(message_digest))
-    {
+    if (!sha.Result(message_digest)) {
         cerr << "ERROR-- could not compute message digest" << endl;
-    }
-    else
-    {
+    } else {
         DisplayMessageDigest(message_digest);
         cout << "Should match:" << endl;
         cout << '\t' << "84983E44 1C3BD26E BAAE4AA1 F95129E5 E54670F1" << endl;
@@ -98,14 +91,11 @@ int main()
     cout << endl << "Test C: One million 'a' characters" << endl;
 
     sha.Reset();
-    for(int i = 1; i <= 1000000; i++) sha.Input('a');
+    for (int i = 1; i <= 1000000; i++) sha.Input('a');
 
-    if (!sha.Result(message_digest))
-    {
+    if (!sha.Result(message_digest)) {
         cerr << "ERROR-- could not compute message digest" << endl;
-    }
-    else
-    {
+    } else {
         DisplayMessageDigest(message_digest);
         cout << "Should match:" << endl;
         cout << '\t' << "34AA973C D4C4DAA4 F61EEB2B DBAD2731 6534016F" << endl;
@@ -129,17 +119,15 @@ int main()
  *  Comments:
  *
  */
-void DisplayMessageDigest(unsigned *message_digest)
-{
-    ios::fmtflags   flags;
+void DisplayMessageDigest(unsigned *message_digest) {
+    ios::fmtflags flags;
 
     cout << '\t';
 
-    flags = cout.setf(ios::hex|ios::uppercase,ios::basefield);
+    flags = cout.setf(ios::hex | ios::uppercase, ios::basefield);
     cout.setf(ios::uppercase);
 
-    for(int i = 0; i < 5 ; i++)
-    {
+    for (int i = 0; i < 5; i++) {
         cout << message_digest[i] << ' ';
     }
 

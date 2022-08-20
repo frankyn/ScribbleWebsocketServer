@@ -30,81 +30,93 @@ Todo:
 	Add in the ability to check to see if settings were updated for channel.
 */
 struct AppDB {
-	int auth;
-	std::string host;
-	std::string dbname;
-	std::string username;
-	std::string password;
+    int auth;
+    std::string host;
+    std::string dbname;
+    std::string username;
+    std::string password;
 };
 typedef struct AppDB AppDB;
 
-class Channel : public ThreadClass { 
-	public:
-		Channel(int, std::string, std::string, std::string);
-		~Channel();
-		
-				
-		//User limit reached
-		void limitReached(Connection *);
-		void setStatus(int);
+class Channel : public ThreadClass {
+public:
+    Channel(int, std::string, std::string, std::string);
 
-		//Adding clients
-		void addConnection(Connection *);
-		void removeConnection(std::string);
+    ~Channel();
 
-		//Events
-		void doBeat();
-		
-		//Handling Data
-		void handleConnectionBuffers();
 
-		//Writing methods
-		int sendTo(std::string, std::string); 
-		int broadcast(std::string, std::string);
+    //User limit reached
+    void limitReached(Connection *);
 
-		//Get DB Handle
-		MySQL * getDB();
+    void setStatus(int);
 
-		//Channel Information
-		int usersConnected();
-		std::string getName();
-		std::string getDBKey();
-		int getID();
-		
-		/*LUA Module Interaction*/
-		std::string currentScript();
-		int updateScript(std::string);
-		
-		/*Channel LUA API Callback*/
-		static int luaBroadcast(lua_State *);
-		static int luaDisconnectUser(lua_State *);
-		static int luaSendTo(lua_State *);
-		
-		/*Logger LUA API Callback*/
-		static int luaLog(lua_State *);
-		
-		/*DB LUA API Callback*/
-		static int luaStore(lua_State *);
-		static int luaGet(lua_State *);
-	
-	private:
-		int channelID;
-		int eventsOccuring, eventFD, incomingFD, status;
-		unsigned maxConnections;
-		epoll_event ev, *eventsList; 
-		ScriptLoader logicModule;
+    //Adding clients
+    void addConnection(Connection *);
 
-		std::string name;
-		std::string channelDBKey;
-		std::string scriptFile, scriptUpdate;
-		SemClass sc;
-		MySQL appDatabase;
-		
-		std::map<std::string, Connection*> connections; 
+    void removeConnection(std::string);
 
-		//Thread Polymorphism
-		void Setup();
-		void Execute(void*);
+    //Events
+    void doBeat();
+
+    //Handling Data
+    void handleConnectionBuffers();
+
+    //Writing methods
+    int sendTo(std::string, std::string);
+
+    int broadcast(std::string, std::string);
+
+    //Get DB Handle
+    MySQL *getDB();
+
+    //Channel Information
+    int usersConnected();
+
+    std::string getName();
+
+    std::string getDBKey();
+
+    int getID();
+
+    /*LUA Module Interaction*/
+    std::string currentScript();
+
+    int updateScript(std::string);
+
+    /*Channel LUA API Callback*/
+    static int luaBroadcast(lua_State *);
+
+    static int luaDisconnectUser(lua_State *);
+
+    static int luaSendTo(lua_State *);
+
+    /*Logger LUA API Callback*/
+    static int luaLog(lua_State *);
+
+    /*DB LUA API Callback*/
+    static int luaStore(lua_State *);
+
+    static int luaGet(lua_State *);
+
+private:
+    int channelID;
+    int eventsOccuring, eventFD, incomingFD, status;
+    unsigned maxConnections;
+    epoll_event ev, *eventsList;
+    ScriptLoader logicModule;
+
+    std::string name;
+    std::string channelDBKey;
+    std::string scriptFile, scriptUpdate;
+    SemClass sc;
+    MySQL appDatabase;
+
+    std::map<std::string, Connection *> connections;
+
+    //Thread Polymorphism
+    void Setup();
+
+    void Execute(void *);
 };
 
 #endif
