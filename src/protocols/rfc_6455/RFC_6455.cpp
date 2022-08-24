@@ -1,5 +1,7 @@
 #include "RFC_6455.h"
 
+using namespace boost::uuids::detail;
+using namespace boost::archive::iterators;
 
 RFC_6455::RFC_6455() {
 
@@ -26,40 +28,44 @@ int RFC_6455::handshake(const std::string input, WSAttributes *response) {
     int channelEnd = input.find(channelLookupEnd, channelStart);
     response->channel = input.substr(channelStart + channelLookupStart.length(),
                                      channelEnd - (channelStart + channelLookupStart.length()));
-
     /*Create Server Response*/
+    std::stringstream os;
     std::string GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-    std::string handshake = "HTTP/1.1 101 Switching Protocols\r\n";
-    handshake += "Upgrade: websocket\r\n";
-    handshake += "Connection: Upgrade\r\n";
-    handshake += "Sec-WebSocket-Accept: ";
+    os << "HTTP/1.1 101 Switching Protocols\r\n";
+    os << "Upgrade: websocket\r\n";
+    os << "Connection: Upgrade\r\n";
+    os << "Sec-WebSocket-Accept: ";
     std::string keyLookupStart = "Sec-WebSocket-Key: ";
     std::string keyLookupEnd = "\r\n";
     int keyStart = input.find(keyLookupStart);
     int keyEnd = input.find(keyLookupEnd, keyStart);
     std::string inputKey =
             input.substr(keyStart + keyLookupStart.length(), keyEnd - (keyStart + keyLookupStart.length())) + GUID;
-
-    unsigned digest[5];
+    unsigned int digest[5];
     unsigned char longDigest[20];
-    SHA1 sha1;
-    sha1.Reset();
-    sha1.Input(inputKey.c_str(), inputKey.length());
-    if (!sha1.Result((unsigned *) digest)) {
-        std::cout << "Sha1: Error ocurred creating the digest" << std::endl;
-        return -1;
-    }
-
+    sha1 sha1;
+    sha1.process_bytes(inputKey.c_str(), inputKey.length());
+    sha1.get_digest(digest);
     for (int i = 0, j = 0; i < 5; i++) {
         longDigest[j++] = (digest[i] & 0xFF000000) >> 24;
         longDigest[j++] = (digest[i] & 0x00FF0000) >> 16;
         longDigest[j++] = (digest[i] & 0x0000FF00) >> 8;
-        longDigest[j++] = (digest[i] & 0xFF);
+        longDigest[j++] = (digest[i] & 0x000000FF);
     }
-
-    response->response = handshake;
-    response->response += base64_encode(longDigest, 20);
-    response->response += "\r\n\r\n";
+    typedef base64_from_binary<
+            transform_width<
+                    const char *,
+                    6,
+                    8
+            > > base64_text;
+    std::copy(
+            base64_text(longDigest),
+            base64_text(longDigest + 20),
+            ostream_iterator<char>(os)
+    );
+    os << '=';
+    os << "\r\n\r\n";
+    response->response = os.str();
 
     return 0;
 }

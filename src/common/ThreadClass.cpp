@@ -1,4 +1,4 @@
-s#include "ThreadClass.h"
+#include "ThreadClass.h"
 
 ThreadClass::ThreadClass() {/*Constructor*/
     pthread_attr_init(&threadAttributes);

@@ -1,12 +1,31 @@
 # Scrible Websocket Server
-[![Build Status][circleci-badge]][circleci-link]
 
 A c++ hobby project started in 2012. 
 
 # Environment Reqs:
+
+Debian
+
 ```
-$ sudo apt-get install liblua5.1-0-dev libmysqlclient-dev 
+sudo apt-get install liblua5.1-0-dev libmysqlclient-dev
 ```
+
+MacOSX
+
+Lua:
+```
+curl -R -O http://www.lua.org/ftp/lua-5.1.5.tar.gz
+tar -xzf lua-5.1.5.tar.gz
+cd lua-5.1.5
+sudo make macosx install
+```
+
+MySQL:
+```
+
+```
+
+
 
 # Usage
 

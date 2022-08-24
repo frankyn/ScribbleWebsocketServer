@@ -1,42 +1,22 @@
 #include "SemaphoreClass.h"
 
+
 SemClass::SemClass() {
-    sem_init(&s, 0, 0);
+    uniform_sem_init(&s, 0);
 }
 
 SemClass::SemClass(unsigned int startCount) {
-    if (sem_init(&s, 0, startCount) != 0) {
-        switch (errno) {
-            case EINVAL:
-                //startCount too large and exceeds SEM_VALUE_MAX
-                break;
-            case ENOSYS:
-                //pshared is non-zero -- Argument 2 in sem_init()
-                break;
-        }
-        exit(0);
-    }
+    uniform_sem_init(&s, startCount);
 }
 
 SemClass::~SemClass() {
-    sem_destroy(&s);
+    uniform_sem_destroy(&s);
 }
 
-int SemClass::value() {
-    int val;
-    sem_getvalue(&s, &val);
-    return val;
+void SemClass::wait() {
+    uniform_sem_wait(&s);
 }
 
-int SemClass::wait() {
-    return sem_wait(&s);
-}
-
-int SemClass::timedWait(long nano_sec, time_t sec) {
-    timespec t = {sec, nano_sec};
-    return sem_timedwait(&s, &t);
-}
-
-int SemClass::post() {
-    return sem_post(&s);
+void SemClass::post() {
+    uniform_sem_post(&s);
 }

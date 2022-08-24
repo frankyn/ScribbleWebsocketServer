@@ -1,4 +1,15 @@
+#if __APPLE__
+#include <sys/types.h>
+#include <sys/event.h>
+#include <sys/time.h>
+#elif __linux__
+// linux
 #include <sys/epoll.h>
+#else
+#   error "Unknown compiler"
+#endif
+
+
 #include <iostream>
 #include <list>
 #include <map>
@@ -11,7 +22,7 @@
 #include "./ConnectionsWaiting.h"
 #include "./ChannelSelector.h"
 #include "./Channel.h"
-#include "./scriptloader/ScriptLoader.h"
+#include "ScriptLoader.h"
 
 #ifndef LISTENER_HEADER
 #define LISTERER_HEADER

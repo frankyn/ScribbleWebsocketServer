@@ -1,9 +1,14 @@
 #include <cstdio>
 #include <cstring>
 #include <fcntl.h>
+#include <sstream>
+#include <boost/uuid/detail/sha1.hpp>
+#include <boost/archive/iterators/base64_from_binary.hpp>
+#include <boost/archive/iterators/insert_linebreaks.hpp>
+#include <boost/archive/iterators/transform_width.hpp>
+#include <boost/archive/iterators/ostream_iterator.hpp>
 #include "../WSProtocol.h"
-#include "./sha1/sha1.h"
-#include "./base64/base64.h"
+
 
 #ifndef RFC_6455_HEADER
 #define RFC_6455_HEADER

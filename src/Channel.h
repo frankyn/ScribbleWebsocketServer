@@ -4,14 +4,30 @@
 #include <cstdlib>
 #include <map>
 #include <sstream>
+
+#if __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_MAC
+#include <sys/types.h>
+#include <sys/event.h>
+#include <sys/time.h>
+#else
+#   error "Unknown Apple platform"
+#endif
+#elif __linux__
+// linux
 #include <sys/epoll.h>
+#else
+#   error "Unknown compiler"
+#endif
+
 #include "./common/ThreadClass.h"
 #include "./common/SemaphoreClass.h"
 #include "./common/SocketClass.h"
 #include "./common/Logger.h"
 #include "./protocols/WSProtocol.h"
 #include "./protocols/rfc_6455/RFC_6455.h"
-#include "./scriptloader/ScriptLoader.h"
+#include "ScriptLoader.h"
 #include "./mysql/MySQL.h"
 //#include "./mongodb/DBMongo.h"
 #include "Connection.h"
@@ -102,13 +118,22 @@ private:
     int channelID;
     int eventsOccuring, eventFD, incomingFD, status;
     unsigned maxConnections;
+
+#if __APPLE__
+    struct kevent ev;
+    int eventsList;
+#elif __linux__
+    // linux
     epoll_event ev, *eventsList;
+#else
+#   error "Unknown compiler"
+#endif
+
     ScriptLoader logicModule;
 
     std::string name;
     std::string channelDBKey;
     std::string scriptFile, scriptUpdate;
-    SemClass sc;
     MySQL appDatabase;
 
     std::map<std::string, Connection *> connections;

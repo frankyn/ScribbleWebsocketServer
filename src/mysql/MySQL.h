@@ -37,7 +37,7 @@ private:
     MYSQL_RES *result;
     MYSQL_FIELD *field;
 
-    std::vector <std::vector<std::string>> tableResults;
+    std::vector <std::vector<std::string> > tableResults;
 };
 
 #endif

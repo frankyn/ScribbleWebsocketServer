@@ -25,7 +25,7 @@ public:
 
     void signal();
 
-    int wait();
+    void wait();
 
 private:
     SemClass sem;

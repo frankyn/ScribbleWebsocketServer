@@ -30,6 +30,6 @@ void ConnectionsWaiting::signal() {
     sem.post();
 }
 
-int ConnectionsWaiting::wait() {
-    return sem.wait();
+void ConnectionsWaiting::wait() {
+    sem.wait();
 }
