@@ -1,14 +1,14 @@
 cc_test(
-    name = "rfc_6455_unit_tests",
-    srcs = ["rfc_6455/unit_protocol.cpp"],
-    deps = [":rfc_6455"],
+  name = "websocket_unit_tests",
+  srcs = ["rfc_6455/unit_protocol.cpp"],
+  deps = ["@com_google_googletest//:gtest_main", ":websocket"],
 )
 
 cc_library(
-    name = "rfc_6455",
+    name = "websocket",
     visibility = ["//visibility:public"],
-    srcs = ["rfc_6455/RFC_6455.cpp",],
-    hdrs = ["WSProtocol.h", "rfc_6455/RFC_6455.h"],
+    srcs = ["rfc_6455/WebSocket.cpp",],
+    hdrs = ["rfc_6455/WebSocket.h"],
     deps = [
         "@boost//:uuid",
         "@boost//:algorithm",

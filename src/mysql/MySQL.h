@@ -1,44 +1,43 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <mysql/mysql.h>
-#include "../common/Logger.h"
-
 #ifndef MYSQL_HEADER
 #define MYSQL_HEADER
+#include "../common/Logger.h"
+#include <iostream>
+#include <mysqlx/xdevapi.h>
+#include <sstream>
+#include <string>
+#include <vector>
 
 class MySQL {
 public:
-    MySQL();
+  MySQL(std::string host, std::string username, std::string password,
+        std::string database);
 
-    ~MySQL();
+  ~MySQL();
 
-    void log(std::string);
+  void log(std::string);
 
-    bool connect(std::string, std::string, std::string, std::string);
+  void disconnect();
 
-    void disconnect();
+  int query(std::string);
 
-    int query(std::string);
+  int exec(std::string); // alias for query
+  int update(std::string);
 
-    int exec(std::string); //alias for query
-    int update(std::string);
+  int hasNext();
 
-    int hasNext();
-
-    std::vector <std::string> next();
+  std::vector<std::string> next();
 
 private:
-    int hasNextRow;
-    int affectedRows;
-    bool isOpenDB;
+  // int hasNextRow;
+  // int affectedRows;
+  ::mysqlx::Session session;
+  bool isOpenDB;
 
-    MYSQL connectionID;
-    MYSQL_RES *result;
-    MYSQL_FIELD *field;
+  // MYSQL connectionID;
+  // MYSQL_RES *result;
+  // MYSQL_FIELD *field;
 
-    std::vector <std::vector<std::string> > tableResults;
+  std::vector<std::vector<std::string>> tableResults;
 };
 
 #endif
-

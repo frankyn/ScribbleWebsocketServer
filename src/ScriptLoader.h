@@ -1,14 +1,13 @@
-#include <iostream>
-#include <string>
-#include <list>
 #include "common/Logger.h"
+#include <iostream>
+#include <list>
+#include <string>
 
 extern "C" {
+#include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
-#include <lauxlib.h>
 }
-
 
 #ifndef SCRIPT_LOADER_HEADER
 #define SCRIPT_LOADER_HEADER
@@ -16,45 +15,44 @@ extern "C" {
 
 class Lua_State {
 public:
-    Lua_State() : m_state(lua_open()) {}
+  Lua_State() : m_state(lua_open()) {}
 
-    ~Lua_State() { lua_close(m_state); }
+  ~Lua_State() { lua_close(m_state); }
 
-    inline operator lua_State *() { return m_state; }
+  inline operator lua_State *() { return m_state; }
 
 private:
-    lua_State *m_state;
+  lua_State *m_state;
 };
 
 class ScriptLoader {
 public:
-    ScriptLoader();
+  ScriptLoader();
 
-    ~ScriptLoader();
+  ~ScriptLoader();
 
-    void call(std::string);
+  void call(std::string);
 
-    void call(std::string, SLArg);
+  void call(std::string, SLArg);
 
-    void focusVar(std::string);
+  void focusVar(std::string);
 
-    int load(std::string);
+  int load(std::string);
 
-    int loadText(std::string);
+  int loadText(std::string);
 
-    int loadLib(std::string);
+  int loadLib(std::string);
 
-    int addProc(lua_CFunction, void *, const std::string);
+  int addProc(lua_CFunction, void *, const std::string);
 
-    int getTableValue_int(std::string);
+  int getTableValue_int(std::string);
 
-    int getValue_int(std::string);
+  int getValue_int(std::string);
 
-    std::string getTableValue_str(std::string);
+  std::string getTableValue_str(std::string);
 
 private:
-    Lua_State m_state;
+  Lua_State m_state;
 };
 
 #endif
-

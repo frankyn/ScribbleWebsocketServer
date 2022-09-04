@@ -1,27 +1,26 @@
 #if __APPLE__
-#include <sys/types.h>
 #include <sys/event.h>
 #include <sys/time.h>
+#include <sys/types.h>
 #elif __linux__
 // linux
 #include <sys/epoll.h>
 #else
-#   error "Unknown compiler"
+#error "Unknown compiler"
 #endif
 
-
+#include <ctime>
 #include <iostream>
 #include <list>
 #include <map>
-#include <ctime>
 
+#include "./Channel.h"
+#include "./ChannelSelector.h"
+#include "./Connection.h"
+#include "./ConnectionsWaiting.h"
 #include "./common/TCPListener.h"
 #include "./common/ThreadClass.h"
 #include "./mysql/MySQL.h"
-#include "./Connection.h"
-#include "./ConnectionsWaiting.h"
-#include "./ChannelSelector.h"
-#include "./Channel.h"
 #include "ScriptLoader.h"
 
 #ifndef LISTENER_HEADER
@@ -29,40 +28,40 @@
 
 class ListenerClass : public ThreadClass {
 public:
-    ListenerClass();
+  ListenerClass();
 
-    void handleConnection(int);
+  void handleConnection(int);
 
-    ~ListenerClass();
+  ~ListenerClass();
 
-    void setStatus(int);
+  void setStatus(int);
 
-    int usersConnected();
+  int usersConnected();
 
-    std::string availableChannels();
+  std::string availableChannels();
 
-    int checkForUpdates();
+  int checkForUpdates();
 
 private:
-    void Setup();
+  void Setup();
 
-    void Execute(void *);
+  void Execute(void *);
 
-    void doBeat();
+  void doBeat();
 
-    int incomingFD, maxSelectors, status, queue, port;
+  int incomingFD, maxSelectors, status, queue, port;
 
-    int elapseUpdateCheck;
-    time_t lastUpdateCheck;
+  int elapseUpdateCheck;
+  time_t lastUpdateCheck;
 
-    std::map<std::string, Channel *> channels; //Only one channel for now
-    ConnectionsWaiting connectionsWaiting;
-    ChannelSelector **chselect;
+  std::map<std::string, Channel *> channels; // Only one channel for now
+  ConnectionsWaiting connectionsWaiting;
+  ChannelSelector **chselect;
 
-    ScriptLoader config;
+  ScriptLoader config;
 
-    MySQL appDB;
-    TCPListener listenerSocket;
+  MySQL appDB;
+  TCPListener listenerSocket;
 };
 
 #endif

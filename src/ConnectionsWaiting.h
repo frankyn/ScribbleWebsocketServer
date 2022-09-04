@@ -1,38 +1,36 @@
 #include <iostream>
-#include <string>
 #include <list>
+#include <string>
 
-#include "./common/SemaphoreClass.h"
-#include "./common/LockClass.h"
 #include "./Connection.h"
+#include "./common/LockClass.h"
+#include "./common/SemaphoreClass.h"
 
 #ifndef CONNECTIONS_WAITING_HEADER
 #define CONNECTIONS_WAITING_HEADER
 
 class ConnectionsWaiting {
 public:
-    ConnectionsWaiting();
+  ConnectionsWaiting();
 
-    ~ConnectionsWaiting();
+  ~ConnectionsWaiting();
 
-    void lock();
+  void lock();
 
-    void unlock();
+  void unlock();
 
-    void insert(int);
+  void insert(int);
 
-    int get();
+  int get();
 
-    void signal();
+  void signal();
 
-    void wait();
+  void wait();
 
 private:
-    SemClass sem;
-    LockClass pad;
-    std::list<int> connectionsWaiting;
-
+  SemClass sem;
+  LockClass pad;
+  std::list<int> connectionsWaiting;
 };
 
 #endif
-
