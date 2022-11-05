@@ -13,5 +13,6 @@ cc_library(
         "@boost//:uuid",
         "@boost//:algorithm",
         "@boost//:archive",
+        "@boost//:json",
     ],
 )
