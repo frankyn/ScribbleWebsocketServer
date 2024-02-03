@@ -49,9 +49,13 @@ private:
   void ParseChannel(const std::string &t_data);
   void ParseGuid(const std::string &t_data);
   void AddDigest(std::stringstream &os);
+  size_t ParseNextFrame(const std::string &t_data, std::string &t_decoded_data);
   uint64_t m_version;
   std::string m_channel;
   std::string m_guid;
+  bool m_frame_incomplete;
+  bool m_message_processing;
+  size_t m_frame_bytes_remaining;
 };
 } // namespace websocket
 } // namespace scribble

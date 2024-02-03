@@ -1,5 +1,6 @@
 #include "WebSocket.h"
 #include <cassert>
+#include <chrono>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <memory>
@@ -129,18 +130,75 @@ TEST(WebSocket, SingleFrameLargeMessage) {
   EXPECT_EQ(encoded_message, example_wsmessage_large_encoded);
 }
 
-// TEST(WebSocket, MultiFrameParsing) {
-//   const string exampleFourFramedMessages =
-//       "\x01\x02\x48\x65\x01\x01\x6c\x01\x01\x6c\x81\x01\x6f";
-//   const string exampleFramedMessagePayload = "Hello";
-//   WebSocket protocolHandler;
-//   WSMessage smallSplitMessage{};
-//   string decodedMessage =
-//       protocolHandler.decode(exampleFourFramedMessages, smallSplitMessage);
-//   EXPECT_EQ(smallSplitMessage.frames.size(), 4);
-//   EXPECT_EQ(smallSplitMessage.frames.at(0).message.to_string(), "He");
-//   EXPECT_EQ(smallSplitMessage.frames.at(1).message.to_string(), "l");
-//   EXPECT_EQ(smallSplitMessage.complete, true);
-//   EXPECT_EQ(decodedMessage, exampleFramedMessagePayload);
-//   EXPECT_EQ(smallSplitMessage.next_message_offset, 0);
+TEST(WebSocket, MultiFrameSmallMessage) {
+  const string example_four_framed_messages_encoded =
+      "\x01\x02\x48\x65\x01\x01\x6c\x01\x01\x6c\x81\x01\x6f";
+  const string example_framed_message_payload = "Hello";
+  WebSocket websocket(13, "chat", "guid");
+  string decoded_message;
+  size_t bytes_decoded =
+      websocket.Decode(example_four_framed_messages_encoded, decoded_message,
+                       /* Unimplemented */ 0);
+  EXPECT_EQ(decoded_message, example_framed_message_payload);
+  EXPECT_EQ(bytes_decoded, example_four_framed_messages_encoded.length());
+}
+
+TEST(WebSocket, IncompleteSingleFrame) {
+  const string example_incomplete_frame_message_encoded = "\x01\x02\x48";
+  const string example_incomplete_frame_message_final_encoded = "\x65";
+  const string example_framed_message_payload = "He";
+  WebSocket websocket(13, "chat", "guid");
+  string decoded_message;
+  size_t bytes_decoded = websocket.Decode(
+      example_incomplete_frame_message_encoded, decoded_message,
+      /* Unimplemented */ 0);
+  bytes_decoded += websocket.Decode(
+      example_incomplete_frame_message_final_encoded, decoded_message,
+      /* Unimplemented */ 0);
+  EXPECT_EQ(decoded_message, example_framed_message_payload);
+  EXPECT_EQ(bytes_decoded,
+            example_incomplete_frame_message_encoded.length() +
+                example_incomplete_frame_message_final_encoded.length());
+}
+
+TEST(WebSocket, IncompleteMultiFrame) {
+  const string incomplete_frame_message_encoded = "\x01\x02\x48\x65\x01";
+  const string incomplete_frame_message_final_encoded =
+      "\x01\x01\x6c\x01\x01\x6c\x81\x01\x6f";
+  const string framed_message_payload = "Hello";
+  WebSocket websocket(13, "chat", "guid");
+  string decoded_message;
+
+  std::chrono::steady_clock::time_point begin =
+      std::chrono::steady_clock::now();
+  size_t bytes_decoded =
+      websocket.Decode(incomplete_frame_message_encoded, decoded_message,
+                       /* Unimplemented */ 0);
+  std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+  EXPECT_LE(
+      std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count(),
+      500);
+
+  EXPECT_EQ(bytes_decoded, incomplete_frame_message_encoded.length() - 1);
+  bytes_decoded +=
+      websocket.Decode(incomplete_frame_message_final_encoded, decoded_message,
+                       /* Unimplemented */ 0);
+  EXPECT_EQ(decoded_message, framed_message_payload);
+  EXPECT_EQ(bytes_decoded, incomplete_frame_message_encoded.length() +
+                               incomplete_frame_message_final_encoded.length() -
+                               1);
+}
+
+// TEST(WebSocket, DecodeOneMessageAtATime) {
+//   const string two_messages_multi_frame_encoded =
+//       "\x01\x02\x48\x65\x01\x01\x6c\x01\x01\x6c\x81\x01\x6f\x01\x02\x48\x65\x01"
+//       "\x01\x6c\x01\x01\x6c\x81\x01\x6f";
+//   const string example_framed_message_payload = "Hello";
+//   WebSocket websocket(13, "chat", "guid");
+//   string decoded_message;
+//   size_t bytes_decoded =
+//       websocket.Decode(two_messages_multi_frame_encoded, decoded_message,
+//                        /* Unimplemented */ 0);
+//   EXPECT_EQ(decoded_message, example_framed_message_payload);
+//   EXPECT_EQ(bytes_decoded, two_messages_multi_frame_encoded.length() / 2);
 // }

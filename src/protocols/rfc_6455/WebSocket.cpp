@@ -14,13 +14,17 @@ using std::string;
 using std::stringstream;
 
 WebSocket::WebSocket(uint64_t t_version, string t_channel, string t_guid)
-    : m_version(t_version), m_channel(t_channel), m_guid(t_guid) {
+    : m_version(t_version), m_channel(t_channel), m_guid(t_guid),
+      m_frame_incomplete(false), m_message_processing(false),
+      m_frame_bytes_remaining(0) {
   if (m_version != 13) {
     throw invalid_argument("WebSocket version 13 is the only supported");
   }
 }
 
-WebSocket::WebSocket(const string &t_data) {
+WebSocket::WebSocket(const string &t_data)
+    : m_frame_incomplete(false), m_message_processing(false),
+      m_frame_bytes_remaining(0) {
   ParseVersion(t_data);
   ParseChannel(t_data);
   ParseGuid(t_data);
@@ -97,13 +101,23 @@ const std::string WebSocket::GetHandshake() {
   return os.str();
 }
 
-const size_t WebSocket::Decode(const string &t_data, string &t_decoded_data,
-                               const size_t t_bytes_to_read) {
-  // TODO: Handle multi frame messages
-  if (t_data.empty() || t_data.size() < 2) {
+size_t WebSocket::ParseNextFrame(const string &t_data, string &t_decoded_data) {
+  if (t_data.empty() || (t_data.size() < 2 && !m_frame_incomplete)) {
     return 0;
   }
-  bool complete = t_data[0] & 0x80;
+  if (m_frame_incomplete) {
+    if (m_frame_bytes_remaining <= t_data.length()) {
+      size_t tmp = m_frame_bytes_remaining;
+      t_decoded_data += t_data.substr(0, m_frame_bytes_remaining);
+      m_frame_bytes_remaining = 0;
+      m_frame_incomplete = false;
+      return tmp;
+    } else {
+      m_frame_bytes_remaining -= t_data.length();
+      t_decoded_data += t_data.substr(0, t_data.length());
+      return t_data.length();
+    }
+  }
   size_t payload_length = 0;
   size_t payload_offset = 2;
   if (t_data[1] == 0x7E) {
@@ -114,11 +128,37 @@ const size_t WebSocket::Decode(const string &t_data, string &t_decoded_data,
         t_data[2] << 24 | t_data[3] << 16 | t_data[4] << 8 | t_data[5];
     payload_offset += 4;
   } else {
-    payload_length = t_data[1] & 0x7D;
+    payload_length = t_data[1];
   }
   // TODO: add mask length to payload_offset
-  t_decoded_data = t_data.substr(payload_offset, payload_length);
-  return payload_offset + payload_length;
+  if (payload_length > t_data.length() - payload_offset) {
+    m_frame_bytes_remaining =
+        payload_length - (t_data.length() - payload_length);
+    m_frame_incomplete = true;
+    payload_length = t_data.length() - payload_length;
+  }
+  t_decoded_data += t_data.substr(payload_offset, payload_length);
+  size_t bytes_read = payload_offset + payload_length;
+  return bytes_read;
+}
+
+const size_t WebSocket::Decode(const string &t_data, string &t_decoded_data,
+                               const size_t t_bytes_to_read) {
+  if (t_data.empty() || (t_data.size() < 2 && !m_frame_incomplete)) {
+    return 0;
+  }
+  size_t bytes_remaining = t_data.length();
+  size_t offset = 0;
+  while (bytes_remaining > 0) {
+    const string view = t_data.substr(offset, bytes_remaining);
+    size_t bytes_read = ParseNextFrame(view, t_decoded_data);
+    if (bytes_read == 0) {
+      break;
+    }
+    bytes_remaining -= bytes_read;
+    offset += bytes_read;
+  }
+  return t_data.length() - bytes_remaining;
 }
 
 const size_t WebSocket::Encode(const string &t_data, string &t_encoded_data,
