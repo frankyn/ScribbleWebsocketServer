@@ -54,7 +54,6 @@ private:
   std::string m_channel;
   std::string m_guid;
   bool m_frame_incomplete;
-  bool m_message_processing;
   size_t m_frame_bytes_remaining;
 };
 } // namespace websocket

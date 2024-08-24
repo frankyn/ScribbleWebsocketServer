@@ -15,16 +15,14 @@ using std::stringstream;
 
 WebSocket::WebSocket(uint64_t t_version, string t_channel, string t_guid)
     : m_version(t_version), m_channel(t_channel), m_guid(t_guid),
-      m_frame_incomplete(false), m_message_processing(false),
-      m_frame_bytes_remaining(0) {
+      m_frame_incomplete(false), m_frame_bytes_remaining(0) {
   if (m_version != 13) {
     throw invalid_argument("WebSocket version 13 is the only supported");
   }
 }
 
 WebSocket::WebSocket(const string &t_data)
-    : m_frame_incomplete(false), m_message_processing(false),
-      m_frame_bytes_remaining(0) {
+    : m_frame_incomplete(false), m_frame_bytes_remaining(0) {
   ParseVersion(t_data);
   ParseChannel(t_data);
   ParseGuid(t_data);
@@ -144,10 +142,11 @@ size_t WebSocket::ParseNextFrame(const string &t_data, string &t_decoded_data) {
 
 const size_t WebSocket::Decode(const string &t_data, string &t_decoded_data,
                                const size_t t_bytes_to_read) {
-  if (t_data.empty() || (t_data.size() < 2 && !m_frame_incomplete)) {
+  if (t_data.empty() || (t_data.size() < 2 && !m_frame_incomplete) &&
+                            t_bytes_to_read > t_data.size()) {
     return 0;
   }
-  size_t bytes_remaining = t_data.length();
+  size_t bytes_remaining = t_bytes_to_read;
   size_t offset = 0;
   while (bytes_remaining > 0) {
     const string view = t_data.substr(offset, bytes_remaining);
@@ -158,7 +157,7 @@ const size_t WebSocket::Decode(const string &t_data, string &t_decoded_data,
     bytes_remaining -= bytes_read;
     offset += bytes_read;
   }
-  return t_data.length() - bytes_remaining;
+  return t_bytes_to_read - bytes_remaining;
 }
 
 const size_t WebSocket::Encode(const string &t_data, string &t_encoded_data,
